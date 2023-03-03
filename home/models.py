@@ -7,17 +7,19 @@ from wagtail.models import Orderable, Page
 
 class HomePageCard(models.Model):
     tagline = models.CharField(max_length=255, blank=True)
-    heading = RichTextField()
+    heading = models.CharField(max_length=255)
     blurb = RichTextField()
     date = models.DateField(blank=True, null=True)
     image = models.ForeignKey(
         "content.WAHFImage",
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
-    link_page = models.ForeignKey("wagtailcore.Page", on_delete=models.CASCADE)
+    link_page = models.ForeignKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, null=True, blank=True
+    )
     link_text = models.CharField(max_length=255, blank=True)
 
     panels = [

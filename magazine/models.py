@@ -34,6 +34,10 @@ class MagazineIssuePage(Page):
     def __str__(self):
         return f"{self.date} - {self.headline}"
 
+    def get_sitemap_urls(self, request):
+        # Individual issues are paywalled and should not appear in sitemaps
+        return []
+
     content_panels = Page.content_panels + [
         FieldPanel("date"),
         FieldPanel("headline"),

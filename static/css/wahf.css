@@ -26,6 +26,10 @@ h1, h2, h3, h4, h5 {
     margin-left: 10px;
 }
 
+.card-date {
+    text-transform: uppercase;
+    font-size: smaller;
+}
 
 /* open-sans-regular - latin */
 @font-face {

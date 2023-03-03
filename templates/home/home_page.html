@@ -13,7 +13,7 @@
         <!-- magazine preview -->
         <div class="col-md-6 px-0">
             <h1 class="display-4 fst-italic">{{ magazine.headline }}</h1>
-            <p class="lead my-3">{{ magazine.blurb }}</p>
+            <p class="lead my-3">{{ magazine.blurb|safe }}</p>
 
             <p class="lead mb-0">
                 <a href="{% slugurl magazine.slug %}" class="text-white fw-bold">
@@ -34,7 +34,7 @@
         <!-- anonymous sign in -->
         <div class="col-md-6 px-0">
             <h1 class="display-4 fst-italic">{{ page.non_member_headline }}</h1>
-            <p class="lead my-3">{{ page.non_member_blurb }}</p>
+            <p class="lead my-3">{{ page.non_member_blurb|safe }}</p>
 
             {% if page.non_member_link_page and page.non_member_link_text %}
             <p class="lead mb-0">
@@ -55,65 +55,41 @@
 </div>
 
 <div class="row mb-2">
-    <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">Featured Story</strong>
-            <h3 class="mb-0">Wisconsin Airlines</h3>
-            <div class="mb-1 text-muted">Nov 12</div>
-            <p class="card-text mb-auto">Here is a exciting and informative story about historical local Wisconsin airlines flying around the state.</p>
-            <a href="#" class="stretched-link">Continue reading</a>
-            </div>
-            <div class="col-auto d-none d-lg-block">
-                <img src="/static/img/img2.jpg" class="rounded p-3" style="height:205px;">
-            </div>
-        </div>
-    </div>
 
+    {% for card in page.home_page_cards.all %}
     <div class="col-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success">Hall of Fame</strong>
-            <h3 class="mb-0">2023 Inductees</h3>
-            <div class="mb-1 text-muted">Nov 11</div>
-            <p class="mb-auto">Please welcome our Hall of Fame Inductees for 2023! Join us to celebrate an evening of thrilling aviation stories.</p>
-            <a href="#" class="stretched-link">2023 Event Info</a>
-            </div>
-            <div class="col-auto d-none d-lg-block">
-                <img src="/static/img/img3.jpg" class="rounded p-3" style="height:205px;">
-            </div>
-        </div>
-    </div>
+            <div class="col px-3 py-3 d-flex flex-column position-static">
 
-    <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-warning">2022 Hall of Fame</strong>
-            <h3 class="mb-0">Example Profile</h3>
-            <div class="mb-1 text-muted">Nov 11</div>
-            <p class="mb-auto">This example features heroism, patriotism, airplanes, and the mysterious disappearing fuel truck. He never did park that fuel truck where he claimed that he did.</p>
-            <a href="#" class="stretched-link">Read More</a>
-            </div>
-            <div class="col-auto d-none d-lg-block">
-                <img src="/static/img/img4.jpg" class="rounded p-3" style="height:235px;">
-            </div>
-        </div>
-    </div>
+                <!--
+                <strong class="d-inline-block mb-2 text-primary">Featured Story</strong>
+                -->
 
-    <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-danger">Membership</strong>
-            <h3 class="mb-0">Donate Today</h3>
-            <div class="mb-1 text-muted">Nov 11</div>
-            <p class="mb-auto">Become a member today and support local aviation history.</p>
-            <a href="#" class="stretched-link">Join Today</a>
+                <h3 class="my-0">{{ card.heading }}</h3>
+
+                {% if card.date %}
+                <div class="mb-1 text-muted card-date">{{ card.date|date:"N j" }}</div>
+                {% endif %}
+
+                <p class="card-text mb-auto">
+                    {{ card.blurb|safe }}
+                </p>
+
+                {% if card.link_page %}
+                <a href="{% slugurl card.link_page.slug %}" class="stretched-link">{{ card.link_text }}</a>
+                {% endif %}
+
             </div>
+
+            {% if card.image %}
             <div class="col-auto d-none d-lg-block">
-                <img src="/static/img/img5.jpg" class="rounded p-3" style="height:255px;">
+                {% image card.image fill-200x200 class="img-thumbnail img-fluid mx-2 my-2" %}
             </div>
+            {% endif %}
         </div>
     </div>
+    {% endfor %}
+
 </div>
 
 {% endblock content %}
