@@ -9,7 +9,7 @@
 
 
 <div class="row p-4 p-md-5 mb-4 rounded text-bg-dark">
-    {% if user and magazine %}
+    {% if user.pk > 0 and magazine %}
         <!-- magazine preview -->
         <div class="col-md-6 px-0">
             <h1 class="display-4 fst-italic">{{ magazine.headline }}</h1>
