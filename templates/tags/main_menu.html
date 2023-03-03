@@ -1,0 +1,7 @@
+{% for item in menu_items %}
+  <li class="nav-link px-2 link-dark">
+    <a href="{{ item.link }}" class="nav-link{% if item.active %} active{% endif %}" {% if item.active %}aria-current="page"{% endif %}>
+      {{ item.title }}
+    </a>
+  </li>
+{% endfor %}

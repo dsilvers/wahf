@@ -1,0 +1,9 @@
+<ul class="nav flex-column">
+    {% for item in menu_items %}
+    <li class="nav-item mb-2">
+      <a href="{{ item.link }}" class="nav-link p-0 text-muted">
+        {{ item.title }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

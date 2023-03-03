@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:15.2
+    container_name: db
+    environment:
+      - POSTGRES_DB=wahf
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always
+    volumes:
+      - ./.db/:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+  django:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-production
+    container_name: django
+    env_file: .env
+    command: gunicorn wahf.wsgi:application --bind 0.0.0.0:8000 --log-level debug
+      - db
+    volumes:
+      - static_collected:/app/static_collected
+      - media:/app/media
+    ports:
+      - 8000:8000
+    stdin_open: true
+    tty: true

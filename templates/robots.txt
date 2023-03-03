@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /django-admin
+Disallow: /cms
+Disallow: /documents
+
+Sitemap: https://www.wahf.org/sitemap.xml

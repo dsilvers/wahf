@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+
+{% block extra_css %}
+<style type="text/css">
+.card-body p {
+    margin: 1px;
+}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+    {% image page.person.image height-600 class="img-fluid img-thumbnail" %}
+</div>
+
+<h1 class="my-3">{{ page.person }}</h1>
+
+
+{% if page.born_date or page.died_date or page.inducted_date %}
+<div class="card text-bg-light my-4">
+    <div class="card-body px-3">
+
+        {% if page.born_date %}
+            <p class="born-date"><strong>Born: </strong> {{ page.born_date|date:"F j, Y" }}</p>
+        {% endif %}
+
+        {% if page.died_date %}
+            <p class="died-date"><strong>Died: </strong> {{ page.died_date|date:"F j, Y" }}</p>
+        {% endif %}
+
+        {% if page.inducted_date %}
+            <p class="inducted-date"><strong>Inducted: </strong> {{ page.inducted_date|date:"Y" }}</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endif %}
+
+
+{% for block in page.body %}
+    {% if block.block_type == 'heading' %}
+        <h3>{{ block.value }}</h3>
+    {% elif block.block_type == 'paragraph' %}
+        {{ block.value|richtext }}
+    {% elif block.block_type == 'image' %}
+        {% image block.value original class="img-fluid" %}
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

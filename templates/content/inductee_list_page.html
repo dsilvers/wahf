@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+
+{% block extra_css %}
+<style type="text/css">
+.inductee-detail {
+    display: inline-block;
+}
+
+.inductee-item {
+    cursor: pointer;
+    border: none;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ page.title }}</h1>
+
+<ul class="list-group">
+
+{% for inductee in inductee_list %}
+    <li class="list-group-item inductee-item" onclick="window.location='{% slugurl inductee.slug %}';">
+
+        <a href="{% slugurl inductee.slug %}">{% image inductee.person.image fill-150x150 class="img-thumbnail" %}</a>
+
+        <div class="inductee-detail my-3 mx-4">
+
+            <h2>{{ inductee.person }}</h2>
+
+            {% if inductee.tagline %}
+                <p class="lead">{{ inductee.tagline }}</p>
+            {% endif %}
+
+        </div>
+
+    </li>
+
+{% endfor %}
+</ul>
+
+{% endblock %}
