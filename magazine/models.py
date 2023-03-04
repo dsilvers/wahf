@@ -3,8 +3,10 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
+from wahf.mixins import OpenGraphMixin
 
-class MagazineIssuePage(Page):
+
+class MagazineIssuePage(OpenGraphMixin, Page):
     date = models.DateField(
         help_text="Date of issue for this magazine release. Used for sorting issues by date."
     )
@@ -34,6 +36,11 @@ class MagazineIssuePage(Page):
     def __str__(self):
         return f"{self.date} - {self.headline}"
 
+    def get_graph_image_url(self):
+        if self.cover:
+            return self.cover.full_url
+        return super().get_graph_image_url()
+
     def get_sitemap_urls(self, request):
         # Individual issues are paywalled and should not appear in sitemaps
         return []
@@ -53,12 +60,18 @@ class MagazineIssuePage(Page):
     subpage_types = []
 
 
-class MagazineListPage(Page):
+class MagazineListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
         context["magazine_list"] = MagazineIssuePage.objects.child_of(self).live()
         return context
+
+    def get_graph_image(self):
+        first_magazine = MagazineIssuePage.objects.child_of(self).live().first()
+        if first_magazine:
+            return first_magazine.get_graph_image()
+        return super().get_graph_image()
 
     subpage_types = [
         "magazine.MagazineIssuePage",

@@ -15,6 +15,8 @@ from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
 
+from wahf.mixins import OpenGraphMixin
+
 
 class Person(models.Model):
     first_name = models.CharField(max_length=200)
@@ -78,7 +80,7 @@ class WAHFRendition(AbstractRendition):
         unique_together = (("image", "filter_spec", "focal_point_key"),)
 
 
-class InducteeListPage(Page):
+class InducteeListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
@@ -98,7 +100,7 @@ class InducteeListPage(Page):
     ]
 
 
-class InducteeDetailPage(Page):
+class InducteeDetailPage(OpenGraphMixin, Page):
     person = models.OneToOneField("content.Person", on_delete=models.PROTECT)
     tagline = models.TextField(
         blank=True,
@@ -133,8 +135,13 @@ class InducteeDetailPage(Page):
         "content.InducteeListPage",
     ]
 
+    def get_graph_image(self):
+        if self.person.image:
+            return self.person.image
+        return super().get_graph_image()
 
-class FreeformPage(Page):
+
+class FreeformPage(OpenGraphMixin, Page):
     body = StreamField(
         [
             ("heading", blocks.CharBlock(form_classname="title")),

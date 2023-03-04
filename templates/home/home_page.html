@@ -8,12 +8,12 @@
 {% get_magazine as magazine %}
 
 
-<div class="row p-4 p-md-5 mb-4 rounded text-bg-dark">
+<div class="row p-3 p-md-3 mb-3 rounded text-bg-dark">
     {% if user.pk > 0 and magazine %}
         <!-- magazine preview -->
         <div class="col-md-6 px-0">
             <h1 class="display-4 fst-italic">{{ magazine.headline }}</h1>
-            <p class="lead my-3">{{ magazine.blurb|safe }}</p>
+            <p class="lead my-2">{{ magazine.blurb|safe }}</p>
 
             <p class="lead mb-0">
                 <a href="{% slugurl magazine.slug %}" class="text-white fw-bold">
@@ -23,9 +23,9 @@
         </div>
 
         {% if magazine.cover %}
-            <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
+            <div class="col-md-6 px-0 mx-auto my-auto px-2 py-3 text-center">
                 <a href="{% slugurl magazine.slug %}">
-                    {% image magazine.cover height-600 class="img-thumbnail img-fluid" %}
+                    {% image magazine.cover height-400 class="img-thumbnail img-fluid" %}
                 </a>
             </div>
         {% endif %}
@@ -47,7 +47,7 @@
 
         {% if page.non_member_image %}
         <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
-            {% image page.non_member_image fill-800x800 class="img-thumbnail img-fluid" %}
+            {% image page.non_member_image fill-600x600 class="img-thumbnail img-fluid" %}
         </div>
         {% endif %}
 

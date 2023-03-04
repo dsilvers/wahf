@@ -4,6 +4,8 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 
+from wahf.mixins import OpenGraphMixin
+
 
 class HomePageCard(models.Model):
     tagline = models.CharField(max_length=255, blank=True)
@@ -42,7 +44,7 @@ class HomePageCardItem(Orderable, HomePageCard):
     )
 
 
-class HomePage(Page):
+class HomePage(OpenGraphMixin, Page):
     non_member_headline = models.TextField()
     non_member_blurb = RichTextField()
     non_member_link_text = models.CharField(max_length=200, blank=True)
@@ -86,3 +88,8 @@ class HomePage(Page):
         "magazine.MagazineListPage",
         "content.FreeformPage",
     ]
+
+    def get_graph_image(self):
+        if self.non_member_image:
+            return self.non_member_image
+        return super().get_graph_image()
