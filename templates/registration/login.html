@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h2 class="mt-2">Member Login</h2>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <div class="alert alert-block alert-danger mt-3 mb-3">
+                        <p>You appear to be already logged in.</p>
+                        <p>Perhaps you would like to <a href="{% url 'logout' %}?next={% url 'login' %}">logout first?</a></p>
+                    </div>
+                    {% else %}
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-block alert-danger mt-3 mb-3">
+                            <p>Your username and password didn't match. Please try again.</p>
+
+                            <p>For assistance, please <a href="/contact">contact us.</a></p>
+                        </div>
+                        {% endif %}
+
+                        <div id="div_id_login" class="form-group my-3">
+                            <label for="id_login">Email Address</label>
+                            <div>
+                                <input type="email" name="username" value="{% if form.email.value %}{{ form.email.value }}{% endif %}" placeholder="" autocomplete="email" class="form-control form-control-lg" required id="id_login">
+                            </div>
+                        </div>
+
+                        <div id="div_id_password" class="form-group my-3">
+                            <label for="id_password">Password</label>
+                            <div>
+                                <input type="password" name="password" placeholder="" autocomplete="current-password" class="form-control form-control-lg" required id="id_password">
+                            </div>
+                        </div>
+
+                        <div class="container login-controls">
+                            <div class="row">
+                                <div class="col">
+                                    <div id="div_id_remember" class="form-check">
+                                        <input type="checkbox" name="remember" class="form-check-input" id="id_remember">
+                                        <label for="id_remember" class="form-check-label">Remember Me</label>
+                                    </div>
+                                </div>
+                                <div class="col text-right">
+                                        <a class="text-muted" href="{% url 'password_reset' %}">Forgot Password?</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <input class="btn btn-lg btn-primary mt-4 mb-3 w-100" type="submit" value="Log in">
+                        </div>
+
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

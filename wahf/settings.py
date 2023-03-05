@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "content",
     "home",
     "magazine",
+    "users",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.modeladmin",
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     "django_extensions",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -81,18 +84,22 @@ WSGI_APPLICATION = "wahf.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#    "default": {
-#        "ENGINE": "django.db.backends.sqlite3",
-#        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-#    }
-# }
-
-DATABASES = {"default": env.db("DATABASE_URL", default="")}
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+else:
+    DATABASES = {"default": env.db("DATABASE_URL", default="")}
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = "users.User"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -167,7 +174,7 @@ WAGTAILADMIN_BASE_URL = "https://www.wahf.org"
 # https://docs.wagtail.org/en/stable/advanced_topics/images/custom_image_model.html
 WAGTAILIMAGES_IMAGE_MODEL = "content.WAHFImage"
 
-WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = True
+# WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = True
 
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50MB
 
@@ -175,3 +182,24 @@ WAGTAILADMIN_RECENT_EDITS_LIMIT = 5
 
 WAGTAILADMIN_COMMENTS_ENABLED = False
 WAGTAIL_ALLOW_UNICODE_SLUGS = False
+
+
+WAGTAIL_FRONTEND_LOGIN_TEMPLATE = "auth/login.html"
+WAGTAIL_FRONTEND_LOGIN_URL = "/accounts/login/"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ] + MIDDLEWARE
+
+    import socket  # only if you haven't already imported this
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
+        "127.0.0.1",
+        "10.0.2.2",
+    ]
