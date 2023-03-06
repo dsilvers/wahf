@@ -13,7 +13,7 @@ class HomePageCard(models.Model):
     blurb = RichTextField()
     date = models.DateField(blank=True, null=True)
     image = models.ForeignKey(
-        "content.WAHFImage",
+        "archives.WAHFImage",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -56,7 +56,7 @@ class HomePage(OpenGraphMixin, Page):
         related_name="+",
     )
     non_member_image = models.ForeignKey(
-        "content.WAHFImage",
+        "archives.WAHFImage",
         null=True,
         blank=False,
         on_delete=models.SET_NULL,

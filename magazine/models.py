@@ -15,7 +15,7 @@ class MagazineIssuePage(OpenGraphMixin, Page):
         help_text="Short snippet of text describing the content inside this issue."
     )
     cover = models.ForeignKey(
-        "content.WAHFImage",
+        "archives.WAHFImage",
         null=True,
         blank=False,
         on_delete=models.SET_NULL,

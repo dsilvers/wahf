@@ -1,0 +1,7 @@
+{% if caption or source %}
+<figcaption>
+    {% if caption %}{{ caption }}{% if source %} - {% endif %}{% endif %}
+    {% if source %}<i>{{ source }}</i>{% endif %}
+    {% if date %}<i>({{ date|date:"Y" }})</i>{% endif %}
+</figcaption>
+{% endif %}

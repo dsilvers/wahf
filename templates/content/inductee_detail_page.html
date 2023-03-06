@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
 
 
 {% block extra_css %}
@@ -23,6 +24,7 @@
 {% if page.person.image %}
 <div class="container mt-3">
     {% image page.person.image height-200 class="img-fluid img-thumbnail" %}
+    {% caption page.person.image %}
 </div>
 {% endif %}
 
@@ -52,6 +54,7 @@
         {{ block.value|richtext }}
     {% elif block.block_type == 'image' %}
         {% image block.value original class="img-fluid" %}
+        {% caption block.value %}
     {% endif %}
 {% endfor %}
 

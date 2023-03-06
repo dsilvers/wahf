@@ -17,6 +17,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 INSTALLED_APPS = [
+    "archives",
     "content",
     "home",
     "magazine",
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "crispy_forms",
     "crispy_bootstrap5",
+    "wagtailautocomplete",
 ]
 
 MIDDLEWARE = [
@@ -172,7 +174,8 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = "https://www.wahf.org"
 
 # https://docs.wagtail.org/en/stable/advanced_topics/images/custom_image_model.html
-WAGTAILIMAGES_IMAGE_MODEL = "content.WAHFImage"
+WAGTAILIMAGES_IMAGE_MODEL = "archives.WAHFImage"
+WAGTAILIMAGES_IMAGE_FORM_BASE = "archives.forms.WAHFImageAdminForm"
 
 # WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = True
 

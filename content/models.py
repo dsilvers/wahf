@@ -11,73 +11,10 @@ from wagtail.admin.panels import (
 )
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
 
 from wahf.mixins import OpenGraphMixin
-
-
-class Person(models.Model):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    image = models.ForeignKey(
-        "content.WAHFImage", null=True, blank=False, on_delete=models.SET_NULL
-    )
-
-    panels = [
-        FieldPanel("first_name"),
-        FieldPanel("last_name"),
-        FieldPanel("image"),
-    ]
-
-    class Meta:
-        verbose_name_plural = "People"
-        ordering = ["last_name", "first_name"]
-
-    @property
-    def name(self):
-        return str(self)
-
-    def __str__(self):
-        return f"{self.last_name}, {self.first_name}"
-
-
-class Location(models.Model):
-    name = models.CharField(max_length=200)
-    # airport_code = models.CharField(max_length=200)
-    # latitude
-    # longitude
-
-
-class WAHFImage(AbstractImage):
-    caption = models.CharField(max_length=255, blank=True)
-    date = models.DateField(blank=True, null=True)
-    source = models.CharField(max_length=255, blank=True)
-    location = models.ForeignKey(
-        Location,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="images",
-    )
-    people = models.ManyToManyField(Person, blank=True)
-
-    admin_form_fields = Image.admin_form_fields + (
-        "caption",
-        "date",
-        "people",
-        "location",
-    )
-
-
-class WAHFRendition(AbstractRendition):
-    image = models.ForeignKey(
-        WAHFImage, on_delete=models.CASCADE, related_name="renditions"
-    )
-
-    class Meta:
-        unique_together = (("image", "filter_spec", "focal_point_key"),)
 
 
 class InducteeListPage(OpenGraphMixin, Page):
@@ -101,7 +38,7 @@ class InducteeListPage(OpenGraphMixin, Page):
 
 
 class InducteeDetailPage(OpenGraphMixin, Page):
-    person = models.OneToOneField("content.Person", on_delete=models.PROTECT)
+    person = models.OneToOneField("archives.Person", on_delete=models.PROTECT)
     tagline = models.TextField(
         blank=True,
         help_text="Short description of the Inductee. This is displayed on the Inductee List page.",

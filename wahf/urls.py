@@ -6,11 +6,13 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 from users import views as user_views
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
+    path("cms/autocomplete/", include(autocomplete_admin_urls)),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path(

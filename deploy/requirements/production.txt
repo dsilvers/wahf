@@ -6,3 +6,4 @@ django-environ==0.9.0
 psycopg2==2.9.5
 django-extensions==3.2.1
 crispy-bootstrap5==0.7
+git+https://github.com/wagtail/wagtail-autocomplete.git@refs/pull/143/head

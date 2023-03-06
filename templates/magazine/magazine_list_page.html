@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
 
 
 {% block extra_css %}
@@ -22,6 +23,7 @@
         {% for magazine in magazine_list %}
         <div class="col-md-4">
             <a href="{% slugurl magazine.slug %}">{% image magazine.cover height-600 class="img-thumbnail img-fluid" %}</a>
+            {% caption magazine.cover %}
         </div>
         {% endfor %}
     </div>
