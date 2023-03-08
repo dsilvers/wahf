@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
-
+{% load image_tags %}
 
 {% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9">
 
 <h1>{{ page.title }}</h1>
 
@@ -13,7 +17,12 @@
         {{ block.value|richtext }}
     {% elif block.block_type == 'image' %}
         {% image block.value original class="img-fluid" %}
+        {% caption block.value %}
     {% endif %}
 {% endfor %}
+
+        </div>
+    </div>
+</div>
 
 {% endblock %}
