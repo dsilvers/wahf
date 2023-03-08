@@ -7,4 +7,4 @@ register = template.Library()
 
 @register.simple_tag()
 def get_magazine():
-    return MagazineIssuePage.objects.live().first()
+    return MagazineIssuePage.objects.live().order_by("-date").first()

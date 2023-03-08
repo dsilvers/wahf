@@ -64,11 +64,15 @@ class MagazineListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["magazine_list"] = MagazineIssuePage.objects.child_of(self).live()
+        context["magazine_list"] = (
+            MagazineIssuePage.objects.child_of(self).live().order_by("-date")
+        )
         return context
 
     def get_graph_image(self):
-        first_magazine = MagazineIssuePage.objects.child_of(self).live().first()
+        first_magazine = (
+            MagazineIssuePage.objects.child_of(self).live().order_by("-date").first()
+        )
         if first_magazine:
             return first_magazine.get_graph_image()
         return super().get_graph_image()
