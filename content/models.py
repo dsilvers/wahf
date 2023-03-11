@@ -53,6 +53,14 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         use_json_field=True,
     )
 
+    gallery = StreamField(
+        [
+            ("image", ImageChooserBlock()),
+        ],
+        use_json_field=True,
+        default=[],
+    )
+
     inducted_date = models.DateField(null=True, blank=True)
     born_date = models.DateField(null=True, blank=True)
     died_date = models.DateField(null=True, blank=True)
@@ -63,6 +71,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         FieldPanel("person"),
         FieldPanel("tagline"),
         FieldPanel("body"),
+        FieldPanel("gallery"),
         FieldPanel("inducted_date"),
         FieldPanel("born_date"),
         FieldPanel("died_date"),
@@ -76,6 +85,27 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         if self.person.image:
             return self.person.image
         return super().get_graph_image()
+
+
+@register_snippet
+class InducteePhotoPlaceholder(models.Model):
+    image = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Placeholder image for inductees that are missing an image.",
+    )
+
+    panels = [
+        FieldPanel("image"),
+    ]
+
+    class Meta:
+        verbose_name_plural = "Inductees List - Missing Photo Placeholder Image"
+
+    def __str__(self):
+        return "Inductee Missing Photo Placeholder Image"
 
 
 class FreeformPage(OpenGraphMixin, Page):
