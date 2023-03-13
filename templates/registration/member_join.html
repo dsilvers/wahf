@@ -8,9 +8,12 @@
 
 <style type="text/css">
 
+.smaller-please {
+    font-size: smaller;
+}
+
 .membership-selector h3 {
     margin-top: 20px;
-    border-bottom: 1px dotted #cecece;
 }
 
 .membership-selector .form-check label {
@@ -112,68 +115,77 @@ card.mount("#card-element");
 
                     <hr class="border border-primary border-3 opacity-75">
 
-                    <h1>Membership Form</h1>
+                    <h1>Choose Your Membership Level</h1>
 
                     <div class="row membership-selector">
-                        <h3><i data-feather="user"></i> Individual - Annual</h3>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="individual" id="membership_level_individual">
-                            <label class="form-check-label" for="membership_level_individual">
-                            $30 - Individual
-                            </label>
+                        <div class="col-md-4">
+                            <h3 class="text-success-emphasis"><i data-feather="user"></i> Individual</h3>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual" id="membership_level_individual">
+                                <label class="form-check-label" for="membership_level_individual">
+                                $30 - Individual
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual-spouse" id="membership_level_individual_spouse">
+                                <label class="form-check-label" for="membership_level_individual_spouse">
+                                $40 - Individual <i class="smaller-please">(with Spouse)</i>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual-youth" id="membership_level_individual_youth">
+                                <label class="form-check-label" for="membership_level_individual_youth">
+                                $10 - Youth <i class="smaller-please">(under 18)</i>
+                                </label>
+                            </div>
                         </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="individual-spouse" id="membership_level_individual_spouse">
-                            <label class="form-check-label" for="membership_level_individual_spouse">
-                            $40 - Individual <i>(with Spouse)</i>
-                            </label>
+                        <div class="col-md-4">
+                            <h3 class="text-primary-emphasis"><i data-feather="compass"></i> Business</h3>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="biz-small" id="membership_level_biz_small">
+                                <label class="form-check-label" for="membership_level_biz_small">
+                                $250 - Corporate <br><i class="smaller-please">(&lt;100 employees)</i>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="biz-large" id="membership_level_biz_large">
+                                <label class="form-check-label" for="membership_level_biz_large">
+                                $500 - Corporate <br><i class="smaller-please">(100+ employees)</i>
+                                </label>
+                            </div>
                         </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="individual-youth" id="membership_level_individual_youth">
-                            <label class="form-check-label" for="membership_level_individual_youth">
-                            $10 - Youth <i>(under 18)</i>
-                            </label>
+                        <div class="col-md-4">
+                            <h3 class="text-warning-emphasis"><i data-feather="send"></i> Lifetime</h3>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-individual" id="membership_level_lifetime">
+                                <label class="form-check-label" for="membership_level_lifetime">
+                                $500 - Lifetime
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-spouse" id="membership_level_lifetime_spouse">
+                                <label class="form-check-label" for="membership_level_lifetime_spouse">
+                                $750 - Lifetime <i class="smaller-please">(with Spouse)</i>
+                                </label>
+                            </div>
+
                         </div>
-
-                        <h3><i data-feather="compass"></i> Business - Annual</h3>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="biz-small" id="membership_level_biz_small">
-                            <label class="form-check-label" for="membership_level_biz_small">
-                            $250 - Corporate Membership <i>(under 100 employees)</i>
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="biz-large" id="membership_level_biz_large">
-                            <label class="form-check-label" for="membership_level_biz_large">
-                            $500 - Corporate Membership <i>(over 100 employees)</i>
-                            </label>
-                        </div>
-
-                        <h3><i data-feather="send"></i> Lifetime</h3>
 
                         <div class="alert alert-warning" role="alert">
                             <b>Show your commitment to preserving Wisconsin aviation history by choosing a lifetime membership.</b>
                             Also, your spouse can become a life member at a reduced rate when you both join as life members at the same time.
                         </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="lifetime-individual" id="membership_level_lifetime">
-                            <label class="form-check-label" for="membership_level_lifetime">
-                            $500 - Lifetime Membership
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="membership_level" value="lifetime-spouse" id="membership_level_lifetime_spouse">
-                            <label class="form-check-label" for="membership_level_lifetime_spouse">
-                            $750 - Lifetime Membership <i>(with Spouse)</i>
-                            </label>
-                        </div>
                     </div>
 
                     <hr class="border border-info border-3 opacity-75">
