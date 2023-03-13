@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load stripe_tags %}
+
+{% block extra_css %}
+
+<style type="text/css">
+
+.membership-selector h3 {
+    margin-top: 20px;
+    border-bottom: 1px dotted #cecece;
+}
+
+.membership-selector .form-check label {
+    cursor: pointer;
+    font-size: larger;
+}
+
+.membership-selector .form-check {
+    margin: 15px 0 15px 0;
+}
+
+input[type="radio"]:checked+label{
+    border-bottom: 2px dotted blue;
+    background-color: yellow;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.secure-message {
+    font-size: smaller;
+}
+
+.payment-card-wrapper {
+    border: 1px solid var(--bs-border-color);;
+    padding: 10px;
+    margin: 5px 0 5px 10px;
+    border-radius: .375rem;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+var stripe = Stripe('{% stripe_public_key %}');
+
+var elements = stripe.elements();
+var card = elements.create("card", {
+    style: {
+        base: {
+            fontWeight: '400',
+            fontFamily: 'Open Sans, sans-serif',
+            fontSize: '18px',
+            fontSmoothing: 'antialiased',
+        },
+        invalid: {
+            iconColor: '#FFC7EE',
+            color: '#FFC7EE',
+        },
+    },
+    hidePostalCode: true,
+    iconStyle: 'solid'
+});
+
+card.mount("#card-element");
+
+</script>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 pb-5">
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1>Become a Member</h1>
+
+                            <p>
+                                Someone can write a much more interesting lead here, maybe we use big fonts and some images.
+                            </p>
+                            <p>
+                                Members receive:
+                                <ul>
+                                    <li>A membership card</li>
+                                    <li>An invitation to the annual investiture ceremony</li>
+                                    <li>Subscription to our quarterly magazine, <i>Forward in Flight</i></li>
+                                </ul>
+
+                                Membership fees are due annually on January 1.
+                            </p>
+                            <p>
+                                For membership questions, contact <a href="mailto:info@wahf.org">info@wahf.org</a> or call <b>Tom Thomas</b> at <b>(608) 221-1994</b>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="border border-primary border-3 opacity-75">
+
+                    <h1>Membership Form</h1>
+
+                    <div class="row membership-selector">
+                        <h3><i data-feather="user"></i> Individual - Annual</h3>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="individual" id="membership_level_individual">
+                            <label class="form-check-label" for="membership_level_individual">
+                            $30 - Individual
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="individual-spouse" id="membership_level_individual_spouse">
+                            <label class="form-check-label" for="membership_level_individual_spouse">
+                            $40 - Individual <i>(with Spouse)</i>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="individual-youth" id="membership_level_individual_youth">
+                            <label class="form-check-label" for="membership_level_individual_youth">
+                            $10 - Youth <i>(under 18)</i>
+                            </label>
+                        </div>
+
+                        <h3><i data-feather="compass"></i> Business - Annual</h3>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="biz-small" id="membership_level_biz_small">
+                            <label class="form-check-label" for="membership_level_biz_small">
+                            $250 - Corporate Membership <i>(under 100 employees)</i>
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="biz-large" id="membership_level_biz_large">
+                            <label class="form-check-label" for="membership_level_biz_large">
+                            $500 - Corporate Membership <i>(over 100 employees)</i>
+                            </label>
+                        </div>
+
+                        <h3><i data-feather="send"></i> Lifetime</h3>
+
+                        <div class="alert alert-warning" role="alert">
+                            <b>Show your commitment to preserving Wisconsin aviation history by choosing a lifetime membership.</b>
+                            Also, your spouse can become a life member at a reduced rate when you both join as life members at the same time.
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="lifetime-individual" id="membership_level_lifetime">
+                            <label class="form-check-label" for="membership_level_lifetime">
+                            $500 - Lifetime Membership
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="membership_level" value="lifetime-spouse" id="membership_level_lifetime_spouse">
+                            <label class="form-check-label" for="membership_level_lifetime_spouse">
+                            $750 - Lifetime Membership <i>(with Spouse)</i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="border border-info border-3 opacity-75">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3>Your Details</h3>
+
+                            <div class="container">
+
+                                <div class="row">
+                                    {{ form.email|as_crispy_field}}
+                                    {{ form.password|as_crispy_field}}
+                                </div>
+
+                                <hr class="border border-secondary border-1 opacity-75">
+
+                                <div class="row">
+                                    {{ form.first_name|as_crispy_field }}
+                                    {{ form.last_name|as_crispy_field }}
+                                    {{ form.business_name|as_crispy_field }}
+                                </div>
+
+                                <hr class="border border-secondary border-1 opacity-75">
+
+                                <div class="row">
+                                    {{ form.address_line1|as_crispy_field }}
+                                    {{ form.address_line2|as_crispy_field }}
+                                    {{ form.city|as_crispy_field }}
+                                    {{ form.state|as_crispy_field }}
+                                    {{ form.zip|as_crispy_field }}
+                                    {{ form.phone|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border border-info border-3 opacity-75">
+
+                    <div class="row">
+                        <h3>Payment</h3>
+
+                        <div class="alert alert-light secure-message mt-2 mx-2" role="alert">
+                            <i data-feather="lock" class="mx-1"></i> Your credit card is securely sent directly from your web browser to our payment processor and never touches the WAHF website.
+                        </div>
+
+                        <div class="col-sm-7 col-md-5 col-lg-5 payment-card-wrapper">
+                            <div id="card-element">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        {{ form.membership_automatic_payments|as_crispy_field }}
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-lg">Submit Membership Form</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

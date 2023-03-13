@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from localflavor.us.models import USStateField, USZipCodeField
+from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,10 +31,43 @@ class User(AbstractUser):
     username = None
     email = models.EmailField("Email Address", unique=True)
 
+    membership_level = models.ForeignKey(
+        "membership.MembershipLevel", on_delete=models.PROTECT, blank=True, null=True
+    )
+    renewal_payment_date = models.DateField(
+        blank=True, null=True, help_text="The date they paid their membership dues."
+    )
+    membership_expiry_date = models.DateField(
+        blank=True,
+        null=True,
+        help_text="For WAHF - This is typically the last day of the year.",
+    )
+    membership_automatic_payment = models.BooleanField(default=False)
+
+    # Inherited from AbstractUser
+    #   first_name
+    #   last_name
+    business_name = models.CharField(max_length=200, blank=True)
+    spouse_name = models.CharField(max_length=200, blank=True)
+
+    address_line1 = models.CharField(max_length=200, blank=True)
+    address_line2 = models.CharField(max_length=200, blank=True)
+    city = models.CharField(max_length=200, blank=True)
+    state = USStateField(blank=True)
+    zip = USZipCodeField(blank=True)
+
+    phone = models.CharField(max_length=100, blank=True)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
+
+    @property
+    def name(self):
+        if self.business_name:
+            return f"{self} ({self.business_name})"
+        return str(self)
 
     def __str__(self):
         if self.first_name and self.last_name:
@@ -43,3 +78,41 @@ class User(AbstractUser):
             return self.last_name
 
         return self.email
+
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("first_name"),
+                        FieldPanel("last_name"),
+                    ]
+                ),
+                FieldPanel("business_name"),
+                FieldPanel("spouse_name"),
+                FieldPanel("address_line1"),
+                FieldPanel("address_line2"),
+                FieldRowPanel(
+                    [
+                        FieldPanel("city"),
+                        FieldPanel("state"),
+                        FieldPanel("zip"),
+                    ]
+                ),
+                FieldPanel("phone"),
+            ],
+            heading="Contact Details",
+        ),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("membership_level"),
+                        FieldPanel("renewal_payment_date"),
+                        FieldPanel("membership_expiry_date"),
+                    ]
+                ),
+            ],
+            heading="Membership",
+        ),
+    ]

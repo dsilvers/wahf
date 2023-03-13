@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "home",
     "magazine",
     "users",
+    "membership",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.modeladmin",
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "wagtailautocomplete",
+    "localflavor",
+    "djstripe",
 ]
 
 MIDDLEWARE = [
@@ -193,6 +196,11 @@ WAGTAIL_FRONTEND_LOGIN_URL = "/accounts/login/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+# https://django-phonenumber-field.readthedocs.io/en/latest/reference.html#settings
+PHONENUMBER_DEFAULT_REGION = "US"
+PHONENUMBER_DB_FORMAT = "NATIONAL"
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
+
 if DEBUG:
     INSTALLED_APPS += ["debug_toolbar"]
     MIDDLEWARE = [
@@ -206,3 +214,23 @@ if DEBUG:
         "127.0.0.1",
         "10.0.2.2",
     ]
+
+
+# Stripe/djstripe
+STRIPE_LIVE_SECRET_KEY = env("STRIPE_LIVE_SECRET_KEY", default=None)
+STRIPE_LIVE_PUBLIC_KEY = env("STRIPE_LIVE_PUBLIC_KEY", default=None)
+
+STRIPE_TEST_SECRET_KEY = env("STRIPE_TEST_SECRET_KEY", default=None)
+STRIPE_TEST_PUBLIC_KEY = env("STRIPE_TEST_PUBLIC_KEY", default=None)
+
+STRIPE_LIVE_MODE = env.bool(
+    "STRIPE_LIVE_MODE", default=False
+)  # Change to True in production
+
+DJSTRIPE_WEBHOOK_SECRET = env(
+    "DJSTRIPE_WEBHOOK_SECRET", default=None
+)  # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = (
+    True  # We recommend setting to True for new installations
+)
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
