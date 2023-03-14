@@ -17,6 +17,68 @@ from wagtail.snippets.models import register_snippet
 from wahf.mixins import OpenGraphMixin
 
 
+class ArticleListPage(OpenGraphMixin, Page):
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["articles_list"] = ArticlePage.objects.child_of(self).live()
+        return context
+
+    subpage_types = [
+        "content.ArticlePage",
+    ]
+
+    parent_page_type = [
+        "home.HomePage",
+    ]
+
+
+class ArticlePage(OpenGraphMixin, Page):
+    byline = models.ForeignKey("archives.Person", on_delete=models.PROTECT)
+    date = models.DateField(null=True, blank=True)
+    image = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Thumbnail and social media preview image for this gallery.",
+    )
+    short_description = models.TextField(
+        help_text="A short description of this gallery, used for gallery list page and social media preview."
+    )
+
+    body = StreamField(
+        [
+            ("heading", blocks.CharBlock(form_classname="title")),
+            ("paragraph", blocks.RichTextBlock()),
+            ("image", ImageChooserBlock()),
+        ],
+        use_json_field=True,
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("byline"),
+                FieldPanel("date"),
+                FieldPanel("image"),
+                FieldPanel("short_description"),
+            ],
+            heading="Details and Preview",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("body"),
+            ],
+            heading="Article Contents",
+        ),
+    ]
+
+    parent_page_type = [
+        "home.ArticleListPage",
+    ]
+
+
 class InducteeListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -30,10 +92,6 @@ class InducteeListPage(OpenGraphMixin, Page):
 
     parent_page_type = [
         "home.HomePage",
-    ]
-
-    subpage_types = [
-        "content.InducteeDetailPage",
     ]
 
 

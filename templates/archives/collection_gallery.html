@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
+{% load placeholder_tags %}
+
+{% block extra_css %}
+<style type="text/css">
+figure {
+    margin: 0;
+}
+
+.image-credit-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.image-credit-wrapper .image-credit {
+    position: absolute;
+    right: 0px;
+    bottom: 4px;
+}
+
+.image-credit {
+    background: rgba(0,0,0,.7);
+    color: #ccc;
+    display: inline-block;
+    font-size: 10px;
+    font-family: helvetica;
+    font-weight: 300;
+    padding: 3px 5px;
+    margin: 0 4px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.alert p {
+    margin-bottom: 0;
+}
+
+.breadcrumb-item  a {
+    color: #3e3e3e;
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-2">
+                  <li class="breadcrumb-item"><a href="{% slugurl page.get_parent.slug %}">All Collections</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
+                </ol>
+            </nav>
+
+            <h1>{{ page.title }}</h1>
+
+
+            {% if page.date_start or page.date_end %}
+            <div>
+                <span class="badge text-bg-secondary">
+                    {% if page.date_start %}{{ page.date_start|date:"Y" }}{% endif %}
+                    {% if page.date_start and page.date_end %} to {% endif %}
+                    {% if page.date_end %}{{ page.date_end|date:"Y" }}{% endif %}
+                </span>
+            </div>
+            {% endif %}
+
+            <div class="alert alert-light mt-2" role="alert">
+                {{ page.description|richtext  }}
+            </div>
+
+            {% if collection_images %}
+            <div class="container">
+                <div class="row" data-masonry='{"percentPosition": true }'>
+                    {% for img in collection_images %}
+                    <div class="col-lg-4 p-1">
+                        <figure class="inline-image">
+                            <div class="border rounded image-credit-wrapper">
+                                <span class="image-credit">
+                                    [{{ img.title }}] {{ img.caption}}
+                                </span>
+                                {% image img width-600 class="img-fluid p-1" %}
+                            </div>
+                        </figure>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <p>There are no images in this gallery.</p>
+            {% endif %}
+
+{% endblock %}

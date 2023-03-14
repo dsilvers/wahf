@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load placeholder_tags %}
+
+
+{% block extra_css %}
+<style type="text/css">
+.collection-item {
+    cursor: pointer;
+}
+
+.collection-item:hover div a img {
+    border-color: #c5ebff;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ page.title }}</h1>
+
+<div class="container">
+{% for collection in collection_list %}
+    <div class="row my-3 collection-item" onclick="window.location='{% slugurl collection.slug %}';">
+
+        <div class="col-md-auto col-3 col-auto">
+            {% if collection.image %}
+                <a href="{% slugurl collection.slug %}">{% image collection.image fill-100x100 class="img-thumbnail img-fluid" %}</a>
+            {% else %}
+                <a href="{% slugurl collection.slug %}">{% inductee_placeholder_image %}</a>
+            {% endif %}
+        </div>
+
+        <div class="col">
+            <h2>{{ collection.title }}</h2>
+
+            {% if collection.short_description %}
+                <p class="lead">
+                    {% if collection.date_start or collection.date_end %}
+                    <span class="badge text-bg-secondary">
+                        {% if collection.date_start %}{{ collection.date_start|date:"Y" }}{% endif %}
+                        {% if collection.date_start and collection.date_end %} to {% endif %}
+                        {% if collection.date_end %}{{ collection.date_end|date:"Y" }}{% endif %}
+                    </span>
+                    {% endif %}
+
+                    {{ collection.short_description }}
+                </p>
+            {% endif %}
+        </div>
+
+    </div>
+{% empty %}
+<p>No Galleries Found</p>
+{% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load placeholder_tags %}
+
+
+{% block extra_css %}
+<style type="text/css">
+.article-detail {
+    display: inline-block;
+}
+
+.article-item {
+    cursor: pointer;
+}
+
+.article-item:hover div a img {
+    border-color: #eafeaf;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ page.title }}</h1>
+
+<div class="container">
+{% for article in articles_list %}
+    <div class="row my-3 article-item" onclick="window.location='{% slugurl article.slug %}';">
+
+        <div class="col-md-auto col-3 col-auto">
+            {% if article.image %}
+                <a href="{% slugurl article.slug %}">{% image article.image fill-100x100 class="img-thumbnail img-fluid" %}</a>
+            {% else %}
+                <a href="{% slugurl article.slug %}">{% inductee_placeholder_image %}</a>
+            {% endif %}
+        </div>
+
+        <div class="col">
+            <h2>{{ article.title }}</h2>
+
+            {% if article.short_description %}
+                <p class="lead">
+
+                    <span class="badge text-bg-info">
+                        {{ article.byline.name }}
+                    </span>
+
+                    <span class="badge text-bg-secondary">
+                        {{ article.date }}
+                    </span>
+                </p>
+                <p class="lead">
+                    {{ article.short_description }}
+                </p>
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endfor %}
+</div>
+
+{% endblock %}

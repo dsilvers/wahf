@@ -9,6 +9,7 @@ from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
+from membership import views as membership_views
 from users import views as user_views
 
 urlpatterns = [
@@ -22,6 +23,11 @@ urlpatterns = [
     # ACCOUNT UPDATES
     path(
         "membership/join", user_views.MemberJoinView.as_view(), name="membership_join"
+    ),
+    path(
+        "membership/stripe-payment-intent",
+        membership_views.create_payment_intent,
+        name="membership_stripe_payment_intent",
     ),
     path(
         "account/member-profile",
