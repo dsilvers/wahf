@@ -6,5 +6,5 @@ register = template.Library()
 
 
 @register.simple_tag()
-def get_magazine():
+def get_current_magazine_issue():
     return MagazineIssuePage.objects.live().order_by("-date").first()

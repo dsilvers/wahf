@@ -3,7 +3,7 @@
 {% load magazine_tags %}
 
 {% get_site_root as site_root %}
-{% get_magazine as magazine %}
+{% get_current_magazine_issue as current_magazine_issue %}
 
 <!doctype html>
 <html lang="en">
@@ -141,11 +141,11 @@
                     {% get_footer_menu slug="footer_about" parent=site_root calling_page=self %}
                 </div>
 
-                {% if magazine.cover %}
+                {% if current_magazine_issue.cover %}
                 <div class="col-6 col-md-3 mb-4">
                     <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
-                        <a href="{% slugurl magazine.slug %}">
-                            {% image magazine.cover height-300 class="img-thumbnail img-fluid" %}
+                        <a href="{% slugurl current_magazine_issue.slug %}">
+                            {% image current_magazine_issue.cover height-300 class="img-thumbnail img-fluid" %}
                         </a>
                     </div>
                 </div>

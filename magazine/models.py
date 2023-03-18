@@ -1,5 +1,5 @@
 from django.db import models
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
@@ -10,6 +10,9 @@ class MagazineIssuePage(OpenGraphMixin, Page):
     date = models.DateField(
         help_text="Date of issue for this magazine release. Used for sorting issues by date."
     )
+    volume_number = models.PositiveSmallIntegerField(null=True, blank=True)
+    issue_number = models.PositiveSmallIntegerField(null=True, blank=True)
+
     headline = models.TextField(help_text="Headline on the cover of the magazine.")
     blurb = RichTextField(
         help_text="Short snippet of text describing the content inside this issue."
@@ -45,12 +48,39 @@ class MagazineIssuePage(OpenGraphMixin, Page):
         # Individual issues are paywalled and should not appear in sitemaps
         return []
 
+    def get_admin_display_title(self):
+        title = f"{self.title}"
+        if self.volume_number and self.issue_number:
+            title += f" - Volume {self.volume_number}, Issue {self.issue_number}"
+        return title
+
     content_panels = Page.content_panels + [
-        FieldPanel("date"),
-        FieldPanel("headline"),
-        FieldPanel("blurb"),
-        FieldPanel("cover"),
-        FieldPanel("download_pdf"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("date"),
+                        FieldPanel("volume_number"),
+                        FieldPanel("issue_number"),
+                    ]
+                ),
+            ],
+            heading="Issue Details",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("headline"),
+                FieldPanel("blurb"),
+            ],
+            heading="Content",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("cover"),
+                FieldPanel("download_pdf"),
+            ],
+            heading="Images and Files",
+        ),
     ]
 
     parent_page_type = [

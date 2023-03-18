@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "magazine",
     "users",
     "membership",
+    "dashboard",  # used mostly to override the wagtail admin templates
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.modeladmin",
