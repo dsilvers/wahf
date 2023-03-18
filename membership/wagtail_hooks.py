@@ -9,7 +9,7 @@ class MembershipLevelAdmin(ModelAdmin):
         "membershipleveladmin"  # customise the URL from default to admin/bookadmin
     )
     menu_icon = "user"  # change as required
-    menu_order = 260  # will put in 3rd place (000 being 1st, 100 2nd)
+    menu_order = 90  # will put in 3rd place (000 being 1st, 100 2nd)
     add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = (
         True  # or True to exclude pages of this type from Wagtail's explorer view

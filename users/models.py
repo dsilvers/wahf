@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from localflavor.us.models import USStateField, USZipCodeField
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
+from wagtail.fields import RichTextField
+from wagtail.snippets.models import register_snippet
 
 
 class CustomUserManager(BaseUserManager):
@@ -116,3 +118,20 @@ class User(AbstractUser):
             heading="Membership",
         ),
     ]
+
+
+@register_snippet
+class MembershipJoinSnippet(models.Model):
+    title = models.CharField(max_length=250)
+    content = RichTextField()
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("content"),
+    ]
+
+    class Meta:
+        verbose_name_plural = "Membership Join Page - Top Copy"
+
+    def __str__(self):
+        return "Membership Join Page - Top Copy"

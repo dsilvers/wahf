@@ -22,7 +22,7 @@
     <div class="row">
         {% for magazine in magazine_list %}
         <div class="col-md-4">
-            <a href="{% slugurl magazine.slug %}">{% image magazine.cover height-600 class="img-thumbnail img-fluid" %}</a>
+            <a href="{% slugurl magazine.slug %}" title="{{ magazine }}">{% image magazine.cover height-600 class="img-thumbnail img-fluid" alt=magazine %}</a>
             {% caption magazine.cover %}
         </div>
         {% endfor %}

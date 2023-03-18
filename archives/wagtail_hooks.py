@@ -7,7 +7,7 @@ from .models import AircraftType, Location, Person
 class PersonAdmin(ThumbnailMixin, ModelAdmin):
     model = Person
     base_url_path = "personadmin"  # customise the URL from default to admin/bookadmin
-    menu_icon = "user"  # change as required
+    menu_icon = "pick"  # change as required
     menu_order = 202  # will put in 3rd place (000 being 1st, 100 2nd)
     # add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = (
@@ -27,7 +27,7 @@ class PersonAdmin(ThumbnailMixin, ModelAdmin):
 class LocationAdmin(ThumbnailMixin, ModelAdmin):
     model = Location
     base_url_path = "locationadmin"  # customise the URL from default to admin/bookadmin
-    menu_icon = "user"  # change as required
+    menu_icon = "globe"  # change as required
     menu_order = 201  # will put in 3rd place (000 being 1st, 100 2nd)
     # add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = (
@@ -49,7 +49,7 @@ class AircraftTypeAdmin(ThumbnailMixin, ModelAdmin):
     base_url_path = (
         "aircrafttypeadmin"  # customise the URL from default to admin/bookadmin
     )
-    menu_icon = "user"  # change as required
+    menu_icon = "tag"  # change as required
     menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
     # add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
     exclude_from_explorer = (

@@ -37,7 +37,7 @@ class MagazineIssuePage(OpenGraphMixin, Page):
         ordering = ["-date"]
 
     def __str__(self):
-        return f"{self.date} - {self.headline}"
+        return self.get_admin_display_title()
 
     def get_graph_image_url(self):
         if self.cover:

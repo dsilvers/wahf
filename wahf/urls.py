@@ -21,9 +21,7 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     # MEMBERSHIP
     # ACCOUNT UPDATES
-    path(
-        "membership/join", user_views.MemberJoinView.as_view(), name="membership_join"
-    ),
+    path("membership/", user_views.MemberJoinView.as_view(), name="membership_join"),
     path(
         "membership/stripe-payment-intent",
         membership_views.create_payment_intent,
