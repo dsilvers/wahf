@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load stripe_tags %}
+
+{% block extra_css %}
+
+<style type="text/css">
+
+#card-error {
+    color: red;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+var stripe = Stripe('{% stripe_public_key %}');
+
+var elements = stripe.elements();
+var element_style = {
+    base: {
+            fontWeight: '400',
+            fontFamily: 'Open Sans, sans-serif',
+            fontSize: '18px',
+            fontSmoothing: 'antialiased'
+    },
+    invalid: {
+        iconColor: '#FFC7EE',
+        color: '#FFC7EE',
+    }
+};
+
+var card = elements.create("card", {
+    style: element_style,
+    hidePostalCode: true,
+    iconStyle: 'solid'
+});
+
+card.mount("#card-element");
+
+card.on("change", function (event) {
+      document.querySelector("button").disabled = event.empty;
+      document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+});
+
+const btn = document.querySelector('#submit-membership-form-button');
+btn.addEventListener('click', async (e) => {
+  e.preventDefault();
+  btn.disabled = true;
+  btn.innerHTML = "Processing...";
+
+  // Create payment method and confirm payment intent.
+  stripe.confirmCardPayment("{{ subscription_client_secret }}", {
+    payment_method: {
+      card: card,
+    }
+  }).then((result) => {
+    if(result.error) {
+        btn.disabled = false;
+        btn.innerHTML = "Submit Payment";
+    } else {
+      // Successful subscription payment
+      if (document.getElementById("id_membership_automatic_payments_trigger").checked) {
+        document.getElementById("id_membership_automatic_payments").checked = true;
+      }
+      btn.innerHTML = "Almost done...";
+      document.getElementById("magic-done-form").submit()
+    }
+  });
+});
+
+// Display recurring payment message in green box
+document.getElementById("id_membership_automatic_payments_trigger").addEventListener('click', event => {
+    if(document.getElementById("id_membership_automatic_payments_trigger").checked) {
+        document.getElementById("automatic-renewal-confirmation").classList.remove("d-none");
+    } else {
+        document.getElementById("automatic-renewal-confirmation").classList.add("d-none");
+    }
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 pb-5">
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="container">
+                    <hr class="border border-primary border-3 opacity-75">
+
+                    <h1>Membership - Payment</h1>
+
+                    <p>Enter your card number, expiration date, and CVV code below:</p>
+
+                    <div class="row">
+                        <div class="col-sm-9 col-md-7 col-lg-6 my-1 payment-card-wrapper">
+                            <div id="card-element" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="card-error" role="alert"></p>
+
+                    {% if membership_level.allow_recurring_payments %}
+                    <div class="row">
+                        {{ form.membership_automatic_payments_trigger|as_crispy_field }}
+                    </div>
+                    {% endif %}
+
+                    <button type="button" class="btn btn-primary btn-lg mb-5" id="submit-membership-form-button">Submit Payment</button>
+
+
+
+                    <div id="membership-price-confirmation" class="alert alert-success my-2" role="alert">
+                        <p>Your card will be charged <b>${{ membership_level.price }}</b>. A receipt will be emailed to your email address.</p>
+
+                        <p id="automatic-renewal-confirmation" class="d-none"><br><b>We will renew your membership automatically in one year.</b> You can turn off automatic renewal anytime in your member profile area.</p>
+                    </div>
+
+
+                    {% if snippet.credit_card_blurb %}
+                    <div class="alert alert-light secure-message" role="alert" style="margin-top:150px;">
+                        <i data-feather="lock" class="mx-1"></i> {{ snippet.credit_card_blurb }}
+                    </div>
+                    {% endif %}
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="d-none">
+    <form method="post" id="magic-done-form">
+        {% csrf_token %}
+        {{ form.membership_automatic_payments|as_crispy_field }}
+    </form>
+</div>
+{% endblock %}

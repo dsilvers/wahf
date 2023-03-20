@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9">
+
+<h1>{{ snippet.title }}</h1>
+
+{{ snippet.content|richtext }}
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

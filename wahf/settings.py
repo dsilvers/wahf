@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 
 import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 ENV_FILE = BASE_DIR / ".env"
@@ -12,6 +14,23 @@ env.read_env(ENV_FILE)
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+
+SENTRY_DSN = env("SENTRY_DSN", default=None)
+if not DEBUG and SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=0.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -50,7 +69,6 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "wagtailautocomplete",
     "localflavor",
-    "djstripe",
 ]
 
 MIDDLEWARE = [
@@ -227,11 +245,3 @@ STRIPE_TEST_PUBLIC_KEY = env("STRIPE_TEST_PUBLIC_KEY", default=None)
 STRIPE_LIVE_MODE = env.bool(
     "STRIPE_LIVE_MODE", default=False
 )  # Change to True in production
-
-DJSTRIPE_WEBHOOK_SECRET = env(
-    "DJSTRIPE_WEBHOOK_SECRET", default=None
-)  # Get it from the section in the Stripe dashboard where you added the webhook endpoint
-DJSTRIPE_USE_NATIVE_JSONFIELD = (
-    True  # We recommend setting to True for new installations
-)
-DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"

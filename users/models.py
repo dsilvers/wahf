@@ -1,10 +1,10 @@
+import uuid
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from localflavor.us.models import USStateField, USZipCodeField
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
-from wagtail.fields import RichTextField
-from wagtail.snippets.models import register_snippet
 
 
 class CustomUserManager(BaseUserManager):
@@ -36,15 +36,19 @@ class User(AbstractUser):
     membership_level = models.ForeignKey(
         "membership.MembershipLevel", on_delete=models.PROTECT, blank=True, null=True
     )
-    renewal_payment_date = models.DateField(
-        blank=True, null=True, help_text="The date they paid their membership dues."
+    last_payment_date = models.DateField(
+        blank=True,
+        null=True,
+        help_text="The date they last paid their membership dues.",
     )
     membership_expiry_date = models.DateField(
         blank=True,
         null=True,
-        help_text="For WAHF - This is typically the last day of the year.",
     )
     membership_automatic_payment = models.BooleanField(default=False)
+    stripe_customer_id = models.CharField(max_length=50, blank=True)
+    stripe_subscription_id = models.CharField(max_length=50, blank=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     # Inherited from AbstractUser
     #   first_name
@@ -110,28 +114,18 @@ class User(AbstractUser):
                 FieldRowPanel(
                     [
                         FieldPanel("membership_level"),
-                        FieldPanel("renewal_payment_date"),
+                        FieldPanel("last_payment_date"),
                         FieldPanel("membership_expiry_date"),
+                    ]
+                ),
+                FieldRowPanel(
+                    [
+                        FieldPanel("stripe_customer_id"),
+                        FieldPanel("stripe_subscription_id"),
+                        FieldPanel("membership_automatic_payment"),
                     ]
                 ),
             ],
             heading="Membership",
         ),
     ]
-
-
-@register_snippet
-class MembershipJoinSnippet(models.Model):
-    title = models.CharField(max_length=250)
-    content = RichTextField()
-
-    panels = [
-        FieldPanel("title"),
-        FieldPanel("content"),
-    ]
-
-    class Meta:
-        verbose_name_plural = "Membership Join Page - Top Copy"
-
-    def __str__(self):
-        return "Membership Join Page - Top Copy"

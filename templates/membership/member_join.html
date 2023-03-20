@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load stripe_tags %}
+
+{% block extra_css %}
+
+<style type="text/css">
+
+.smaller-please {
+    font-size: small;
+}
+
+.membership-selector h3 {
+    margin-top: 20px;
+}
+
+.membership-selector .form-check label {
+    cursor: pointer;
+    font-size: 22px;
+}
+
+.membership-selector .form-check {
+    margin: 15px 0 25px 0;
+    min-height: 100px;
+    padding: 14px;
+    border: 2px solid #efefef;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.membership-selector .form-check input {
+    /* display: none; */
+}
+
+.membership-level-selector {
+
+}
+
+.secure-message {
+    font-size: smaller;
+}
+
+.payment-card-wrapper {
+    border: 1px solid var(--bs-border-color);;
+    padding: 10px;
+    margin: 5px 0 5px 10px;
+    border-radius: .375rem;
+}
+
+.alert p {
+    margin-bottom: 0;
+}
+
+.selected-level {
+    background: #fff3cd;
+    border: 2px solid #bdbcaf !important;
+}
+
+.asteriskField {
+    display: none;
+}
+
+.detail-form label {
+    margin-top: 4px;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+function handle_name_input_display(selected_level) {
+    biz_name_div = document.getElementById("div_id_business_name");
+    spouse_name_div = document.getElementById("div_id_spouse_name");
+
+    if (selected_level.startsWith("biz-"))
+        biz_name_div.classList.remove("d-none")
+    else
+        biz_name_div.classList.add("d-none")
+
+    if (selected_level.endsWith("-spouse"))
+        spouse_name_div.classList.remove("d-none")
+    else
+        spouse_name_div.classList.add("d-none")
+
+}
+
+// Logic for changing the membership level and UI
+const checks = document.querySelectorAll('.membership-level-item');
+
+checks.forEach(el => el.addEventListener('click', event => {
+    let formCheck = event.target.parentNode.closest(".form-check");
+    if (!formCheck)
+        formCheck = event.target;
+
+    let input = formCheck.querySelector("input")
+    input.checked = true;
+
+    handle_name_input_display(input.value);
+
+    for (elem of document.getElementsByClassName("selected-level")) {
+        elem.classList.remove("selected-level");
+    }
+
+    formCheck.classList.add("selected-level");
+
+}));
+
+// Select membership level if we are returning back to the form
+function startup_select_membership_level() {
+    let selected_option = document.querySelector('input[name="membership_level"]:checked');
+    if (selected_option) {
+        let formCheck = selected_option.parentNode.closest(".form-check");
+        formCheck.classList.add("selected-level");
+
+        handle_name_input_display(selected_option.value);
+    }
+}
+startup_select_membership_level();
+
+
+// Scroll error message into view
+let form_errors_message = document.getElementById("form_errors_message");
+if (form_errors_message) {
+    form_errors_message.scrollIntoView();
+}
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 pb-5">
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1>{{ snippet.title }}</h1>
+
+                            {{ snippet.content|richtext }}
+
+                        </div>
+                    </div>
+
+                    {% if snippet.lifetime_membership_blurb %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ snippet.lifetime_membership_blurb|richtext }}
+                    </div>
+                    {% endif %}
+
+                    <hr class="border border-primary border-3 opacity-75">
+
+                    <h1>Choose Your Membership Level</h1>
+
+                    <div class="row membership-selector">
+
+                        <div class="col-md-4">
+                            <h3 class="text-success-emphasis"><i data-feather="user"></i> Individual</h3>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual" data-amount="30.00" id="membership_level_individual" {% if form.membership_level.value == "individual" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_individual">
+                                <b>$30</b> - Individual
+                                </label>
+                            </div>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual-spouse" data-amount="40.00" id="membership_level_individual_spouse" {% if form.membership_level.value == "individual-spouse" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_individual_spouse">
+                                <b>$40</b> - Individual <br>
+                                <i class="smaller-please">(with Spouse)</i>
+                                </label>
+                            </div>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="individual-youth" data-amount="10.00" id="membership_level_individual_youth" {% if form.membership_level.value == "individual-youth" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_individual_youth">
+                                <b>$10</b> - Youth <i class="smaller-please">(under 18)</i>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <h3 class="text-primary-emphasis"><i data-feather="compass"></i> Business</h3>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="biz-small" data-amount="250.00" id="membership_level_biz_small" {% if form.membership_level.value == "biz-small" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_biz_small">
+                                <b>$250</b> - Corporate <br><i class="smaller-please">(&lt;100 employees)</i>
+                                </label>
+                            </div>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="biz-large" data-amount="500.00" id="membership_level_biz_large" {% if form.membership_level.value == "biz-large" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_biz_large">
+                                <b>$500</b> - Corporate <br><i class="smaller-please">(100+ employees)</i>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <h3 class="text-warning-emphasis"><i data-feather="send"></i> Lifetime</h3>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-individual" data-amount="500.00" id="membership_level_lifetime" {% if form.membership_level.value == "lifetime-individual" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_lifetime">
+                                <b>$500</b> - Lifetime
+                                </label>
+                            </div>
+
+                            <div class="form-check membership-level-item">
+                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-spouse" data-amount="750.00" id="membership_level_lifetime_spouse" {% if form.membership_level.value == "lifetime-spouse" %}checked="checked"{% endif %}>
+                                <label class="form-check-label" for="membership_level_lifetime_spouse">
+                                <b>$750</b> - Lifetime<br><i class="smaller-please">(with Spouse)</i>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr class="border border-primary border-3 opacity-75">
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <h3>Your Details</h3>
+
+                            <div class="container">
+
+                                {% for error_key, error_message in form.errors.items %}
+                                <div class="row">
+                                    <div class="alert alert-danger" role="alert" id="form_errors_message">
+                                        {% if error_message.as_text == "* EXISTING_USER" %}
+                                            <p><b>It looks like you might have had a membership at one point or another.</b></p>
+                                            <br>
+                                            <p>Please try <a href="{% url 'password_reset' %}">resetting your password</a> or <a href="/contact">contact us</a> for assistance.</p>
+                                        {% else %}
+                                            {{ error_message.as_text }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% empty %}
+                                    {% if payment_error %}
+                                    <div class="row">
+                                        <div class="alert alert-danger" role="alert" id="form_errors_message">
+                                            {{ payment_error }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <div class="container detail-form m-0 p-0">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+
+                                            <div class="row">
+                                                {{ form.email|as_crispy_field }}
+                                                {{ form.password|as_crispy_field }}
+                                            </div>
+
+                                            <hr class="border border-secondary border-1 opacity-75">
+
+                                            <div class="row">
+                                                {{ form.first_name|as_crispy_field }}
+                                                {{ form.last_name|as_crispy_field }}
+                                                {{ form.business_name|as_crispy_field }}
+                                                {{ form.spouse_name|as_crispy_field }}
+                                            </div>
+
+                                            <hr class="border border-secondary border-1 opacity-75">
+
+                                            <div class="row">
+                                                {{ form.address_line1|as_crispy_field }}
+                                                {{ form.address_line2|as_crispy_field }}
+                                                {{ form.city|as_crispy_field }}
+                                                {{ form.state|as_crispy_field }}
+                                                {{ form.zip|as_crispy_field }}
+                                                {{ form.phone|as_crispy_field }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to Payment</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

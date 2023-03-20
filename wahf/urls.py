@@ -1,6 +1,5 @@
 from django.conf import settings
-
-# from django.contrib import admin
+from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 from wagtail import urls as wagtail_urls
@@ -10,10 +9,10 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 from membership import views as membership_views
-from users import views as user_views
+from membership import webhooks as membership_webhook_views
 
 urlpatterns = [
-    # path("django-admin/", admin.site.urls),
+    path("django-admin/", admin.site.urls),
     # WAGTAIL ADMIN
     path("cms/autocomplete/", include(autocomplete_admin_urls)),
     path("cms/", include(wagtailadmin_urls)),
@@ -21,15 +20,23 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     # MEMBERSHIP
     # ACCOUNT UPDATES
-    path("membership/", user_views.MemberJoinView.as_view(), name="membership_join"),
     path(
-        "membership/stripe-payment-intent",
-        membership_views.create_payment_intent,
-        name="membership_stripe_payment_intent",
+        "membership/", membership_views.MemberJoinView.as_view(), name="membership-join"
     ),
     path(
+        "membership/payment/",
+        membership_views.MemberJoinPaymentView.as_view(),
+        name="membership-join-payment",
+    ),
+    path(
+        "membership/thanks/",
+        membership_views.MemberJoinThanks.as_view(),
+        name="membership-join-thanks",
+    ),
+    path("stripe-webhooks/", membership_webhook_views.process_stripe_webhook),
+    path(
         "account/member-profile",
-        user_views.MemberProfileView.as_view(),
+        membership_views.MemberProfileView.as_view(),
         name="member_profile",
     ),
     path("accounts/", include("django.contrib.auth.urls")),
@@ -40,8 +47,6 @@ urlpatterns = [
         name="robots.txt",
     ),
     path("sitemap.xml", sitemap),
-    # PAYMENT PROCESSING
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
 
 
