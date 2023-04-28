@@ -7,7 +7,11 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from membership.models import MembershipLevel, MembershipRegistration
+from membership.utils import get_stripe_secret_key
 from users.models import User
+from users.utils import usps_validate_user_address
+
+stripe.api_key = get_stripe_secret_key()
 
 
 @csrf_exempt
@@ -31,11 +35,11 @@ def process_stripe_webhook(request):
 
 def process_subscription_update(obj):
     # Create User
-    # Delete Registration Data
     # USPS validate their address
     # Set their password
     # Send an email
     # Handle automatic payments (disable if not checked)
+    # Delete Registration Data
 
     try:
         signup_uuid = obj["metadata"]["signup_uuid"]
@@ -59,8 +63,6 @@ def process_subscription_update(obj):
 
     start_date = datetime.utcfromtimestamp(obj["current_period_start"]).date()
     end_date = datetime.utcfromtimestamp(obj["current_period_end"]).date()
-
-    print(reg.data)
 
     user = User.objects.create_user(
         email=user_data["email"],
@@ -92,5 +94,15 @@ def process_subscription_update(obj):
     user.password = reg.data["password_hash"]
     user.save()
 
-    # transaction.on_commit(do_something)
+    # Attempt to validate the address
+    user = usps_validate_user_address(user)
+
+    # Handle automatic payments (disable subscription if they didn't want autopay)
+    if not user.membership_automatic_payment:
+        stripe.Subscription.modify(
+            user.stripe_subscription_id, cancel_at_period_end=True
+        )
+
+    # Send a welcome email
+
     reg.delete()

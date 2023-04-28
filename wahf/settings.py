@@ -32,7 +32,20 @@ if not DEBUG and SENTRY_DSN:
     )
 
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = env(
+    "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+)
+
+DEFAULT_FROM_EMAIL = "WAHF <info@wahf.org>"
+SERVER_EMAIL = "info@wahf.org"
+# EMAIL_SUBJECT_PREFIX = "[CX] "
+
+EMAIL_CONFIG = env.email_url("EMAIL_URL", default="smtp://@localhost:1025")
+vars().update(EMAIL_CONFIG)
+
+WAHF_SIGNUP_BCC = [
+    DEFAULT_FROM_EMAIL,
+]
 
 
 INSTALLED_APPS = [
@@ -107,16 +120,7 @@ WSGI_APPLICATION = "wahf.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
-else:
-    DATABASES = {"default": env.db("DATABASE_URL", default="")}
+DATABASES = {"default": env.db("DATABASE_URL")}
 
 
 # Password validation
@@ -234,7 +238,6 @@ if DEBUG:
         "10.0.2.2",
     ]
 
-
 # Stripe/djstripe
 STRIPE_LIVE_SECRET_KEY = env("STRIPE_LIVE_SECRET_KEY", default=None)
 STRIPE_LIVE_PUBLIC_KEY = env("STRIPE_LIVE_PUBLIC_KEY", default=None)
@@ -245,3 +248,7 @@ STRIPE_TEST_PUBLIC_KEY = env("STRIPE_TEST_PUBLIC_KEY", default=None)
 STRIPE_LIVE_MODE = env.bool(
     "STRIPE_LIVE_MODE", default=False
 )  # Change to True in production
+
+# USPS Address Validation
+USPS_USERNAME = env("USPS_USERNAME", default=None)
+USPS_PASSWORD = env("USPS_PASSWORD", default=None)
