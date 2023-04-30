@@ -125,11 +125,11 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://cache:6379/0",
+        "LOCATION": "redis://{}:6379/0".format(env("REDIS_HOST", default="127.0.0.1")),
     },
     "renditions": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://cache:6379/1",
+        "LOCATION": "redis://{}:6379/1".format(env("REDIS_HOST", default="127.0.0.1")),
     },
 }
 
