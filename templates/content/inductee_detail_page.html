@@ -38,15 +38,15 @@ div iframe {
     <div class="row">
         <div class="col-lg-9">
 
-            {% if page.person.image %}
+            {% if page.photo %}
             <div class="float-end border rounded mt-3 ml-3 mb-3 p-0 w-50">
-                {% image page.person.image width-600 class="img-fluid float-end p-1" %}
-                {% caption page.person.image %}
+                {% image page.photo width-600 class="img-fluid float-end p-1" %}
+                {% caption page.photo %}
             </div>
             {% endif %}
 
 
-            <h1 class="my-1">{{ page.person }}</h1>
+            <h1 class="my-1">{{ page.name }}</h1>
 
             {% if page.born_date or page.died_date or page.inducted_date %}
             <div class="dates-block px-2 my-3">

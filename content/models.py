@@ -83,7 +83,12 @@ class InducteeListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["inductee_list"] = InducteeDetailPage.objects.child_of(self).live()
+        context["inductee_list"] = (
+            InducteeDetailPage.objects.child_of(self)
+            .select_related("person", "photo")
+            .order_by("person__last_name, person__first_name")
+            .live()
+        )
         return context
 
     subpage_types = [
@@ -96,7 +101,17 @@ class InducteeListPage(OpenGraphMixin, Page):
 
 
 class InducteeDetailPage(OpenGraphMixin, Page):
+    # Person is used for sorting, and will typically be the first assigned value for people
     person = models.OneToOneField("archives.Person", on_delete=models.PROTECT)
+    people = models.ManyToManyField("archives.Person", related_name="inductee_people")
+
+    name = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="If multiple people are set above, you can customize thei name that is displayed here.",
+    )
+
     tagline = models.TextField(
         blank=True,
         help_text="Short description of the Inductee. This is displayed on the Inductee List page.",
@@ -109,6 +124,14 @@ class InducteeDetailPage(OpenGraphMixin, Page):
             ("image", ImageChooserBlock()),
         ],
         use_json_field=True,
+    )
+
+    photo = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Main image for the inductee list and primary photo for their page.",
     )
 
     gallery = StreamField(
@@ -126,7 +149,8 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     died_year = models.PositiveSmallIntegerField(null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("person"),
+        FieldPanel("people"),
+        FieldPanel("name"),
         FieldPanel("tagline"),
         FieldPanel("body"),
         FieldPanel("gallery"),
@@ -138,6 +162,17 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     parent_page_type = [
         "content.InducteeListPage",
     ]
+
+    def save(self, *args, **kwargs):
+        # Assign a default name if one is not set and a person is assigned
+        if self.person and self.name == "":
+            self.name = f"{self.person.first_name} {self.person.last_name}".strip()
+
+        # Assign a primary person for sorting behaviors
+        if not self.person:
+            self.person = self.people.first()
+
+        super().save(*args, **kwargs)
 
     def get_graph_image(self):
         if self.person.image:

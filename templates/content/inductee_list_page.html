@@ -26,18 +26,18 @@
 
 <div class="container">
 {% for inductee in inductee_list %}
-    <div class="row my-3 inductee-item" onclick="window.location='{% slugurl inductee.slug %}';">
+    <div class="row my-3 inductee-item" onclick="window.location='{% pageurl inductee %}';">
 
         <div class="col-md-auto col-3 col-auto">
-            {% if inductee.person.image %}
-                <a href="{% slugurl inductee.slug %}">{% image inductee.person.image fill-100x100 class="img-thumbnail img-fluid" %}</a>
+            {% if inductee.photo %}
+                <a href="{% pageurl inductee %}">{% image inductee.photo fill-100x100 class="img-thumbnail img-fluid" %}</a>
             {% else %}
-                <a href="{% slugurl inductee.slug %}">{% inductee_placeholder_image %}</a>
+                <a href="{% pageurl inductee %}">{% inductee_placeholder_image %}</a>
             {% endif %}
         </div>
 
         <div class="col">
-            <h2>{{ inductee.person.first_name }} {{ inductee.person.last_name }}</h2>
+            <h2>{{ inductee.name }}</h2>
 
             {% if inductee.tagline %}
                 <p class="lead d-none d-md-block">{{ inductee.tagline }}</p>

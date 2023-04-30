@@ -63,6 +63,7 @@ coverage.xml
 .env.production
 
 .db
+.redis
 
 old_site
 

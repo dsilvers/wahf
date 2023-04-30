@@ -1,5 +1,13 @@
 version: "3.7"
 services:
+  cache:
+    image: redis:7.0.11
+    container_name: cache
+    restart: always
+    volumes:
+      - ./.redis:/data
+    ports:
+      - 6379:6379
   db:
     image: postgres:15.2
     container_name: db
@@ -22,6 +30,7 @@ services:
     command: python /app/manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
+      - cache
       # - mailhog
     volumes:
       - .:/app
