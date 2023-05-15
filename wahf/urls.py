@@ -8,6 +8,7 @@ from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
+from content import views as content_views
 from membership import views as membership_views
 from membership import webhooks as membership_webhook_views
 
@@ -47,6 +48,12 @@ urlpatterns = [
         name="robots.txt",
     ),
     path("sitemap.xml", sitemap),
+    # OLD WEBSITE REDIRECTS
+    path(
+        "inductee/<slug:slug>",
+        content_views.old_website_inductee_redirect,
+        name="old_inductee_redirect",
+    ),
 ]
 
 
