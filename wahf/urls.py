@@ -50,7 +50,7 @@ urlpatterns = [
     path("sitemap.xml", sitemap),
     # OLD WEBSITE REDIRECTS
     path(
-        "inductee/<slug:slug>",
+        "inductees/<slug:slug>.htm",
         content_views.old_website_inductee_redirect,
         name="old_inductee_redirect",
     ),
