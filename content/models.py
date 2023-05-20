@@ -1,6 +1,6 @@
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from wagtail import blocks
 from wagtail.admin.panels import (
@@ -13,7 +13,9 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
+from archives.models import Person
 from wahf.mixins import OpenGraphMixin
 
 
@@ -102,8 +104,10 @@ class InducteeListPage(OpenGraphMixin, Page):
 
 class InducteeDetailPage(OpenGraphMixin, Page):
     # Person is used for sorting, and will typically be the first assigned value for people
-    person = models.OneToOneField("archives.Person", on_delete=models.PROTECT)
-    people = models.ManyToManyField("archives.Person", related_name="inductee_people")
+    person = models.OneToOneField(
+        "archives.Person", on_delete=models.PROTECT, null=True, blank=True
+    )
+    people = ParentalManyToManyField("archives.Person", related_name="inductee_people")
 
     name = models.CharField(
         max_length=255,
@@ -140,6 +144,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         ],
         use_json_field=True,
         default=[],
+        blank=True,
     )
 
     inducted_date = models.DateField(null=True, blank=True)
@@ -149,7 +154,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     died_year = models.PositiveSmallIntegerField(null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("people"),
+        AutocompletePanel("people", target_model=Person),
         FieldPanel("name"),
         FieldPanel("tagline"),
         FieldPanel("body"),
@@ -164,15 +169,17 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     ]
 
     def save(self, *args, **kwargs):
-        # Assign a default name if one is not set and a person is assigned
-        if self.person and self.name == "":
-            self.name = f"{self.person.first_name} {self.person.last_name}".strip()
+        super().save(*args, **kwargs)
 
         # Assign a primary person for sorting behaviors
         if not self.person:
             self.person = self.people.first()
 
-        super().save(*args, **kwargs)
+        # Assign a default name if one is not set and a person is assigned
+        if self.person and self.name == "":
+            self.name = f"{self.person.first_name} {self.person.last_name}".strip()
+
+        super().save()
 
     def get_graph_image(self):
         if self.person.image:
