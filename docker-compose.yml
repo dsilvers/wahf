@@ -31,7 +31,7 @@ services:
     depends_on:
       - db
       - cache
-      # - mailhog
+      - mailhog
     volumes:
       - .:/app
     ports:
@@ -39,11 +39,11 @@ services:
       - 8000:8000
     stdin_open: true
     tty: true
-  #mailhog:
-  #  # image: mailhog/mailhog  # not arm
-  #  image: anatomicjc/mailhog  # is arm64
-  #  logging:
-  #    driver: 'none'  # disable saving logs
-  #  ports:
-  #    - 1025:1025 # smtp server
-  #    - 8025:8025 # web ui
+  mailhog:
+    # image: mailhog/mailhog  # not arm
+    image: anatomicjc/mailhog  # is arm64
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui

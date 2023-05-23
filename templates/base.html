@@ -121,6 +121,19 @@
 
             <!-- end header -->
 
+            <!-- renewal blurb if they are logged in -->
+            {% if user.pk > 0 and user.member %}
+              {% if user.member.membership_expiring %}
+              <div class="alert alert-warning mt-2">
+                Your WAHF Membership is expiring soon! <a href="{% url "member_renew" %}">Please renew your membership!</a>
+              </div>
+              {% elif user.member.membership_valid is False %}
+              <div class="alert alert-danger mt-2">
+                Your WAHF Membership has lapsed. <a href="{% url "member_renew" %}">Please renew your membership!</a>
+              </div>
+              {% endif %}
+            {% endif %}
+
             <div class="content">
             <!-- start content block -->
 
@@ -133,7 +146,7 @@
     </main>
 
     <!-- begin footer -->
-    <footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto py-3 pt-5">
         <div class="container border-top">
             <div class="row py-3">
                 <div class="col-6 col-md-3 mb-4">
@@ -148,7 +161,7 @@
                 </div>
 
                 <div class="col-6 col-md-3 mb-4">
-                    <h5>About Us</h5>
+                    <h5>About WAHF</h5>
                     {% get_footer_menu slug="footer_about" parent=site_root calling_page=self %}
                 </div>
 

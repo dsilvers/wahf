@@ -3,6 +3,10 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+WAHF Account
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -15,23 +19,42 @@
                     </div>
 
                     <div class="alert alert-block alert-info mt-3 mb-3">
-                        Welcome, {{ user }}!
+                            <strong style="font-size:larger;">Welcome, {{ user }}!</strong>
+                            <br>
+                            {% if user.member.membership_join_date %}
+                            <span style="font-size:smaller; text-transform: uppercase;">Member since: {{ user.member.membership_join_date|date:"Y" }}</span>
+                            {% endif %}
                     </div>
 
                     <div class="alert alert-block alert-secondary mt-3 mb-3">
-                        WAHF member since 20XX.
+                        <b>Membership Level:</b> {{ user.member.membership_level }}<br>
+                        <b>Renewal Date:</b> {{ user.member.membership_expiry_date }}
                     </div>
 
-                    <div class="alert alert-block alert-secondary mt-3 mb-3">
-                        Membership Type: INDIVIDUAL<br>
-                        Renews: 3/4/23
+                    {% if user.member.membership_expiring %}
+                    <div class="alert alert-block alert-warning">
+                        <strong style="font-size:larger;">Membership Status</strong><br>
+                        Your WAHF Membership will expire soon.
+                        <br>
+                        <a href="{% url "member_renew" %}">Click here to renew your membership.</a>
+                        <br>Your support is greatly appreciated!
                     </div>
+                    {% elif user.member.membership_valid is False %}
+                    <div class="alert alert-block alert-warning">
+                        Your WAHF Membership has lapsed as of {{ user.member.membership_expiry_date }}.
+                        <br>
+                        <a href="{% url "member_renew" %}">Click here to renew your membership.</a>
+                        <br>Your support is greatly appreciated!
+                    </div>
+                    {% endif %}
 
                     <ul class="list-group">
-                        <li class="list-group-item px-3 py-3">Update Contact Information</li>
                         <li class="list-group-item px-3 py-3">
-                            <a href="{% url 'password_change' %}">Change Password</a></li>
-                        <li class="list-group-item px-3 py-3">Membership Payments</li>
+                            <a href="{% url 'member_update' %}">Update My Contact &amp; Address Info</a>
+                        </li>
+                        <li class="list-group-item px-3 py-3">
+                            <a href="{% url 'password_change' %}">Change My Password</a>
+                        </li>
                         <li class="list-group-item px-3 py-3">
                             <a href="{% url 'logout' %}">Logout</a>
                         </li>

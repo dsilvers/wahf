@@ -36,9 +36,19 @@ urlpatterns = [
     ),
     path("stripe-webhooks/", membership_webhook_views.process_stripe_webhook),
     path(
-        "account/member-profile",
+        "account/member-profile/",
         membership_views.MemberProfileView.as_view(),
         name="member_profile",
+    ),
+    path(
+        "account/member-update/",
+        membership_views.MemberUpdateFormView.as_view(),
+        name="member_update",
+    ),
+    path(
+        "account/member-renew/",
+        membership_views.MemberRenewPaymentView.as_view(),
+        name="member_renew",
     ),
     path("accounts/", include("django.contrib.auth.urls")),
     # SEARCH ENGINE STUFF

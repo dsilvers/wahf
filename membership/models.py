@@ -10,6 +10,9 @@ class MembershipRegistration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     data = models.JSONField(default=dict)
     created = models.DateTimeField(auto_now_add=True)
+    member = models.ForeignKey(
+        "users.Member", null=True, blank=True, on_delete=models.CASCADE
+    )
 
 
 class MembershipLevel(models.Model):
@@ -21,6 +24,9 @@ class MembershipLevel(models.Model):
 
     stripe_price_id = models.CharField(max_length=50, blank=True, null=True)
     allow_recurring_payments = models.BooleanField(default=False)
+    is_lifetime = models.BooleanField(default=False)
+    is_business = models.BooleanField(default=False)
+    includes_spouse = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -67,3 +73,22 @@ class MembershipThanksSnippet(models.Model):
 
     def __str__(self):
         return "Membership Thanks Page - Content Blocks"
+
+
+@register_snippet
+class MembershipEmailTemplateSnippet(models.Model):
+    slug = models.CharField(max_length=200, unique=True)
+    subject = models.CharField(max_length=800)
+    body = models.TextField()
+
+    panels = [
+        FieldPanel("slug"),
+        FieldPanel("subject"),
+        FieldPanel("body"),
+    ]
+
+    class Meta:
+        verbose_name_plural = "Email Templates"
+
+    def __str__(self):
+        return f"Email Template: {self.slug} - {self.subject}"

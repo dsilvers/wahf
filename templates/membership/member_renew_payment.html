@@ -5,8 +5,9 @@
 {% load crispy_forms_tags %}
 {% load stripe_tags %}
 
+
 {% block title %}
-Membership - Payment
+Membership Renewal - Payment
 {% endblock %}
 
 {% block extra_css %}
@@ -103,7 +104,7 @@ document.getElementById("id_membership_automatic_payments_trigger").addEventList
                 <div class="container">
                     <hr class="border border-primary border-3 opacity-75">
 
-                    <h1>Membership - Payment</h1>
+                    <h1>Membership Renewal - Payment</h1>
 
                     <p>Enter your card number, expiration date, and CVV code below:</p>
 
@@ -117,7 +118,7 @@ document.getElementById("id_membership_automatic_payments_trigger").addEventList
 
                     <p id="card-error" role="alert"></p>
 
-                    {% if membership_level.allow_recurring_payments %}
+                    {% if member.membership_level.allow_recurring_payments %}
                     <div class="row">
                         {{ form.membership_automatic_payments_trigger|as_crispy_field }}
                     </div>
@@ -128,7 +129,7 @@ document.getElementById("id_membership_automatic_payments_trigger").addEventList
 
 
                     <div id="membership-price-confirmation" class="alert alert-success my-2" role="alert">
-                        <p>Your card will be charged <b>${{ membership_level.price }}</b>. A receipt will be emailed to your email address.</p>
+                        <p>Your card will be charged <b>${{ member.membership_level.price }}</b>. A receipt will be emailed to your email address.</p>
 
                         <p id="automatic-renewal-confirmation" class="d-none"><br><b>We will renew your membership automatically in one year.</b> You can turn off automatic renewal anytime in your member profile area.</p>
                     </div>

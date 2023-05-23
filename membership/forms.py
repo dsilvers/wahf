@@ -4,7 +4,30 @@ from django.core.exceptions import ValidationError
 from localflavor.us.forms import USStateSelect
 
 from membership.models import MembershipLevel
-from users.models import User
+from users.models import Member, User
+
+
+class MemberUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "spouse_name",
+            "business_name",
+            "address_line1",
+            "address_line2",
+            "city",
+            "state",
+            "zip",
+            "phone",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
 
 
 class MemberJoinForm(forms.Form):

@@ -5,8 +5,6 @@
 
 {% block content %}
 
-{% get_current_magazine_issue as current_magazine_issue %}
-
 <style type="text/css">
 figcaption {
     font-size: smaller;
@@ -19,24 +17,25 @@ figcaption {
 
 
 <div class="row p-4 mx-1 my-3 mb-3 rounded text-bg-dark">
-    {% if user.pk > 0 and magazine %}
+    {% get_current_magazine_issue as current_magazine_issue %}
+    {% if user.pk > 0 and current_magazine_issue %}
         <!-- magazine preview -->
         <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">{{ magazine.headline }}</h1>
-            <p class="lead my-2">{{ magazine.blurb|safe }}</p>
+            <h1 class="display-4 fst-italic">{{ current_magazine_issue.headline }}</h1>
+            <p class="lead my-2">{{ current_magazine_issue.blurb|safe }}</p>
 
             <p class="lead mb-0">
-                <a href="{% slugurl magazine.slug %}" class="text-white fw-bold">
+                <a href="{% slugurl current_magazine_issue.slug %}" class="text-white fw-bold">
                     Read <i>Forward in Flight</i>
                 </a>
             </p>
         </div>
 
-        {% if magazine.cover %}
+        {% if current_magazine_issue.cover %}
             <div class="col-md-6 px-0 mx-auto my-auto px-2 py-3 text-center">
-                <a href="{% slugurl magazine.slug %}">
-                    {% image magazine.cover height-400 class="img-thumbnail img-fluid" %}
-                    {% caption magazine.cover %}
+                <a href="{% slugurl current_magazine_issue.slug %}">
+                    {% image current_magazine_issue.cover height-400 class="img-thumbnail img-fluid" %}
+                    {% caption current_magazine_issue.cover %}
                 </a>
             </div>
         {% endif %}

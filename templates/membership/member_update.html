@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Membership - Update My Information
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 pb-5">
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1>Update Your Information</h1>
+
+                            <p>Change your contact information or mailing address here. For membership level changes, please contact <a href="mailto:membership@wahf.org">membership@wahf.org</a>.</p>
+
+                        </div>
+                    </div>
+
+                    <hr class="border border-primary border-3 opacity-75">
+
+                    <div class="row">
+                        <div class="col-lg-7">
+
+                            <div class="row">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+
+                            <hr class="border border-1 opacity-75 my-5">
+
+                            <div class="row">
+                                {{ form.first_name|as_crispy_field }}
+                                {{ form.last_name|as_crispy_field }}
+
+                                {% if request.user.member.membership_level.is_business %}
+                                {{ form.business_name|as_crispy_field }}
+                                {% endif %}
+
+                                {% if request.user.member.membership_level.includes_spouse %}
+                                {{ form.spouse_name|as_crispy_field }}
+                                {% endif %}
+                            </div>
+
+                            <hr class="border border-1 opacity-75 my-5">
+
+                            <div class="row">
+                                {{ form.address_line1|as_crispy_field }}
+                                {{ form.address_line2|as_crispy_field }}
+                                {{ form.city|as_crispy_field }}
+                                {{ form.state|as_crispy_field }}
+                                {{ form.zip|as_crispy_field }}
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="update-my-wahf-info">Update My WAHF Info</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

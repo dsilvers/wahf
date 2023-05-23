@@ -5,6 +5,12 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+<script>
+window.location = '/account/member-profile/';
+</script>
+{% else %}
+
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto mt-5">
@@ -70,5 +76,7 @@
         </div>
     </div>
 </div>
+
+{% endif %}
 
 {% endblock %}

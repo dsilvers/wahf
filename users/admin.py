@@ -1,13 +1,29 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import UserAdmin
+
+from users.models import Member
 
 User = get_user_model()
 
 
-class WAHFUserAdmin(UserAdmin):
+# class WAHFMemberAdmin(admin.ModelAdmin):
+#    model = Member
+#    ordering = ("last_name", "first_name")
+#    search_fields = ("first_name", "last_name")
+#    list_display = (
+#        "first_name",
+#        "last_name",
+#        "membership_level",
+#    )
+
+
+class WAHFMemberAdminInline(admin.StackedInline):
+    model = Member
+
+
+class WAHFUserAdmin(admin.ModelAdmin):
     model = User
-    ordering = ("email",)
+    ordering = ("last_name", "first_name")
     search_fields = ("email", "first_name", "last_name")
     list_display = (
         "email",
@@ -24,7 +40,7 @@ class WAHFUserAdmin(UserAdmin):
     )
     exclude = ("username",)
     fieldsets = (
-        (None, {"fields": ("email", "password", "first_name", "last_name")}),
+        (None, {"fields": ("email", "first_name", "last_name")}),
         (
             "Permissions",
             {
@@ -33,11 +49,12 @@ class WAHFUserAdmin(UserAdmin):
                     "is_staff",
                     "is_superuser",
                     "groups",
-                    "user_permissions",
                 ),
             },
         ),
     )
+    inlines = [WAHFMemberAdminInline]
 
 
+# admin.site.register(Member, WAHFMemberAdmin)
 admin.site.register(User, WAHFUserAdmin)

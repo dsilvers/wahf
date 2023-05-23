@@ -3,7 +3,20 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 {% load image_tags %}
 
+{% block title %}
+Membership - Thanks for joining WAHF!
+{% endblock %}
+
 {% block extra_css %}
+{% endblock %}
+
+
+{% block extra_js %}
+{% if do_refresh %}
+<script>
+setTimeout(function() { window.location.reload }, 1250);
+</script>
+{% endif %}
 {% endblock %}
 
 
