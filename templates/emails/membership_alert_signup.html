@@ -1,0 +1,28 @@
+<p style="font-size:20px;margin-bottom:20px;border-bottom:4px solid #0D6EFD">
+    <b>New WAHF Member Signup</b>
+</p>
+
+<p>
+    <b>Name:</b> {{ member.first_name }} {{ member.last_name }}<br>
+    {% if member.spouse_name %}<b>Spouse:</b> {{ member.spouse_name }}<br>{% endif %}
+    {% if member.business_name %}<b>Business:</b> {{ member.business_name }}<br>{% endif %}
+    <b>Email:</b> {{ member.email }}<br>
+    <b>Phone:</b> {{ member.phone }}<br>
+</p>
+
+<p>
+    <b>Membership Level:</b> {{ member.membership_level }}<br>
+    <b>Stripe Customer ID:</b> {{ member.stripe_customer_id }}<br>
+    <b>Stripe Subscription ID:</b> {{ member.stripe_subscription_id }}<br>
+    <b>Membership Join Date:</b> {{ member.membership_join_date }}<br>
+    <b>Membership Expiry Date:</b> {{ member.membership_expiry_date}}<br>
+    <b>Automatic Payments?</b> {% if member.membership_automatic_payment %}Yes{% else %}No{% endif %}
+</p>
+
+<p>
+    <b>Address 1:</b> {{ member.address_line1 }}<br>
+    {% if member.address_line2 %}<b>Address 2:</b> {{ member.address_line2 }}<br>{% endif %}
+    <b>City:</b> {{ member.city }}<br>
+    <b>State:</b> {{ member.state }}<br>
+    <b>Zip:</b> {{ member.zip }}<br>
+</p>

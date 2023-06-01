@@ -4,6 +4,7 @@ from datetime import datetime
 
 import stripe
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
@@ -144,6 +145,21 @@ def process_subscription_update(obj):
             to=member.email,
             subject=snippet.subject,
             body=snippet.body,
+            context={
+                "member": member,
+            },
+        )
+
+        # Send a membership alert
+        alert_body = render_to_string(
+            "emails/membership_alert_signup.html", {"member": member}
+        )
+
+        send_email(
+            to=["membership@wahf.org", "dan@wahf.org"],
+            subject=f"WAHF Membership Signup - {member}",
+            body=None,
+            body_html=alert_body,
             context={
                 "member": member,
             },
