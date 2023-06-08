@@ -90,6 +90,7 @@ btn.addEventListener('click', function handleClick() {
     btn.disabled = true;
     document.getElementById("join-form").submit();
 });
+btn.disabled = true;
 
 const checks = document.querySelectorAll('.membership-level-item');
 checks.forEach(el => el.addEventListener('click', event => {
@@ -106,7 +107,7 @@ checks.forEach(el => el.addEventListener('click', event => {
 
     formCheck.classList.add("selected-level");
 
-    btn.style.display = 'inline';
+    btn.disabled = false;
 
 }));
 
@@ -259,7 +260,7 @@ if (form_errors_message) {
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button" style="display:none;">Proceed to Membership Form</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to Membership Form</button>
 
                 </div>
             </form>
