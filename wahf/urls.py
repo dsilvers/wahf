@@ -25,11 +25,6 @@ urlpatterns = [
         "membership/", membership_views.MemberJoinView.as_view(), name="membership-join"
     ),
     path(
-        "membership/payment/",
-        membership_views.MemberJoinPaymentView.as_view(),
-        name="membership-join-payment",
-    ),
-    path(
         "membership/thanks/",
         membership_views.MemberJoinThanks.as_view(),
         name="membership-join-thanks",

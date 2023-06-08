@@ -71,6 +71,10 @@ Membership
     margin-top: 4px;
 }
 
+#submit-membership-form-button {
+    font-size: 26px;
+}
+
 </style>
 
 {% endblock %}
@@ -80,25 +84,14 @@ Membership
 
 <script>
 
-function handle_name_input_display(selected_level) {
-    biz_name_div = document.getElementById("div_id_business_name");
-    spouse_name_div = document.getElementById("div_id_spouse_name");
+const btn = document.getElementById('submit-membership-form-button');
+btn.addEventListener('click', function handleClick() {
+    btn.textContent = 'Working...';
+    btn.disabled = true;
+    document.getElementById("join-form").submit();
+});
 
-    if (selected_level.startsWith("biz-"))
-        biz_name_div.classList.remove("d-none")
-    else
-        biz_name_div.classList.add("d-none")
-
-    if (selected_level.endsWith("-spouse"))
-        spouse_name_div.classList.remove("d-none")
-    else
-        spouse_name_div.classList.add("d-none")
-
-}
-
-// Logic for changing the membership level and UI
 const checks = document.querySelectorAll('.membership-level-item');
-
 checks.forEach(el => el.addEventListener('click', event => {
     let formCheck = event.target.parentNode.closest(".form-check");
     if (!formCheck)
@@ -107,13 +100,13 @@ checks.forEach(el => el.addEventListener('click', event => {
     let input = formCheck.querySelector("input")
     input.checked = true;
 
-    handle_name_input_display(input.value);
-
     for (elem of document.getElementsByClassName("selected-level")) {
         elem.classList.remove("selected-level");
     }
 
     formCheck.classList.add("selected-level");
+
+    btn.style.display = 'inline';
 
 }));
 
@@ -123,8 +116,6 @@ function startup_select_membership_level() {
     if (selected_option) {
         let formCheck = selected_option.parentNode.closest(".form-check");
         formCheck.classList.add("selected-level");
-
-        handle_name_input_display(selected_option.value);
     }
 }
 startup_select_membership_level();
@@ -146,7 +137,7 @@ if (form_errors_message) {
     <div class="row">
         <div class="col-xl-9 pb-5">
 
-            <form method="post">
+            <form method="post" id="join-form">
                 {% csrf_token %}
 
                 <div class="container">
@@ -236,11 +227,9 @@ if (form_errors_message) {
 
                     </div>
 
-                    <hr class="border border-primary border-3 opacity-75">
 
                     <div class="row">
                         <div class="col-lg-10">
-                            <h3>Your Details</h3>
 
                             <div class="container">
 
@@ -266,43 +255,11 @@ if (form_errors_message) {
                                     {% endif %}
                                 {% endfor %}
 
-                                <div class="container detail-form m-0 p-0">
-                                    <div class="row">
-                                        <div class="col-lg-7">
-
-                                            <div class="row">
-                                                {{ form.email|as_crispy_field }}
-                                                {{ form.password|as_crispy_field }}
-                                            </div>
-
-                                            <hr class="border border-secondary border-1 opacity-75">
-
-                                            <div class="row">
-                                                {{ form.first_name|as_crispy_field }}
-                                                {{ form.last_name|as_crispy_field }}
-                                                {{ form.business_name|as_crispy_field }}
-                                                {{ form.spouse_name|as_crispy_field }}
-                                            </div>
-
-                                            <hr class="border border-secondary border-1 opacity-75">
-
-                                            <div class="row">
-                                                {{ form.address_line1|as_crispy_field }}
-                                                {{ form.address_line2|as_crispy_field }}
-                                                {{ form.city|as_crispy_field }}
-                                                {{ form.state|as_crispy_field }}
-                                                {{ form.zip|as_crispy_field }}
-                                                {{ form.phone|as_crispy_field }}
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to Payment</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button" style="display:none;">Proceed to Membership Form</button>
 
                 </div>
             </form>

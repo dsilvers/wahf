@@ -7,16 +7,14 @@
     {% if member.spouse_name %}<b>Spouse:</b> {{ member.spouse_name }}<br>{% endif %}
     {% if member.business_name %}<b>Business:</b> {{ member.business_name }}<br>{% endif %}
     <b>Email:</b> {{ member.email }}<br>
-    <b>Phone:</b> {{ member.phone }}<br>
 </p>
 
 <p>
-    <b>Membership Level:</b> {{ member.membership_level }}<br>
+    <b>Membership Level:</b> <u>{{ member.membership_level }}</u><br>
     <b>Stripe Customer ID:</b> {{ member.stripe_customer_id }}<br>
     <b>Stripe Subscription ID:</b> {{ member.stripe_subscription_id }}<br>
     <b>Membership Join Date:</b> {{ member.membership_join_date }}<br>
     <b>Membership Expiry Date:</b> {{ member.membership_expiry_date}}<br>
-    <b>Automatic Payments?</b> {% if member.membership_automatic_payment %}Yes{% else %}No{% endif %}
 </p>
 
 <p>

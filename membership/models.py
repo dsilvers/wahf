@@ -1,18 +1,7 @@
-import uuid
-
 from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.snippets.models import register_snippet
-
-
-class MembershipRegistration(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    data = models.JSONField(default=dict)
-    created = models.DateTimeField(auto_now_add=True)
-    member = models.ForeignKey(
-        "users.Member", null=True, blank=True, on_delete=models.CASCADE
-    )
 
 
 class MembershipLevel(models.Model):
