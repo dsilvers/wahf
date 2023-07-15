@@ -98,6 +98,7 @@ class Command(BaseCommand):
                         )
 
         for d in member_data:
+            print(f"+ {d['email']}")
             random_digits = User.objects.make_random_password(
                 length=4, allowed_chars="23456789"
             )
