@@ -128,6 +128,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
             ("image", ImageChooserBlock()),
         ],
         use_json_field=True,
+        blank=True,
     )
 
     photo = models.ForeignKey(
@@ -158,10 +159,24 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         FieldPanel("name"),
         FieldPanel("tagline"),
         FieldPanel("body"),
-        FieldPanel("gallery"),
-        FieldPanel("inducted_date"),
-        FieldPanel("born_date"),
-        FieldPanel("died_date"),
+        MultiFieldPanel(
+            [
+                FieldPanel(
+                    "photo",
+                    help_text="Hot top: don't set this when creating a new Inductee page, it will automatically copy their image from their Person profile. Main photo for Inductee page. Used for social media sharing and the image at the top of the page.",
+                ),
+                FieldPanel("gallery"),
+            ],
+            heading="Photos",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("inducted_date"),
+                FieldPanel("born_date"),
+                FieldPanel("died_date"),
+            ],
+            heading="Dates",
+        ),
     ]
 
     parent_page_type = [
@@ -171,6 +186,8 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+        skip_populate_image = kwargs.pop("skip_populate_image", None)
+
         # Assign a primary person for sorting behaviors
         if not self.person:
             self.person = self.people.first()
@@ -178,6 +195,24 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         # Assign a default name if one is not set and a person is assigned
         if self.person and self.name == "":
             self.name = f"{self.person.first_name} {self.person.last_name}".strip()
+
+        # Copy the image from the person if one is not set
+        if self.person and self.person.image and not self.photo:
+            self.photo = self.person.image
+
+        # Update the image on the associated person
+        if not skip_populate_image:
+            original_page = InducteeDetailPage.objects.get(pk=self.pk)
+            if (
+                original_page
+                and original_page.photo
+                and self.photo
+                and original_page.photo != self.photo
+                and self.person
+                and (not self.person.image or self.person.image == original_page.photo)
+            ):
+                self.person.image = self.photo
+                self.person.save(skip_populate_image=True)
 
         super().save()
 
