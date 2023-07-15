@@ -2,6 +2,7 @@ import csv
 from datetime import date, datetime
 
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from django.template.loader import render_to_string
 
 from membership.models import MembershipLevel
@@ -101,10 +102,14 @@ class Command(BaseCommand):
                 length=4, allowed_chars="23456789"
             )
             password = f"wahf{random_digits}"
-            user = User.objects.create_user(
-                email=d["email"].lower(),
-                password=password,
-            )
+            try:
+                user = User.objects.create_user(
+                    email=d["email"].lower(),
+                    password=password,
+                )
+            except IntegrityError:
+                print(f"ERROR importing {d['email']}")
+                continue
 
             member = Member.objects.create(
                 **{
@@ -128,5 +133,3 @@ class Command(BaseCommand):
             )
 
             send_invite_email(member, password)
-
-            return
