@@ -70,7 +70,7 @@ class Command(BaseCommand):
                     else:
                         level = levels.get(level_raw)
 
-                    email = row[9]
+                    email = row[9].lower().strip()
                     if not email:
                         print(f"skipping row {row[0]}, as it has no email")
                     elif not level:
@@ -81,19 +81,19 @@ class Command(BaseCommand):
                         member_data.append(
                             {
                                 "level": level,
-                                "first_name": row[2],
-                                "last_name": row[3],
-                                "address": row[4],
-                                "city": row[5],
-                                "state": row[6],
-                                "zip": row[7],
+                                "first_name": row[2].strip(),
+                                "last_name": row[3].strip(),
+                                "address": row[4].strip(),
+                                "city": row[5].strip(),
+                                "state": row[6].strip(),
+                                "zip": row[7].strip(),
                                 "date_joined": datetime.strptime(
                                     row[8], "%m/%d/%y"
                                 ).date()
                                 if row[8]
                                 else None,
                                 "email": email,
-                                "phone": row[10],
+                                "phone": row[10].strip(),
                             }
                         )
 
@@ -127,10 +127,15 @@ class Command(BaseCommand):
                     "address_line1": d["address"],
                     "address_line2": "",
                     "city": d["city"],
-                    "state": d["state"],
+                    "state": d["state"][:2],
                     "zip": d["zip"],
                     "phone": d["phone"],
                 }
             )
 
+            member.update_wahf_group_membership()
+
             send_invite_email(member, password)
+
+        for member in Member.objects.all():
+            member.update_wahf_group_membership()
