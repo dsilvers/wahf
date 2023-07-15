@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
@@ -114,3 +116,41 @@ class MagazineListPage(OpenGraphMixin, Page):
     parent_page_type = [
         "content.HomePage",
     ]
+
+
+class MagazinePage(models.Model):
+    issue = models.ForeignKey("magazine.MagazineIssuePage", on_delete=models.CASCADE)
+    page = models.PositiveIntegerField(db_index=True)
+    text = models.TextField(blank=True)
+    guid = models.UUIDField(default=uuid.uuid4)
+
+    def get_filename(self, prefix):
+        # 123/L2-<guid>.jpg
+        return f"{self.issue.pk}/{prefix}{self.page}-{self.guid}.jpg"
+
+    @property
+    def get_thumbnail_filename(self):
+        return self.get_filename("T")
+
+    @property
+    def get_small_filename(self):
+        return self.get_filename("S")
+
+    @property
+    def get_medium_filename(self):
+        return self.get_filename("M")
+
+    @property
+    def get_original_filename(self):
+        return self.get_filename("L")
+
+    def __str__(self):
+        return f"{self.issue} - page {self.page}"
+
+    class Meta:
+        ordering = ["page"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["issue", "page"], name="issuepageuniquetogether"
+            )
+        ]

@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "wagtailautocomplete",
     "localflavor",
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
@@ -192,6 +193,9 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+MAGAZINE_ROOT = f"{MEDIA_ROOT}/magazines"
+MAGAZINE_URL = f"{MEDIA_URL}/magazines/"
 
 
 # Wagtail settings
