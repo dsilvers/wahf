@@ -107,7 +107,19 @@ def process_checkout_session_completed(obj):
 
     line2 = session["shipping_details"]["address"]["line2"]
 
+    phone = obj["customer_details"].get("phone")
+    phone = phone.replace("+1", "") if phone else ""
+
     subscription_id = session["subscription"]["id"] if session["subscription"] else ""
+
+    spouse_name = ""
+    business_name = ""
+
+    for field in obj.get("custom_fields", []):
+        if field["key"] == "spousename":
+            spouse_name = field["text"]["value"]
+        elif field["key"] == "businessname":
+            business_name = field["text"]["value"]
 
     member = Member.objects.create(
         **{
@@ -121,14 +133,14 @@ def process_checkout_session_completed(obj):
             "stripe_subscription_id": subscription_id,
             "first_name": first_name,
             "last_name": last_name,
-            "business_name": "",
-            "spouse_name": "",
+            "business_name": business_name,
+            "spouse_name": spouse_name,
             "address_line1": session["shipping_details"]["address"]["line1"],
             "address_line2": line2 if line2 else "",
             "city": session["shipping_details"]["address"]["city"],
             "state": session["shipping_details"]["address"]["state"],
             "zip": session["shipping_details"]["address"]["postal_code"],
-            "phone": "",
+            "phone": phone,
         }
     )
 

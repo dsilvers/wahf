@@ -208,6 +208,26 @@ class MemberJoinView(FormView):
         if form.membership_level.allow_recurring_payments:
             payment_mode = "subscription"
 
+        custom_fields = []
+
+        if form.membership_level.includes_spouse:
+            custom_fields.append(
+                {
+                    "key": "spousename",
+                    "label": {"type": "custom", "custom": "Spouse Name"},
+                    "type": "text",
+                }
+            )
+
+        if form.membership_level.is_business:
+            custom_fields.append(
+                {
+                    "key": "businessname",
+                    "label": {"type": "custom", "custom": "Business Name"},
+                    "type": "text",
+                }
+            )
+
         # Create or update a subscription
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -225,7 +245,11 @@ class MemberJoinView(FormView):
                     "allowed_countries": ["US"],
                 },
                 allow_promotion_codes=True,
+                phone_number_collection={
+                    "enabled": True,
+                },
                 metadata={"action": "signup"},
+                custom_fields=custom_fields,
             )
 
         except Exception as e:
