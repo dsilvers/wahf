@@ -1,0 +1,58 @@
+<p style="font-size:20px;margin-bottom:20px;border-bottom:4px solid #0D6EFD">
+    <b>Thanks for your RSVP!</b>
+</p>
+
+<p>
+    <a href="https://wahf.org/rsvp">Wisconsin Aviation Hall of Fame - Event Website</a>
+
+    <div class="">
+        SATURDAY, OCTOBER 14, 2023
+    </div>
+
+    <div>
+        <span>EAA Aviation Museum</span><br>
+        <span>Founder's Wing</span><br>
+        <span><a href="https://goo.gl/maps/tcDxdy5PWv3nSsyf7" target="_blank">3000 Poberezny Road, Oshkosh, Wisconsin</a></span>
+    </div>
+
+    <div>
+        <ul>
+            <li><b>Optional Docent-led Museum Tour</b> - 3:30—4:30 p.m.</li>
+            <li><b>No Host Reception</b> - 5 p.m.</li>
+            <li><b>Dinner</b> - 6 p.m.</li>
+            <li><b>Ceremony follows dinner</b></li>
+            <li>Cocktail/Semi-formal dress suggested.</li>
+        </ul>
+    </div>
+
+    <div>
+        <ul>
+            <li><b>Wisconsin Aviation Hall of Fame Annual Membership Meeting</b> - 2:30 p.m. - Batten Board Room, lower level EAA Aviation Museum</li>
+        </ul>
+    </div>
+
+</p>
+
+<hr>
+
+<p>If any of your details below are incorrect, please let us know by replying to this email.</p>
+
+<p>
+    <b>Name:</b> {{ name }}<br>
+    <b>Email:</b> {{ email }}<br>
+    <b>Phone:</b> {{ phone }}<br>
+</p>
+
+<p>
+    <b>Paid:</b> ${{ amount_total|floatformat:2 }} - <b>{{ quantity }} {{ item_type }}</b><br>
+    <b>Attendee Names:</b> {{ attendee_names }}<br>
+    <b>Docent Tour?</b> {{ docent_tour }}<br>
+</p>
+
+<hr>
+
+<p style="color: #cecece;">
+    <b>Item:</b> {{ item }}<br>
+    <b>Paid Date:</b> {{ paid_date }}<br>
+    <b>Payment ID:</b> {{ stripe_id }}<br>
+</p>

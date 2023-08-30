@@ -89,6 +89,8 @@ class HomePage(OpenGraphMixin, Page):
         "content.FreeformPage",
         "content.ArticleListPage",
         "archives.CollectionList",
+        "membership.BanquetRSVPPage",
+        "membership.BanquetRSVPThanksPage",
     ]
 
     def get_graph_image(self):

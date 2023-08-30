@@ -1,13 +1,18 @@
 import json
 from datetime import datetime
 
+import pytz
 import stripe
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from membership.models import MembershipEmailTemplateSnippet, MembershipLevel
+from membership.models import (
+    BanquetPayment,
+    MembershipEmailTemplateSnippet,
+    MembershipLevel,
+)
 from membership.utils import get_stripe_secret_key
 from users.models import Member, User
 from users.utils import send_email, usps_validate_user_address
@@ -30,6 +35,7 @@ def process_stripe_webhook(request):
 
     if event.type == "checkout.session.completed":
         process_checkout_session_completed(event.data.object)
+        process_banquet_tickets(event.data.object)
 
     # if event.type == "customer.subscription.updated":
     #    process_subscription_update(event.data.object)
@@ -41,6 +47,98 @@ def process_stripe_webhook(request):
     #    process_subscription_ending(event.data.object)
 
     return HttpResponse(status=200)
+
+
+def process_banquet_tickets(obj):
+    session = stripe.checkout.Session.retrieve(
+        obj["id"],
+        expand=["line_items"],
+    )
+
+    # Total amount paid
+    amount_total = session["amount_total"] / 100.0
+
+    # Name
+    # Phone
+    # Zip Code
+    name = session["customer_details"]["name"]
+    phone = session["customer_details"]["phone"].replace("+1", "")
+    email = session["customer_details"]["email"]
+
+    # Item they purchased
+    item = session["line_items"]["data"][0]["description"]
+    quantity = session["line_items"]["data"][0]["quantity"]
+
+    stripe_id = session["id"]
+
+    attendee_names = "(no names supplied at checkout)"
+    docent_tour = "Was not selected during checkout"
+
+    paid_date = datetime.utcfromtimestamp(session["created"]).replace(tzinfo=pytz.utc)
+
+    item_type = "ticket"
+    if "table" in item.lower():
+        item_type = "table"
+
+    if quantity > 1:
+        item_type = f"{item_type}s"
+
+    if "table" in item.lower():
+        item_type = f"{item_type} of 8 attendees"
+
+    for cf in session["custom_fields"]:
+        if cf["key"] == "attendeenames":
+            attendee_names = (
+                cf["text"]["value"] if cf["text"]["value"] else attendee_names
+            )
+        elif cf["key"] == "eaamuseumdocentguidedtour":
+            docent_tour = (
+                "Yes, will attend the docent tour."
+                if cf["dropdown"]["value"] and cf["dropdown"]["value"].startswith("no")
+                else "No, we will not attend the docent tour."
+            )
+
+    confirmation_body = render_to_string(
+        "emails/banquet_confirmation.html",
+        {
+            "amount_total": amount_total,
+            "name": name,
+            "email": email,
+            "phone": phone,
+            "item": item,
+            "item_type": item_type,
+            "quantity": quantity,
+            "attendee_names": attendee_names,
+            "docent_tour": docent_tour,
+            "paid_date": paid_date,
+            "stripe_id": stripe_id,
+        },
+    )
+
+    send_email(
+        to=[email, "info@wahf.org"],
+        subject=f"WAHF 2023 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
+        body=None,
+        body_html=confirmation_body,
+        context={
+            "email": email,
+        },
+    )
+
+    BanquetPayment.objects.create(
+        stripe_id=stripe_id,
+        amount_total=amount_total,
+        name=name,
+        email=email,
+        phone=phone,
+        item=item,
+        quantity=quantity,
+        attendee_names=attendee_names,
+        docent_tour=docent_tour,
+        signup_date=paid_date,
+    )
+
+    return
 
 
 def process_checkout_session_completed(obj):

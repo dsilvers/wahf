@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load stripe_tags %}
+
+{% block title %}
+37th Annual Investiture Dinner and Ceremony
+{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Noto+Serif&family=Quicksand&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style type="text/css">
+.banquet-header {
+    height: 430px;
+    padding: 20px;
+    background-image:
+        linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+        ),
+        url("/media/banquet/c.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.banquet-header-image {
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.banquet-header-text {
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-shadow: 3px 3px 3px black;
+    position: relative;
+    top: 0;
+}
+
+hr.border-blue {
+    border: #0a58ca !important;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h1 span {
+    font-size: 12rem;
+}
+
+.section-header {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    background: #0a58ca;
+    color: white;
+}
+
+.inductees {
+    font-family: 'Noto Serif', serif;
+    font-size: 2.0rem;
+}
+
+.inductees .img-thumbnail {
+    width: 150px;
+    margin: 2px;
+}
+
+.star {
+}
+
+.date-header {
+    height: 279px;
+    background-image:
+        url("/media/banquet/a.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.date {
+    font-size: 3rem;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.event-blurb {
+    border-top: 2px dotted #cecece;
+    border-bottom: 2px dotted #cecece;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+li {
+    font-size: larger;
+}
+
+.location1 {
+    font-size: 1.5rem;
+}
+
+.location2 {
+    font-size: 1.5rem;
+}
+
+.location3 {
+    font-size: 1.1rem;
+}
+
+.location3 a {
+    color: #8e8e8e;
+}
+
+
+.tables-header {
+    height: 279px;
+    background-image:
+        url("/media/banquet/b.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.rsvp {
+    font-size: larger;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.btn {
+    min-width: 75%;
+    font-size: 2.0rem !important;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 pb-5">
+            <div class="text-center section-header" style="height:10px !important;">
+                &nbsp;
+            </div>
+
+            <div class="banquet-header">
+                <div class="banquet-header-image"></div>
+                <div class="banquet-header-text">
+                    <h1>
+                        Thanks for your RSVP!
+                    </h1>
+                </div>
+            </div>
+
+            <div class="text-center section-header mb-3">
+                <span class="star">&bigstar; &bigstar; &bigstar;</span> We will see you there! <span class="star">&bigstar; &bigstar; &bigstar;</span>
+            </div>
+
+            <div class="event-blurb mt-4 p-2">
+                <div class="date text-center">
+                    Event details and ticket confirmation has been sent to your email.
+                </div>
+
+                <div class="text-center mt-5" style="font-size: larger;">
+                    <b>Please reach out if you have any questions.</b> See you on Saturday, October 14, 2023!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

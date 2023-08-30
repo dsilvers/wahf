@@ -1,7 +1,35 @@
 from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
+from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
+
+from wahf.mixins import OpenGraphMixin
+
+
+class BanquetRSVPPage(OpenGraphMixin, Page):
+    parent_page_type = [
+        "content.HomePage",
+    ]
+
+
+class BanquetRSVPThanksPage(OpenGraphMixin, Page):
+    parent_page_type = [
+        "content.HomePage",
+    ]
+
+
+class BanquetPayment(models.Model):
+    stripe_id = models.CharField(max_length=100)
+    amount_total = models.DecimalField(max_digits=10, decimal_places=2)
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    phone = models.CharField(max_length=200)
+    item = models.CharField(max_length=200)
+    quantity = models.PositiveIntegerField()
+    attendee_names = models.CharField(max_length=250)
+    docent_tour = models.CharField(max_length=250)
+    signup_date = models.DateTimeField()
 
 
 class MembershipLevel(models.Model):
