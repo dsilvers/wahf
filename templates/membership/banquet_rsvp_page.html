@@ -52,12 +52,12 @@ h1 {
 }
 
 h1 span {
-    font-size: 12rem;
+    font-size: calc(6.525rem + 3.3vw);
 }
 
 .section-header {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     background: #0a58ca;
     color: white;
@@ -65,7 +65,7 @@ h1 span {
 
 .inductees {
     font-family: 'Noto Serif', serif;
-    font-size: 2.0rem;
+    font-size: 1.7rem;
 }
 
 .inductees .img-thumbnail {
@@ -77,7 +77,7 @@ h1 span {
 }
 
 .date-header {
-    height: 279px;
+    min-height: 150px;
     background-image:
         url("/media/banquet/a.jpg");
     background-repeat: no-repeat;
@@ -169,25 +169,59 @@ li {
             </div>
 
             <div class="text-center section-header mb-3">
-                <span class="star">&bigstar; &bigstar; &bigstar;</span> Please join us as we honor our 2023 inductees <span class="star">&bigstar; &bigstar; &bigstar;</span>
+                <div class="row p-2">
+                    <div class="col-md-2">
+                        <span class="star">&bigstar; &bigstar; &bigstar;</span>
+                    </div>
+                    <div class="col-md-8">
+                        Please join us as we honor our 2023 inductees
+                    </div>
+                    <div class="col-md-2">
+                        <span class="star">&bigstar; &bigstar; &bigstar;</span>
+                    </div>
+                </div>
             </div>
 
             <div class="inductees row">
                 <div class="col-md-6">
-                    <img src="/media/banquet/baker-thumb.jpg" alt="Merton Baker" class="img-thumbnail img-responsive ">
-                    Merton Baker
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="/media/banquet/baker-thumb.jpg" alt="Merton Baker" class="img-thumbnail img-fluid">
+                        </div>
+                        <div class="col-8 ">
+                            Merton Baker
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="/media/banquet/bouchard-thumb.jpg" alt="Tom Bouchard" class="img-thumbnail img-responsive ">
-                    Tom Bouchard
+                <div class="col-md-6 mt-2">
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="/media/banquet/bouchard-thumb.jpg" alt="Tom Bouchard" class="img-thumbnail img-fluid ">
+                        </div>
+                        <div class="col-8 ">
+                            Tom Bouchard
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="/media/banquet/erickson-thumb.jpg" alt="Lynn Erickson" class="img-thumbnail img-responsive ">
-                    Lynn Erickson
+                <div class="col-md-6 mt-2">
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="/media/banquet/erickson-thumb.jpg" alt="Lynn Erickson" class="img-thumbnail img-fluid ">
+                        </div>
+                        <div class="col-8  ">
+                            Lynn Erickson
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="/media/banquet/krog-thumb.jpg" alt="Steve Krog" class="img-thumbnail img-responsive ">
-                    Steve Krog
+                <div class="col-md-6 mt-2">
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="/media/banquet/krog-thumb.jpg" alt="Steve Krog" class="img-thumbnail img-fluid ">
+                        </div>
+                        <div class="col-8 ">
+                            Steve Krog
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -254,8 +288,7 @@ li {
             <div class="text-center section-header mt-3" style="height:10px !important;">
                 &nbsp;
             </div>
-            <div class="date-header">
-            </div>
+            <img src="/media/banquet/a.jpg" class="img-fluid">
             <div class="text-center section-header" style="height:10px !important;">
                 &nbsp;
             </div>
@@ -263,8 +296,7 @@ li {
             <div class="text-center section-header mt-4" style="height:10px !important;">
                 &nbsp;
             </div>
-            <div class="tables-header">
-            </div>
+            <img src="/media/banquet/b.jpg" class="img-fluid">
             <div class="text-center section-header" style="height:10px !important;">
                 &nbsp;
             </div>
