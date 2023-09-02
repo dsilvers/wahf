@@ -54,10 +54,14 @@
     <meta property="og:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}" >
     <meta property="og:type" content="website" >
     <meta property="og:url" content="https://www.wahf.org{{ request.path }}" >
+
+    {% block ogimage %}
     {% if page.get_graph_image %}
         {% image page.get_graph_image fill-1200x860 as og_fb_image %}
     <meta property="og:image" content="https://www.wahf.org{{ og_fb_image.url }}" >
     {% endif %}
+    {% endblock %}
+
     {% if page.search_description %}
     <meta property="og:description" content="{{ page.search_description }}" >
     {% endif %}
