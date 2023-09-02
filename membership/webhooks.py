@@ -116,17 +116,7 @@ def process_banquet_tickets(obj):
     )
 
     send_email(
-        to=[email, "president@wahf.org"],
-        subject=f"WAHF 2023 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
-        body=None,
-        body_html=confirmation_body,
-        context={
-            "email": email,
-        },
-    )
-
-    send_email(
-        to=["dan@wahf.org"],
+        to=[email, "info@wahf.org"],
         subject=f"WAHF 2023 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
         body=None,
         body_html=confirmation_body,
