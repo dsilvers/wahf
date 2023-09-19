@@ -55,6 +55,10 @@ def process_banquet_tickets(obj):
         expand=["line_items"],
     )
 
+    if session.metadata.get("action", None) == "signup":
+        # not a signup
+        return
+
     # Total amount paid
     amount_total = session["amount_total"] / 100.0
 
