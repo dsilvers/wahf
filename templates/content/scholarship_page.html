@@ -20,7 +20,7 @@ h3 {
 }
 
 .scholarship-recipient {
-    border-bottom: 1px dotted #dedede;
+    border-bottom: 1px dotted #cecece;
 }
 
 .scholarship-recipient img {
@@ -49,7 +49,7 @@ h3 {
 
 {% for scholarship in scholarship_list %}
 
-<div class="scholarship-recipient py-3">
+<div class="scholarship-recipient py-4">
 
     <h3>{{ scholarship.year }} {{ scholarship.scholarship_name}}</h3>
     <h4>{{ scholarship.recipient_name }}</h4>
@@ -60,7 +60,7 @@ h3 {
                 {{ scholarship.blurb|safe }}
             </div>
             <div class="col-md-auto">
-                {% image scholarship.image height-300 class="img-fluid p-1" %}
+                {% image scholarship.image height-225 class="img-fluid p-1" %}
             </div>
         </div>
     </div>
