@@ -88,6 +88,7 @@ class HomePage(OpenGraphMixin, Page):
         "magazine.MagazineListPage",
         "content.FreeformPage",
         "content.ArticleListPage",
+        "content.ScholarshipPage",
         "archives.CollectionList",
         "membership.BanquetRSVPPage",
         "membership.BanquetRSVPThanksPage",

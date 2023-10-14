@@ -9,7 +9,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
@@ -79,6 +79,78 @@ class ArticlePage(OpenGraphMixin, Page):
     parent_page_type = [
         "home.ArticleListPage",
     ]
+
+
+class ScholarshipPage(OpenGraphMixin, Page):
+    body = StreamField(
+        [
+            ("heading", blocks.CharBlock(form_classname="title")),
+            ("paragraph", blocks.RichTextBlock()),
+            ("image", ImageChooserBlock()),
+        ],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("body"),
+            ],
+            heading="Page Content",
+        ),
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["scholarship_list"] = ScholarshipRecipient.objects.select_related(
+            "image"
+        ).all()
+
+        context["top_images"] = []
+        context["bottom_images"] = []
+
+        count = 0
+        for recipient in context["scholarship_list"]:
+            if recipient.image:
+                if count % 2 == 0:
+                    context["top_images"].append(recipient.image)
+                else:
+                    context["bottom_images"].append(recipient.image)
+                count += 1
+
+        return context
+
+    parent_page_type = [
+        "home.ArticleListPage",
+    ]
+
+
+class ScholarshipRecipient(models.Model):
+    year = models.PositiveSmallIntegerField(help_text="example: 2023")
+    scholarship_name = models.CharField(
+        max_length=250, help_text="example: 'Test Person Scholarship'"
+    )
+    recipient_name = models.CharField(max_length=150)
+
+    blurb = RichTextField(
+        help_text="A longer description of this gallery. Displayed on the gallery detail page."
+    )
+
+    image = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Scholarship recipient photo.",
+    )
+
+    def __str__(self):
+        return f"{self.year} {self.scholarship_name} - {self.recipient_name}"
+
+    class Meta:
+        ordering = ["-year", "scholarship_name"]
 
 
 class InducteeListPage(OpenGraphMixin, Page):
