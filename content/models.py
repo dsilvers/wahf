@@ -80,6 +80,9 @@ class ArticlePage(OpenGraphMixin, Page):
         "home.ArticleListPage",
     ]
 
+    class Meta:
+        ordering = ["-date"]
+
 
 class ScholarshipPage(OpenGraphMixin, Page):
     body = StreamField(
