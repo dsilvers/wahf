@@ -19,12 +19,34 @@ from archives.models import Person
 from wahf.mixins import OpenGraphMixin
 
 
+class ArticleAuthor(models.Model):
+    name = models.CharField(max_length=255)
+    about_blurb = RichTextField(
+        help_text="A short blurb about this author, to be included at the end of articles that they author.",
+        blank=True,
+    )
+    contact_email = models.EmailField(blank=True)
+    image = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Author photo, headshot, or whatever you want to put below their articles.",
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class ArticleListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
         context["articles_list"] = (
-            ArticlePage.objects.child_of(self).live().order_by("-date")
+            ArticlePage.objects.child_of(self)
+            .live()
+            .select_related("author")
+            .order_by("-date")
         )
         return context
 
@@ -38,7 +60,9 @@ class ArticleListPage(OpenGraphMixin, Page):
 
 
 class ArticlePage(OpenGraphMixin, Page):
-    byline = models.ForeignKey("archives.Person", on_delete=models.PROTECT)
+    author = models.ForeignKey(
+        "content.ArticleAuthor", null=True, blank=True, on_delete=models.PROTECT
+    )
     date = models.DateField(null=True, blank=True)
     image = models.ForeignKey(
         "archives.WAHFImage",
@@ -63,7 +87,7 @@ class ArticlePage(OpenGraphMixin, Page):
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
-                FieldPanel("byline"),
+                FieldPanel("author"),
                 FieldPanel("date"),
                 FieldPanel("image"),
                 FieldPanel("short_description"),

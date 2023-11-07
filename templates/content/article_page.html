@@ -3,6 +3,19 @@
 {% load image_tags %}
 {% load placeholder_tags %}
 
+{% block extra_css %}
+<style type="text/css">
+.about-the-author {
+    font-family: monospace;
+    text-transform: uppercase;
+    color: #9e9e9e;
+}
+.article-body {
+    line-height: 125%;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -17,30 +30,63 @@
             </nav>
 
 
-        <h1>{{ page.title }}</h1>
+            <h1>{{ page.title }}</h1>
 
-        <p class="lead">
-            <span class="badge text-bg-info">
-                {{ page.byline.name }}
-            </span>
+            <p class="lead">
+                {% if page.author %}
+                <span class="badge text-bg-info">
+                    {{ page.author.name }}
+                </span>
+                {% endif %}
 
-            <span class="badge text-bg-secondary">
-                {{ page.date }}
-            </span>
-        </p>
+                <span class="badge text-bg-secondary">
+                    {{ page.date }}
+                </span>
+            </p>
 
-        <hr class="border border-primary border-3 opacity-75">
+            <hr class="border border-primary border-3 opacity-75">
 
-        {% for block in page.body %}
-            {% if block.block_type == 'heading' %}
-                <h3>{{ block.value }}</h3>
-            {% elif block.block_type == 'paragraph' %}
-                {{ block.value|richtext }}
-            {% elif block.block_type == 'image' %}
-                {% image block.value original class="img-fluid" %}
-                {% caption block.value %}
+            <div class="article-body">
+            {% for block in page.body %}
+                {% if block.block_type == 'heading' %}
+                    <h3>{{ block.value }}</h3>
+                {% elif block.block_type == 'paragraph' %}
+                    {{ block.value|richtext }}
+                {% elif block.block_type == 'image' %}
+                    {% image block.value original class="img-fluid" %}
+                    {% caption block.value %}
+                {% endif %}
+            {% endfor %}
+            </div>
+
+            {% if page.author %}
+            <div class="border border-secondary rounded p-3 m-5">
+                <div class="about-the-author mx-1 my-2 p-2">
+                    About The Author
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        {% if page.author.image %}
+                        <div class="col-md-3">
+                            {% image page.author.image fill-350x350 class="img-thumbnail img-fluid" %}
+                        </div>
+                        {% endif %}
+
+                        <div class="col p-2">
+                            <h4>{{ page.author.name }}</h4>
+
+                            {% if page.author.contact_email %}
+                                <i><a href="mailto:{{ page.author.contact_email }}">{{ page.author.contact_email }}</a></i>
+                            {% endif %}
+
+                            <p>{{ page.author.about_blurb|safe }}</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endif %}
-        {% endfor %}
 
         </div>
     </div>

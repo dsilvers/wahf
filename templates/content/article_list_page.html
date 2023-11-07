@@ -42,9 +42,11 @@
             {% if article.short_description %}
                 <p class="lead">
 
+                    {% if article.author %}
                     <span class="badge text-bg-info">
-                        {{ article.byline.name }}
+                        {{ article.author.name }}
                     </span>
+                    {% endif %}
 
                     <span class="badge text-bg-secondary">
                         {{ article.date }}
