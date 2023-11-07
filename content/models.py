@@ -81,7 +81,7 @@ class ArticlePage(OpenGraphMixin, Page):
     ]
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ["date"]
 
 
 class ScholarshipPage(OpenGraphMixin, Page):
