@@ -23,7 +23,9 @@ class ArticleListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["articles_list"] = ArticlePage.objects.child_of(self).live()
+        context["articles_list"] = (
+            ArticlePage.objects.child_of(self).live().order_by("-date")
+        )
         return context
 
     subpage_types = [
@@ -81,7 +83,7 @@ class ArticlePage(OpenGraphMixin, Page):
     ]
 
     class Meta:
-        ordering = ["date"]
+        ordering = ["-date"]
 
 
 class ScholarshipPage(OpenGraphMixin, Page):
