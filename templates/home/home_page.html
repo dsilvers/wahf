@@ -14,7 +14,6 @@
 <style type="text/css">
 figcaption {
     font-size: smaller;
-    text-align: left;
     padding-left: 10px;
     padding-top: 3px;
     color: #aeaeae;
@@ -84,13 +83,23 @@ figcaption {
 
                 <h3 class="my-0">{{ card.heading }}</h3>
 
-                {% if card.date %}
-                <div class="mb-1 text-muted card-date">{{ card.date|date:"N j" }}</div>
+                {% if card.date or card.badge_text %}
+                    <p>
+                    {% if card.date %}
+                    <span class="badge rounded-pill bg-secondary">{{ card.date|date:"N j" }}</span>
+                    {% endif %}
+
+                    {% if card.badge_text %}
+                        <span class="badge rounded-pill bg-info text-dark">{{ card.badge_text }}</span>
+                    {% endif %}
+                    </p>
                 {% endif %}
 
                 <p class="card-text mb-auto">
                     {{ card.blurb|safe }}
                 </p>
+
+
 
                 {% if card.link_page %}
                 <a href="{% slugurl card.link_page.slug %}" class="stretched-link">{{ card.link_text }}</a>

@@ -10,6 +10,7 @@ from wahf.mixins import OpenGraphMixin
 class HomePageCard(models.Model):
     tagline = models.CharField(max_length=255, blank=True)
     heading = models.CharField(max_length=255)
+    badge_text = models.CharField(max_length=255, blank=True)
     blurb = RichTextField()
     date = models.DateField(blank=True, null=True)
     image = models.ForeignKey(
@@ -27,6 +28,7 @@ class HomePageCard(models.Model):
     panels = [
         FieldPanel("tagline"),
         FieldPanel("heading"),
+        FieldPanel("badge_text"),
         FieldPanel("blurb"),
         FieldPanel("date"),
         FieldPanel("image"),
