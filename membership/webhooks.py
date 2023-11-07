@@ -34,8 +34,19 @@ def process_stripe_webhook(request):
         return HttpResponse(status=400)
 
     if event.type == "checkout.session.completed":
-        process_checkout_session_completed(event.data.object)
-        process_banquet_tickets(event.data.object)
+        session = stripe.checkout.Session.retrieve(
+            event.data.object["id"],
+            expand=["line_items", "subscription"],
+        )
+
+        # Membership
+        process_membership_signup(event.data.object, session)
+
+        # Donations
+        process_donation_payment(event.data.object, session)
+
+        # Banquet RSVP
+        # process_banquet_tickets(event.data.object, session)
 
     # if event.type == "customer.subscription.updated":
     #    process_subscription_update(event.data.object)
@@ -49,13 +60,14 @@ def process_stripe_webhook(request):
     return HttpResponse(status=200)
 
 
-def process_banquet_tickets(obj):
-    session = stripe.checkout.Session.retrieve(
-        obj["id"],
-        expand=["line_items"],
-    )
-
-    if session.metadata.get("action", None) == "signup":
+def process_banquet_tickets(obj, session):
+    #
+    #
+    # THE ENTRIES AT STRIPE NEED TO BE UPDATED FOR 2024
+    #
+    #
+    #
+    if session.metadata.get("action", None) != "banquet":
         # not a signup
         return
 
@@ -155,12 +167,57 @@ def process_banquet_tickets(obj):
     return
 
 
-def process_checkout_session_completed(obj):
-    session = stripe.checkout.Session.retrieve(
-        obj["id"],
-        expand=["line_items", "subscription"],
+def process_donation_payment(obj, session):
+    if session.metadata.get("action", None) != "donation":
+        return
+
+    # Send them the donation receipt
+    name = session["customer_details"]["name"]
+    if name.lower() == name:
+        name = name.title()
+
+    line2 = session["customer_details"]["address"]["line2"] or ""
+    line1 = session["customer_details"]["address"]["line1"]
+    city = session["customer_details"]["address"]["city"]
+    state = session["customer_details"]["address"]["state"]
+    zip = session["customer_details"]["address"]["postal_code"]
+
+    email = obj["customer_details"]["email"].lower()
+
+    donation_amount = obj["amount_total"] / 100.0
+    donation_amount_str = f"{donation_amount:.2f}"
+
+    date_str = timezone.now().strftime("%B %-d, %Y")
+
+    replacements = [
+        ("%DATE%", date_str),
+        ("%EMAIL%", email),
+        ("%NAME%", name),
+        ("%LINE1%", line1),
+        ("%LINE2%", line2),
+        ("%CITY%", city),
+        ("%STATE%", state),
+        ("%ZIP%", zip),
+        ("%AMOUNT%", donation_amount_str),
+    ]
+
+    snippet = MembershipEmailTemplateSnippet.objects.get(slug="donation_thanks")
+    snippet_body = snippet.body
+
+    for replacement_key, replacement_value in replacements:
+        snippet_body = snippet_body.replace(replacement_key, replacement_value)
+
+    send_email(
+        to=email,
+        subject=snippet.subject,
+        body=snippet_body,
+        context={},
     )
 
+    return
+
+
+def process_membership_signup(obj, session):
     if session.metadata.get("action") != "signup":
         # Other actions here?
         return
