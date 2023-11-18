@@ -19,8 +19,19 @@ h3 {
     font-size: 1.1rem;
 }
 
+.block-paragraph {
+    max-width: 900px;
+    line-height: 160%;
+}
+
+.block-paragraph h2 {
+    margin-bottom: 25px;
+}
+
 .scholarship-recipient {
     border-bottom: 1px dotted #cecece;
+    max-width: 900px;
+    line-height: 160%;
 }
 
 .scholarship-recipient img {
@@ -28,7 +39,7 @@ h3 {
 }
 </style>
 
-<div class="top-images">
+<div class="top-images mt-0 mb-2">
     {% for img in top_images %}
     {% image img height-55 class="img-fluid pr-1" %}
     {% endfor %}
@@ -39,7 +50,7 @@ h3 {
 {{ page.body }}
 
 
-<div class="bottom-images my-3">
+<div class="bottom-images my-5">
     {% for img in bottom_images %}
     {% image img height-55 class="img-fluid pr-1" %}
     {% endfor %}
