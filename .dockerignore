@@ -37,3 +37,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+media/
+static-collected/

@@ -10,11 +10,11 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     restart: always
     volumes:
-      - pg-data:/var/lib/postgresql/data/
+      - ./.db/:/var/lib/postgresql/data/
     expose:
       - 5432
   wahf-cache:
-    image: redis:7.2.3
+    image: redis:7.0.11
     container_name: wahf-cache
     restart: always
     volumes:
@@ -22,18 +22,23 @@ services:
     expose:
       - 6379
   wahf-django:
-    user: "${USER_RUN}:${GROUP_RUN}"
     build:
       context: .
-      dockerfile: ./deploy/Dockerfile-production
+      dockerfile: ./deploy/Dockerfile-development
     container_name: wahf-django
     env_file: .env
     volumes:
-      - ./static-collected:/app/static-collected
-      - ./media:/app/media
+      - .:/app
     ports:
       - "${PORT}:${PORT}"
     stdin_open: true
     tty: true
-volumes:
-  pg-data:
+  mailhog:
+    # image: mailhog/mailhog  # not arm
+    image: anatomicjc/mailhog  # is arm64
+    logging:
+      driver: 'none'  # disable saving logs
+    expose:
+      - 1025  # smtp server
+    ports:
+      - 8025:8025 # web ui

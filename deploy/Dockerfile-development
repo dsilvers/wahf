@@ -6,24 +6,22 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Install system packages required by Wagtail and Django.
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
-    git \
     build-essential \
     libpq-dev \
     libmariadbclient-dev \
     libjpeg62-turbo-dev \
     zlib1g-dev \
     libwebp-dev \
+    git \
+    poppler-utils \
  && rm -rf /var/lib/apt/lists/*
 
- # Use /app folder as a directory where the source code is stored.
-WORKDIR $APP_HOME
 
 # Install the project requirements.
-COPY . .
-COPY deploy/requirements/production.txt /
-RUN pip install --no-cache-dir -r /production.txt
+COPY deploy/requirements/*.txt /
+RUN pip install -r /development.txt
 
+# Use /app folder as a directory where the source code is stored.
+WORKDIR /app
 
-RUN python manage.py collectstatic --noinput --clear
-
-CMD set -xe; gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 30 --log-level debug wahf.wsgi:application
+CMD set -xe; python manage.py runserver 0.0.0.0:$PORT

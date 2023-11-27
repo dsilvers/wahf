@@ -14,6 +14,7 @@ env.read_env(ENV_FILE)
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = ["4ccc-134-215-146-167.ngrok-free.app", "localhost"]
 
 SENTRY_DSN = env("SENTRY_DSN", default=None)
 if not DEBUG and SENTRY_DSN:
@@ -58,7 +59,6 @@ INSTALLED_APPS = [
     "dashboard",  # used mostly to override the wagtail admin templates
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
-    "wagtail.contrib.modeladmin",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
+    "wagtail_modeladmin",
     "wagtail",
     "modelcluster",
     "taggit",
@@ -188,7 +189,7 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/4.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static_collected")
+STATIC_ROOT = os.path.join(BASE_DIR, "static-collected")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

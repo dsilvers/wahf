@@ -189,9 +189,10 @@ class InducteeListPage(OpenGraphMixin, Page):
         context["inductee_list"] = (
             InducteeDetailPage.objects.child_of(self)
             .select_related("person", "photo")
-            .order_by("person__last_name, person__first_name")
+            .order_by("person__last_name", "person__first_name")
             .live()
         )
+
         return context
 
     subpage_types = [

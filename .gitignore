@@ -74,3 +74,6 @@ static_collected
 
 # ignore aws lambda manual builds
 deploy/*.zip
+
+# this should be a symlink for WAHF
+docker-compose.yml
