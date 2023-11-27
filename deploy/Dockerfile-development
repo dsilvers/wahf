@@ -22,6 +22,6 @@ COPY deploy/requirements/*.txt /
 RUN pip install -r /development.txt
 
 # Use /app folder as a directory where the source code is stored.
-WORKDIR /app
+WORKDIR $APP_HOME
 
 CMD set -xe; python manage.py runserver 0.0.0.0:$PORT

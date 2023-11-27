@@ -24,6 +24,6 @@ COPY deploy/requirements/production.txt /
 RUN pip install --no-cache-dir -r /production.txt
 
 
-RUN python manage.py collectstatic --noinput --clear
+# RUN python manage.py collectstatic --noinput --clear
 
 CMD set -xe; gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 30 --log-level debug wahf.wsgi:application
