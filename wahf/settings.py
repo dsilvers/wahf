@@ -268,3 +268,21 @@ STRIPE_LIVE_MODE = env.bool(
 # USPS Address Validation
 USPS_USERNAME = env("USPS_USERNAME", default=None)
 USPS_PASSWORD = env("USPS_PASSWORD", default=None)
+
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.wahf.org",
+    "https://wahf.org",
+    "http://localhost:8000",
+    "http://localhost:9006",
+]
+
+CSRF_COOKIE_DOMAIN = [
+    "*.wahf.org",
+]
