@@ -14,7 +14,6 @@ env.read_env(ENV_FILE)
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
-ALLOWED_HOSTS = ["4ccc-134-215-146-167.ngrok-free.app", "localhost"]
 
 SENTRY_DSN = env("SENTRY_DSN", default=None)
 if not DEBUG and SENTRY_DSN:
