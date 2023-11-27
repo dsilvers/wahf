@@ -11,6 +11,7 @@ ENV_FILE = BASE_DIR / ".env"
 env = environ.Env()
 env.read_env(ENV_FILE)
 
+PRODUCTION = env.bool("PRODUCTION", default=False)
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
@@ -239,7 +240,7 @@ PHONENUMBER_DEFAULT_REGION = "US"
 PHONENUMBER_DB_FORMAT = "NATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
 
-if DEBUG:
+if DEBUG and not PRODUCTION:
     INSTALLED_APPS += ["debug_toolbar"]
     MIDDLEWARE = [
         "debug_toolbar.middleware.DebugToolbarMiddleware",

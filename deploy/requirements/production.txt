@@ -9,6 +9,7 @@ gunicorn
 
 django-environ
 django-extensions
+django-debug-toolbar
 
 psycopg2
 django-redis

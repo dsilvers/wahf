@@ -62,7 +62,7 @@ urlpatterns = [
 ]
 
 
-if settings.DEBUG:
+if settings.DEBUG and not settings.PRODUCTION:
     from django.conf.urls.static import static  # noqa
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns  # noqa
 
