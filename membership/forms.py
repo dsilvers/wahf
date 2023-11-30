@@ -52,18 +52,3 @@ class MemberJoinForm(forms.Form):
         self.membership_level = membership_level
 
         return self.cleaned_data
-
-
-class MemberJoinPaymentForm(forms.Form):
-    membership_automatic_payments_trigger = forms.BooleanField(
-        label="Automatically Renew My Membership",
-        required=False,
-    )
-    membership_automatic_payments = forms.BooleanField(
-        required=False,
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False

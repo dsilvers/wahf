@@ -24,6 +24,7 @@ urlpatterns = [
     path(
         "membership/", membership_views.MemberJoinView.as_view(), name="membership-join"
     ),
+    path("renew/", membership_views.RenewRedirect.as_view(), name="renew"),
     path(
         "membership/thanks/",
         membership_views.MemberJoinThanks.as_view(),

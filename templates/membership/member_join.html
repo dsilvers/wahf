@@ -147,17 +147,28 @@ if (form_errors_message) {
                             <h1>{{ snippet.title }}</h1>
 
                             {{ snippet.content|richtext }}
-
                         </div>
                     </div>
 
-                    {% if snippet.lifetime_membership_blurb %}
-                    <div class="alert alert-warning" role="alert">
-                        {{ snippet.lifetime_membership_blurb|richtext }}
-                    </div>
-                    {% endif %}
 
                     <hr class="border border-primary border-3 opacity-75">
+
+
+                    <div class="row">
+                        <div class="col">
+                            <h2><mark>Looking to Renew your Membership?</mark></h2>
+
+                            <div class="my-4">
+                                <p><a href="/renew/">Sign in to your WAHF.org account</a> to renew your membership!</p>
+
+                                <p>Please email <a href="mailto:membership@wahf.org">membership@wahf.org</a> if you require assistance.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <hr class="border border-primary border-3 opacity-75">
+
 
                     <h1>Choose Your Membership Level</h1>
 
@@ -260,7 +271,7 @@ if (form_errors_message) {
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to Membership Form</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to New Membership Form</button>
 
                 </div>
             </form>

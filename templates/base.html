@@ -83,10 +83,36 @@
     {# Override this in templates to add extra stylesheets #}
     {% endblock %}
 
+    {% if environment_name != "production" %}
+    <style type="text/css">
+    .env-alert {
+        text-align:  center;
+        letter-spacing: .1rem;
+        padding: 4px 0 4px 0;
+        border-bottom:  2px solid rgba(0, 0, 0, 0.1);
+    }
+    .env-staging {
+        background-color: #dc3545!important;
+        color:  #fff!important;
+
+    }
+    .env-development {
+        background-color: #ffc107!important;
+        color:  #343a40!important;
+    }
+    </style>
+    {% endif %}
+
   </head>
 
   <body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
     {% wagtailuserbar %}
+
+    {% if environment_name != "production" %}
+    <div class="env-alert env-{{ environment_name }}">
+        {{ environment_name|upper }} - TESTING
+    </div>
+    {% endif %}
 
     <main class="flex-shrink-0">
         <div class="container">
@@ -114,13 +140,13 @@
                         {% get_main_menu slug="main" parent=site_root calling_page=self %}
 
                         {% if user.pk > 0 %}
-                        <li class="nav-link px-0 link-dark">
+                        <li class="nav-link px-3 link-dark">
                             <a href="{% url 'member_profile' %}" class="nav-link{% if item.active %} active{% endif %}" {% if item.active %}aria-current="page"{% endif %}>
                                 {{ user }}
                             </a>
                           </li>
                         {% else %}
-                        <li class="nav-link px-0 link-dark">
+                        <li class="nav-link px-3 link-dark">
                             <a href="{% url 'login' %}" class="nav-link{% if item.active %} active{% endif %}" {% if item.active %}aria-current="page"{% endif %}>
                               Member Login
                             </a>
@@ -139,12 +165,12 @@
             <!-- renewal blurb if they are logged in -->
             {% if user.pk > 0 and user.member %}
               {% if user.member.membership_expiring %}
-              <div class="alert alert-warning mt-2">
-                Your WAHF Membership is expiring soon! <a href="{% url "member_renew" %}">Please renew your membership!</a>
+              <div class="alert alert-warning mt-3">
+                <i data-feather="alert-circle" class="mx-2 my-0"></i> Your WAHF Membership is expiring soon! <a href="{% url "member_renew" %}">Please renew your membership!</a>
               </div>
               {% elif user.member.membership_valid is False %}
-              <div class="alert alert-danger mt-2">
-                Your WAHF Membership has lapsed. <a href="{% url "member_renew" %}">Please renew your membership!</a>
+              <div class="alert alert-danger mt-3">
+                <i data-feather="alert-circle" class="mx-2 my-0"></i> Your WAHF Membership has lapsed. <a href="{% url "member_renew" %}">Please renew your membership!</a>
               </div>
               {% endif %}
             {% endif %}

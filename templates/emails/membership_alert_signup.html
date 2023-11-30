@@ -1,6 +1,24 @@
 <p style="font-size:20px;margin-bottom:20px;border-bottom:4px solid #0D6EFD">
-    <b>New WAHF Member Signup</b>
+    {% if renewal %}
+        <b>Member Renewal</b>
+    {% elif update %}
+        <b>Member Update - Stripe Notification</b>
+    {% else %}
+        <b>New WAHF Member Signup</b>
+    {% endif %}
 </p>
+
+{% if renewal %}
+<div style="font-size:18px;">
+    <b>NOTE:</b> Address and phone information may need to be updated. This information is from the website database and may no longer be current.
+</div>
+{% endif %}
+
+{% if update %}
+<div style="font-size:18px;">
+    <b>NOTE:</b> This is notification that something updated on Stripe's side of things. Possible automatic renewal?
+</div>
+{% endif %}
 
 <p>
     <b>Name:</b> {{ member.first_name }} {{ member.last_name }}<br>

@@ -13,7 +13,7 @@ from membership.models import (
     MembershipEmailTemplateSnippet,
     MembershipLevel,
 )
-from membership.utils import get_stripe_secret_key
+from membership.utils import get_stripe_secret_key, send_membership_error_email
 from users.models import Member, User
 from users.utils import send_email, usps_validate_user_address
 
@@ -39,23 +39,25 @@ def process_stripe_webhook(request):
             expand=["line_items", "subscription"],
         )
 
-        # Membership
-        process_membership_signup(event.data.object, session)
+        action = session.metadata.get("action", None)
 
-        # Donations
-        process_donation_payment(event.data.object, session)
+        if action == "signup":
+            process_membership_signup(event.data.object, session)
+        elif action == "renewal":
+            process_membership_renewal(event.data.object, session)
+        elif action == "donation":
+            process_donation_payment(event.data.object, session)
+        elif action == "banquet":
+            process_banquet_tickets(event.data.object, session)
 
-        # Banquet RSVP
-        # process_banquet_tickets(event.data.object, session)
+    elif event.type == "customer.subscription.updated":
+        # Update the subscription dates and status
+        # This one might fire before the subscription is there, so we can delay it and tell stripe to come back
+        return process_subscription_update(event.data.object)
 
-    # if event.type == "customer.subscription.updated":
-    #    process_subscription_update(event.data.object)
-    # elif event.type in [
-    #    "invoice.payment_failed",
-    #    "invoice.payment_action_required",
-    # ]:
-    # elif event.type == "customer.subscription.deleted":
-    #    process_subscription_ending(event.data.object)
+    elif event.type == "customer.subscription.deleted":
+        # Update the status of the subscription
+        process_subscription_delete(event.data.object)
 
     return HttpResponse(status=200)
 
@@ -67,9 +69,6 @@ def process_banquet_tickets(obj, session):
     #
     #
     #
-    if session.metadata.get("action", None) != "banquet":
-        # not a signup
-        return
 
     # Total amount paid
     amount_total = session["amount_total"] / 100.0
@@ -168,9 +167,6 @@ def process_banquet_tickets(obj, session):
 
 
 def process_donation_payment(obj, session):
-    if session.metadata.get("action", None) != "donation":
-        return
-
     # Send them the donation receipt
     name = session["customer_details"]["name"]
     if name.lower() == name:
@@ -218,27 +214,20 @@ def process_donation_payment(obj, session):
 
 
 def process_membership_signup(obj, session):
-    if session.metadata.get("action") != "signup":
-        # Other actions here?
-        return
-
     #################################
     # Process signup
     email = obj["customer_details"]["email"].lower()
 
     if User.objects.filter(email__iexact=email).exists():
-        alert_body = render_to_string(
-            "emails/membership_alert_duplicate_email.html", {"email": email}
-        )
+        error = f"""
+            Unable to create WAHF account or process signup for <b>{ email }</b>, as it already exists in our users database.
+            <br><br>
+            This membership probably needs to be manually processed and an account created for a different email address if necessary. Sorry!
+        """
 
-        send_email(
-            to=["membership@wahf.org", "dan@wahf.org"],
-            subject=f"WAHF Membership Error - Account Already Exists for {email}",
-            body=None,
-            body_html=alert_body,
-            context={
-                "email": email,
-            },
+        send_membership_error_email(
+            f"WAHF Membership Creation Error - Account Already Exists for {email}",
+            error,
         )
 
         raise Exception("Email address already exists")
@@ -300,6 +289,7 @@ def process_membership_signup(obj, session):
             "membership_expiry_date": end_date,
             "stripe_customer_id": session["customer"] or "",
             "stripe_subscription_id": subscription_id,
+            "stripe_subscription_active": True,
             "first_name": first_name,
             "last_name": last_name,
             "business_name": business_name,
@@ -367,57 +357,102 @@ def process_subscription_ending(obj):
     )
 
 
-"""
+def process_membership_renewal(obj, session):
+    return
+    """
+    # Expired renewals where the subscription is dead and needs to be recreated
+    email = obj["customer_details"]["email"].lower()
+    member_pk = session.metadata.get("member_pk", None)
+    member = Member.objects.filter(pk=member_pk).first() if member_pk else None
+
+    if not member_pk or not member:
+        send_membership_error_email(
+            f"WAHF Membership Renewal Error - Unable to find member #{member_pk}",
+            f"A renewal was submitted for member with ID# {member_pk}, but we are not finding that ID in our WAHF database.",
+        )
+        raise Exception("Member PK not found")
+
+    # Process renewal
+    start_date = datetime.utcfromtimestamp(obj["current_period_start"]).date()
+    end_date = datetime.utcfromtimestamp(obj["current_period_end"]).date()
+
+    member.last_payment_date = start_date
+    member.membership_expiry_date = end_date
+    member.stripe_subscription_id = obj["id"]
+    member.stripe_subscription_active = obj["status"] == "active"
+    member.save()
+
+    member.update_wahf_group_membership()
+
+    # Send a membership alert to ourselves
+    alert_body = render_to_string(
+        "emails/membership_alert_signup.html", {"member": member, "renewal": True}
+    )
+
+    send_email(
+        to=["membership@wahf.org", "dan@wahf.org"],
+        subject=f"WAHF Membership Renewal - {member}",
+        body=None,
+        body_html=alert_body,
+        context={
+            "member": member,
+        },
+    )
+
+    return
+    """
+
+
 def process_subscription_update(obj):
-    # Create User
-    # USPS validate their address
-    # Set their password
-    # Send an email
-    # Handle automatic payments (disable if not checked)
-    # Delete Registration Data
+    subscription_id = obj["id"]
 
-    try:
-        signup_uuid = obj["metadata"]["signup_uuid"]
-    except Exception:
-        signup_uuid = None
+    member = Member.objects.filter(stripe_subscription_id=subscription_id).first()
+    if not member:
+        # possibly a new subscription for someone without an existing one?
+        customer = stripe.Customer.retrieve(obj["customer"])
+        email = customer["email"]
 
+        member = Member.objects.filter(email__iexact=email).first()
 
+        if not member:
+            print(
+                f"Unknown member from subscription ID {subscription_id} or email address"
+            )
+            return HttpResponse("Unknown Member")
 
+        if member.stripe_customer_id and member.stripe_customer_id != obj["customer"]:
+            # Customer is new and does not match, something weird happened
+            print(
+                f"Unknown customer created this subscription, one already exists with that email {email}"
+            )
+            return HttpResponse("Duplicate email account")
 
-    # Renewal registration
-    else:
-        try:
-            member = Member.objects.get(stripe_customer_id=obj["customer"])
-        except Member.DoesNotExist:
-            return
+        member.stripe_customer_id = obj["customer"]
+        member.stripe_subscription_id = subscription_id
 
-        old_subscription_id = member.stripe_subscription_id
+    # Update dates on subscription
+    previous_end_date = member.membership_expiry_date
+    # previous_status = member.stripe_subscription_active
 
-        if not obj["plan"]["active"]:
-            raise Exception("Subscription does not appear to be active.")
+    start_date = datetime.utcfromtimestamp(obj["current_period_start"]).date()
+    end_date = datetime.utcfromtimestamp(obj["current_period_end"]).date()
 
-        start_date = datetime.utcfromtimestamp(obj["current_period_start"]).date()
-        end_date = datetime.utcfromtimestamp(obj["current_period_end"]).date()
+    member.last_payment_date = start_date
+    member.membership_expiry_date = end_date
+    member.stripe_subscription_active = obj["status"] == "active"
+    member.save()
 
-        member.last_payment_date = start_date
-        member.membership_expiry_date = end_date
-        member.stripe_subscription_id = obj["id"]
-        member.save()
+    member.update_wahf_group_membership()
 
-        # Cancel old subscription
-        if old_subscription_id:
-            try:
-                stripe.Subscription.delete(old_subscription_id)
-            except Exception:
-                pass
+    if end_date > previous_end_date and member.stripe_subscription_active:
+        # Renewed?
 
-        member.update_wahf_group_membership()
-
-        # Send a renewal email
-        snippet = MembershipEmailTemplateSnippet.objects.get(slug="renewal_thanks")
-
+        # Email member
+        snippet = MembershipEmailTemplateSnippet.objects.get(
+            slug="renew_thanks_automatic"
+        )
         send_email(
-            to=member.email,
+            to=[member.email],
             subject=snippet.subject,
             body=snippet.body,
             context={
@@ -425,5 +460,37 @@ def process_subscription_update(obj):
             },
         )
 
+        # Email administration
+        alert_body = render_to_string(
+            "emails/membership_alert_signup.html", {"member": member, "renewal": True}
+        )
+        send_email(
+            to=["membership@wahf.org", "dan@wahf.org"],
+            subject=f"WAHF Membership Auto Renewal - {member}",
+            body=None,
+            body_html=alert_body,
+            context={
+                "member": member,
+            },
+        )
+
+    return HttpResponse("OK")
+
+
+def process_subscription_delete(obj):
+    subscription_id = obj["id"]
+
+    member = Member.objects.filter(stripe_subscription_id=subscription_id).first()
+    if not member:
+        print(f"Unknown member from subscription ID {subscription_id}")
         return
-"""
+
+    member.stripe_subscription_active = False
+    member.save()
+
+    member.update_wahf_group_membership()
+
+    send_membership_error_email(
+        f"WAHF Membership Subscription Cancelled - {member} {member.email}",
+        f"Stripe notified us that payments failed or subscription was cancelled for {member.pk} {member} {member.email}",
+    )

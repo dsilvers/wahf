@@ -62,7 +62,10 @@ def send_email(to, subject, body, context={}, body_html=None):
         body_context = Context(context)
         body_html = body_template.render(body_context)
 
-    html_message = render_to_string("emails/base.html", {"body": body_html})
+    html_message = render_to_string(
+        "emails/base.html",
+        {"body": body_html, "environment_name": settings.ENVIRONMENT_NAME},
+    )
     plain_message = strip_tags(html_message)
     from_email = settings.DEFAULT_FROM_EMAIL
 

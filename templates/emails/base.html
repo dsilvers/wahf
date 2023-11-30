@@ -94,7 +94,26 @@ table.body .article {
     background-color: #34495e !important;
     border-color: #34495e !important;
   }
+
+  {% if environment_name != "production" %}
+  .env-alert {
+      text-align:  center;
+      letter-spacing: .1rem;
+      padding: 4px 0 4px 0;
+      border-bottom:  2px solid rgba(0, 0, 0, 0.1);
+  }
+  .env-staging {
+      background-color: #dc3545!important;
+      color:  #fff!important;
+
+  }
+  .env-development {
+      background-color: #ffc107!important;
+      color:  #343a40!important;
+  }
+  {% endif %}
 }
+
 </style>
   </head>
   <body style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
@@ -103,6 +122,12 @@ table.body .article {
         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
         <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 580px; padding: 10px; width: 580px; margin: 0 auto;" width="580" valign="top">
           <div class="content" style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
+
+            {% if environment_name != "production" %}
+            <div class="env-alert env-{{ environment_name }}">
+                {{ environment_name|upper }} - TESTING - IGNORE THIS EMAIL
+            </div>
+            {% endif %}
 
             <!-- START CENTERED WHITE CONTAINER -->
             <table role="presentation" class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border-radius: 3px; width: 100%;" width="100%">
@@ -119,7 +144,9 @@ table.body .article {
                             </a>
                         </p>
 
+                        {% block body %}
                         {{ body }}
+                        {% endblock %}
 
                       </td>
                     </tr>

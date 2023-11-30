@@ -17,8 +17,20 @@ window.location = '/account/member-profile/';
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-3">
-                        <h2 class="mt-2">Member Login</h2>
+                        <h2 class="mt-2">
+                            {% if request.session.renewal %}
+                                Renewal Login
+                            {% else %}
+                                Member Login
+                            {% endif %}
+                        </h2>
                     </div>
+
+                    {% if request.session.renewal %}
+                    <div class="alert alert-block alert-warning mt-3 mb-3">
+                        Please sign in to renew your membership. If you are unable to access your account, email <a href="mailto:membership@wahf.org">membership@wahf.org</a> for assistance.</i>
+                    </div>
+                    {% endif %}
 
                     {% if user.is_authenticated %}
                     <div class="alert alert-block alert-danger mt-3 mb-3">

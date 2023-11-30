@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from localflavor.us.models import USStateField, USZipCodeField
 
@@ -60,9 +60,10 @@ class Member(models.Model):
         blank=True,
         null=True,
     )
-    membership_automatic_payment = models.BooleanField(default=False)
+
     stripe_customer_id = models.CharField(max_length=50, blank=True)
     stripe_subscription_id = models.CharField(max_length=50, blank=True)
+    stripe_subscription_active = models.BooleanField(default=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     email = models.EmailField("Email Address", unique=True, null=True, blank=True)
@@ -108,7 +109,7 @@ class Member(models.Model):
     def membership_expiring(self):
         # membership is expiring soon
         # but don't bug them if they are renewing automatically
-        if self.membership_automatic_payment:
+        if self.stripe_subscription_active:
             return False
 
         if self.membership_level.is_lifetime:
@@ -138,19 +139,18 @@ class Member(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # Keep first and last names in sync between user and member models
-        try:
-            if self.user and (
-                self.first_name != self.user.first_name
-                or self.last_name != self.user.last_name
-                or self.email != self.user.email
-            ):
+
+        if self.user and (
+            self.first_name != self.user.first_name
+            or self.last_name != self.user.last_name
+            or self.email != self.user.email
+        ):
+            with transaction.atomic():
                 User.objects.filter(pk=self.user.pk).update(
-                    first_name=self.first_name,
-                    last_name=self.last_name,
-                    email=self.email,
+                    first_name=self.first_name or self.user.first_name,
+                    last_name=self.last_name or self.user.last_name,
+                    email=self.email or self.user.email,
                 )
-        except Exception:
-            pass
 
 
 class User(AbstractUser):
@@ -192,9 +192,9 @@ class User(AbstractUser):
                 or self.email != self.member.email
             ):
                 Member.objects.filter(pk=self.member.pk).update(
-                    first_name=self.first_name,
-                    last_name=self.last_name,
-                    email=self.email,
+                    first_name=self.first_name or self.member.first_name,
+                    last_name=self.last_name or self.member.last_name,
+                    email=self.email or self.member.email,
                 )
         except Exception:
             pass

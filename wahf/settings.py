@@ -16,6 +16,9 @@ DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
+ENVIRONMENT_NAME = env("ENVIRONMENT_NAME", default="production")
+
+
 SENTRY_DSN = env("SENTRY_DSN", default=None)
 if not DEBUG and SENTRY_DSN:
     sentry_sdk.init(
@@ -112,6 +115,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "content.context_processors.environment_name",
             ],
         },
     },
@@ -123,6 +127,7 @@ WSGI_APPLICATION = "wahf.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
+
 
 CACHES = {
     "default": {
@@ -144,16 +149,7 @@ LOGOUT_REDIRECT_URL = "/"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -270,8 +266,8 @@ USPS_USERNAME = env("USPS_USERNAME", default=None)
 USPS_PASSWORD = env("USPS_PASSWORD", default=None)
 
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = DEBUG
+CSRF_COOKIE_SECURE = DEBUG
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -283,6 +279,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:9006",
 ]
 
-CSRF_COOKIE_DOMAIN = [
-    "*.wahf.org",
-]
+# CSRF_COOKIE_DOMAIN = [
+#    "*.wahf.org",
+#    "localhost",
+#    "127.0.0.1",
+# ]
