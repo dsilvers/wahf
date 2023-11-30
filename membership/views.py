@@ -55,9 +55,9 @@ class MemberRenewPaymentView(LoginRequiredMixin, View):
             payment_mode = "subscription"
 
         # Disallow renewing active subscriptions
-        if (
-            self.request.user.member.stripe_subscription_active
-            or self.request.user.member.membership_expiry_date <= timezone.now().date()
+        if self.request.user.member.stripe_subscription_active or (
+            self.request.user.member.membership_expiry_date
+            and self.request.user.member.membership_expiry_date <= timezone.now().date()
         ):
             return HttpResponseRedirect("/account/member-profile/")
 
