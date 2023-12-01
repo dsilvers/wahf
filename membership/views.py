@@ -10,7 +10,11 @@ from django.views.generic.edit import FormView
 from sentry_sdk import capture_exception
 
 from membership.forms import MemberJoinForm, MemberUpdateForm
-from membership.models import MembershipJoinSnippet, MembershipThanksSnippet
+from membership.models import (
+    MembershipJoinSnippet,
+    MembershipRenewThanksSnippet,
+    MembershipThanksSnippet,
+)
 from membership.utils import get_stripe_secret_key
 from users.models import Member, User
 
@@ -55,10 +59,7 @@ class MemberRenewPaymentView(LoginRequiredMixin, View):
             payment_mode = "subscription"
 
         # Disallow renewing active subscriptions
-        if self.request.user.member.stripe_subscription_active or (
-            self.request.user.member.membership_expiry_date
-            and self.request.user.member.membership_expiry_date <= timezone.now().date()
-        ):
+        if self.request.user.member.stripe_subscription_active:
             return HttpResponseRedirect("/account/member-profile/")
 
         custom_fields = []
@@ -107,6 +108,113 @@ class MemberRenewPaymentView(LoginRequiredMixin, View):
             create_kwargs["customer"] = self.request.user.member.stripe_customer_id
         elif self.request.user.member.email:
             create_kwargs["customer_email"] = self.request.user.member.email
+
+        if (
+            self.request.user.member.membership_expiry_date
+            and self.request.user.member.membership_expiry_date > timezone.now().date()
+        ):
+            create_kwargs["subscription_data"] = {
+                "billing_cycle_anchor": int(
+                    self.request.user.member.membership_expiry_date.strftime("%s")
+                )
+                + (60 * 60 * 24),
+                "proration_behavior": "none",
+            }
+
+        try:
+            checkout_session = stripe.checkout.Session.create(**create_kwargs)
+        except Exception as e:
+            if hasattr(e, "user_message"):
+                self.request.session["payment_error"] = e.user_message
+            else:
+                if settings.SENTRY_DSN:
+                    capture_exception(e)
+                print(e)
+                self.request.session[
+                    "payment_error"
+                ] = "An error occurred, give it a try again. If it continues to occur, please contact us."
+            return HttpResponseRedirect(reverse("membership-join"))
+
+        response = HttpResponse(content="", status=303)
+        response["Location"] = checkout_session.url
+        return response
+
+
+class MemberRenewPublicPaymentView(View):
+    # Use UUID to look up the user
+    # Used by email invite
+    def get(self, *args, **kwargs):
+        try:
+            member = Member.objects.get(uuid=self.kwargs["uuid"])
+        except Member.DoesNotExist:
+            return HttpResponseRedirect("/account/member-profile/")
+
+        payment_mode = "payment"
+        if member.membership_level.allow_recurring_payments:
+            payment_mode = "subscription"
+
+        # Disallow renewing active subscriptions
+        if member.stripe_subscription_active:
+            return HttpResponseRedirect("/account/member-profile/")
+
+        custom_fields = []
+
+        if member.membership_level.includes_spouse:
+            custom_fields.append(
+                {
+                    "key": "spousename",
+                    "label": {"type": "custom", "custom": "Spouse Name"},
+                    "type": "text",
+                }
+            )
+
+        if member.membership_level.is_business:
+            custom_fields.append(
+                {
+                    "key": "businessname",
+                    "label": {"type": "custom", "custom": "Business Name"},
+                    "type": "text",
+                }
+            )
+
+        create_kwargs = {
+            "line_items": [
+                {
+                    "price": member.membership_level.stripe_price_id,
+                    "quantity": 1,
+                },
+            ],
+            "mode": payment_mode,
+            "success_url": "https://www.wahf.org/renew/thanks/",
+            "cancel_url": "https://www.wahf.org/account/member-profile/",
+            "billing_address_collection": "auto",
+            "shipping_address_collection": {
+                "allowed_countries": ["US"],
+            },
+            "allow_promotion_codes": True,
+            "phone_number_collection": {
+                "enabled": True,
+            },
+            "metadata": {"action": "renewal", "member_pk": member.pk},
+            "custom_fields": custom_fields,
+        }
+
+        if member.stripe_customer_id:
+            create_kwargs["customer"] = member.stripe_customer_id
+        elif member.email:
+            create_kwargs["customer_email"] = member.email
+
+        if (
+            member.membership_expiry_date
+            and member.membership_expiry_date > timezone.now().date()
+        ):
+            create_kwargs["subscription_data"] = {
+                "billing_cycle_anchor": int(
+                    member.membership_expiry_date.strftime("%s")
+                )
+                + (60 * 60 * 24),
+                "proration_behavior": "none",
+            }
 
         try:
             checkout_session = stripe.checkout.Session.create(**create_kwargs)
@@ -242,6 +350,15 @@ class MemberJoinThanks(TemplateView):
             print("no reg login found")
 
         context["snippet"] = MembershipThanksSnippet.objects.first()
+        return context
+
+
+class MemberRenewThanks(TemplateView):
+    template_name = "membership/member_join_thanks.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["snippet"] = MembershipRenewThanksSnippet.objects.first()
         return context
 
 

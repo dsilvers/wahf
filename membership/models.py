@@ -93,6 +93,23 @@ class MembershipThanksSnippet(models.Model):
 
 
 @register_snippet
+class MembershipRenewThanksSnippet(models.Model):
+    title = models.CharField(max_length=250)
+    content = RichTextField()
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("content"),
+    ]
+
+    class Meta:
+        verbose_name_plural = "Membership Renew Thanks Page - Content Blocks"
+
+    def __str__(self):
+        return "Membership Renew Thanks Page - Content Blocks"
+
+
+@register_snippet
 class MembershipEmailTemplateSnippet(models.Model):
     slug = models.CharField(max_length=200, unique=True)
     subject = models.CharField(max_length=800)

@@ -26,9 +26,19 @@ urlpatterns = [
     ),
     path("renew/", membership_views.RenewRedirect.as_view(), name="renew"),
     path(
+        "renew/<uuid:uuid>/",
+        membership_views.MemberRenewPublicPaymentView.as_view(),
+        name="renew-public",
+    ),
+    path(
         "membership/thanks/",
         membership_views.MemberJoinThanks.as_view(),
         name="membership-join-thanks",
+    ),
+    path(
+        "renew/thanks/",
+        membership_views.MemberRenewThanks.as_view(),
+        name="membership-renew-thanks",
     ),
     path("stripe-webhooks/", membership_webhook_views.process_stripe_webhook),
     path(

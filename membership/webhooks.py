@@ -44,16 +44,20 @@ def process_stripe_webhook(request):
         if action == "signup":
             process_membership_signup(event.data.object, session)
         elif action == "renewal":
+            # this is currently unused and does nothing
             process_membership_renewal(event.data.object, session)
         elif action == "donation":
             process_donation_payment(event.data.object, session)
         elif action == "banquet":
             process_banquet_tickets(event.data.object, session)
 
-    elif event.type == "customer.subscription.updated":
+    elif event.type in [
+        "customer.subscription.created",
+        "customer.subscription.updated",
+    ]:
         # Update the subscription dates and status
         # This one might fire before the subscription is there, so we can delay it and tell stripe to come back
-        return process_subscription_update(event.data.object)
+        return process_subscription_create_update(event.data.object)
 
     elif event.type == "customer.subscription.deleted":
         # Update the status of the subscription
@@ -403,7 +407,7 @@ def process_membership_renewal(obj, session):
     """
 
 
-def process_subscription_update(obj):
+def process_subscription_create_update(obj):
     subscription_id = obj["id"]
 
     member = Member.objects.filter(stripe_subscription_id=subscription_id).first()
