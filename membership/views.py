@@ -212,7 +212,7 @@ class MemberRenewPublicPaymentView(View):
                 "billing_cycle_anchor": int(
                     member.membership_expiry_date.strftime("%s")
                 )
-                + (60 * 60 * 24),
+                + (60 * 60 * 30),  # cheat for timezone conversion
                 "proration_behavior": "none",
             }
 
