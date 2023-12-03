@@ -94,7 +94,7 @@ class Member(models.Model):
 
     @property
     def membership_valid(self):
-        if self.membership_level.is_lifetime:
+        if self.membership_level and self.membership_level.is_lifetime:
             return True
 
         if (
@@ -112,7 +112,7 @@ class Member(models.Model):
         if self.stripe_subscription_active:
             return False
 
-        if self.membership_level.is_lifetime:
+        if self.membership_level and self.membership_level.is_lifetime:
             return False
 
         if (
@@ -151,6 +151,18 @@ class Member(models.Model):
                     last_name=self.last_name or self.user.last_name,
                     email=self.email or self.user.email,
                 )
+
+        if not self.user:
+            # Create a user if one is not already attached
+            self.user = User.objects.create_user(
+                first_name=self.first_name,
+                last_name=self.first_name,
+                email=self.email,
+                password=User.objects.make_random_password(length=8),
+            )
+            self.save()
+
+        self.update_wahf_group_membership()
 
 
 class User(AbstractUser):

@@ -149,9 +149,9 @@ class MemberRenewPublicPaymentView(View):
         except Member.DoesNotExist:
             return HttpResponseRedirect("/account/member-profile/")
 
-        payment_mode = "payment"
-        if member.membership_level.allow_recurring_payments:
-            payment_mode = "subscription"
+        payment_mode = "subscription"
+        if not member.membership_level.allow_recurring_payments:
+            return HttpResponseRedirect("/account/member-profile/")
 
         # Disallow renewing active subscriptions
         if member.stripe_subscription_active:
