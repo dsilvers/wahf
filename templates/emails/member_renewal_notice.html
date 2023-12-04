@@ -28,10 +28,16 @@ convenient for you – renew your membership securely online through our website
 <p>
 While we encourage and appreciate online membership registrations for their convenience and efficiency,
 we also accept payments by check. Feel free to choose the option that best suits you.
-Renew/join safely online or by mailing a check for ${{ user.member.membership_level.price }} to:
 </p>
 
 <p>
+Renew safely online or by
+<a href="https://www.wahf.org/documents/168/MembershipForm_WAHF_Dec2023.pdf">
+    mailing a check {% if member.membership_level.price %}for ${{ member.membership_level.price }}{% endif %}
+</a> to:
+</p>
+
+<p style="border-left:4px solid #cecece;padding-left:20px;color: #4e4e4e;">
 Rose Dorcey<br>
 Wisconsin Aviation Hall of Fame<br>
 3980 Sharratt Drive<br>
