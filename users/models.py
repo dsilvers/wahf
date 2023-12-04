@@ -61,6 +61,11 @@ class Member(models.Model):
         null=True,
     )
 
+    membership_renewal_reminder_date = models.DateField(
+        blank=True,
+        null=True,
+    )
+
     stripe_customer_id = models.CharField(max_length=50, blank=True)
     stripe_subscription_id = models.CharField(max_length=50, blank=True)
     stripe_subscription_active = models.BooleanField(default=False)

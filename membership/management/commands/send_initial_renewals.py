@@ -22,6 +22,7 @@ class Command(BaseCommand):
             membership_level__in=levels,
             stripe_subscription_id="",
             membership_expiry_date__lt=(timezone.now() + timedelta(days=60)),
+            membership_renewal_reminder_date__isnull=True,
         )
 
         for member in member_qs:
@@ -38,3 +39,6 @@ class Command(BaseCommand):
                     "member": member,
                 },
             )
+
+            member.membership_renewal_reminder_date = timezone.now().date()
+            member.save()
