@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
         send_email(
             to=[member.email],
-            subject="2024 Membership Renewal - Wisconsin Aviation Hall of Fame",
+            subject="Membership Renewal - Wisconsin Aviation Hall of Fame",
             body=None,
             body_html=body,
             context={
