@@ -12,8 +12,8 @@ class Command(BaseCommand):
         body = render_to_string("emails/member_renewal_notice.html", {"member": member})
 
         send_email(
-            to=[member.email],
-            subject="Membership Renewal - Wisconsin Aviation Hall of Fame",
+            to=[member.email, "rosedorceyFIF@gmail.com"],
+            subject="Membership Renewal - Wisconsin Aviation Hall of Fame - TEST",
             body=None,
             body_html=body,
             context={
