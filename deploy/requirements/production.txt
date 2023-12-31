@@ -1,6 +1,6 @@
-Django==4.2.7
+Django==4.2.8
 
-wagtail==5.2.1
+wagtail==5.2.2
 wagtail_modeladmin==1.0.0
 git+https://github.com/wagtail/wagtail-autocomplete.git@refs/pull/143/head
 
