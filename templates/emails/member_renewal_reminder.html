@@ -1,0 +1,78 @@
+<hr style="border: 3px solid #0d6efd;margin-top:40px;margin-bottom:40px;">
+
+<div style="line-height:160%;">
+
+<p>Dear {% if member.first_name %}{{ member.first_name }}{% else %}{{ member }}{% endif %},</p>
+
+<p>
+We hope this message finds you well and that you've enjoyed your past year of membership. <b>We're
+reaching out with a friendly reminder that your membership renewal is now past due.</b>
+</p>
+
+<p>
+By renewing today, you not only continue to enjoy the exclusive Forward in Flight membership
+magazine but also contribute to the vibrant community of individuals who are committed to collecting,
+preserving, and sharing Wisconsin aviation history, and honoring those who make it. We'll also continue
+sharing the stories of today's aviators. <b>Your support is crucial in creating awareness of our rich aviation
+history and supporting education through our growing scholarship program.</b> We appreciate your
+dedication.
+</p>
+
+<p>
+Renew now by <a href="https://www.wahf.org/renew/{{ member.uuid }}/">clicking here</a> to ensure you stay
+connected to our community and the impact we create together.
+</p>
+
+<div style="margin: 60px 0 60px 0;text-align:center;">
+    <a href="https://www.wahf.org/renew/{{ member.uuid }}/" style="padding:20px;font-size:20px;background-color:#0d6efd;color:#fff;cursor:pointer;max-width:300px;border-radius:0.5rem;border:1px solid #0d6efd;">Renew Membership</a>
+</div>
+
+<p>
+While we encourage and appreciate online membership registrations for their convenience and efficiency,
+we also accept payments by check. <b>Feel free to choose the option that best suits you.</b>
+</p>
+
+<p>
+Renew safely online or by
+<a href="https://www.wahf.org/documents/168/MembershipForm_WAHF_Dec2023.pdf">
+    mailing a check {% if member.membership_level.price %}for ${{ member.membership_level.price }}{% endif %}
+</a> to:
+</p>
+
+<p style="border-left:4px solid #cecece;padding-left:20px;color: #4e4e4e;">
+Rose Dorcey<br>
+Wisconsin Aviation Hall of Fame<br>
+3980 Sharratt Drive<br>
+Oshkosh, WI 54901-1276<br>
+</p>
+
+<p>
+Thank you for being an integral part of the Wisconsin Aviation Hall of Fame. <b>We value your commitment
+and look forward to continuing this journey with you.</b>
+</p>
+
+<p>
+Best regards,
+</p>
+
+<p style="line-height:120%;">
+<b>Rose Dorcey</b><br>
+Membership Chair
+</p>
+
+<hr style="border: 3px solid #0d6efd;margin-top:40px;">
+
+<div style="padding: 10px;text-align:center;">
+    <img src="https://www.wahf.org/static/emails/renew-email-t1-225.jpg" alt="">
+    <img src="https://www.wahf.org/static/emails/renew-email-t2-225.jpg" alt="" style="margin: 0 10px 0 0px;">
+</div>
+
+<div style="padding: 10px;text-align:center;">
+    <img src="https://www.wahf.org/static/emails/renew-email-b1-140.jpg" alt="">
+    <img src="https://www.wahf.org/static/emails/renew-email-b2-140.jpg" alt="" style="margin: 0 10px 0 10px;">
+    <img src="https://www.wahf.org/static/emails/renew-email-b3-140.jpg" alt="">
+</div>
+
+<hr style="border: 3px solid #0d6efd">
+
+</div>
