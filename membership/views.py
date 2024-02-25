@@ -407,7 +407,7 @@ class KohnDonateRedirect(View):
                     },
                 ],
                 mode="payment",
-                success_url="https://www.wahf.org/kohn/thanks/",
+                success_url="https://www.wahf.org/kohn/thanks",
                 cancel_url="https://www.wahf.org/kohn/",
                 billing_address_collection="auto",
                 allow_promotion_codes=False,
