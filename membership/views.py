@@ -371,3 +371,55 @@ class RenewRedirect(RedirectView):
         self.request.session["renewal"] = True
 
         return "/accounts/login/?next=/account/member-profile/"
+
+
+class KohnDonateRedirect(View):
+    permanent = False
+    query_string = False
+
+    def get(self, *args, **kwargs):
+        price_lookup = kwargs.get("price", None)
+
+        default = "price_1Onlr2Kymtko2mUA2q57jpdj"
+        price_map = {
+            25: "price_1OnlnMKymtko2mUApH9ZdiFo",
+            50: "price_1OnlnyKymtko2mUAo1jFujQe",
+            100: "price_1OnloCKymtko2mUAl5ZMxbJA",
+            250: "price_1OnloaKymtko2mUAG0WdzoaS",
+            500: "price_1OnloaKymtko2mUAG0WdzoaS",
+            750: "price_1OnlomKymtko2mUA2v01z29T",
+            1000: "price_1OnloxKymtko2mUAjkoqIIfK",
+            2000: "price_1OnlpBKymtko2mUABLvJDPWo",
+            3000: "price_1OnlpnKymtko2mUALZ3y0Vyx",
+            5000: "price_1Onlq3Kymtko2mUA7UlYVMFR",
+            7500: "price_1OnlqDKymtko2mUA2U3wPKs0",
+            10000: "price_1OnlqOKymtko2mUAforXj1PX",
+        }
+
+        price_id = price_map.get(price_lookup, default)
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        "price": price_id,
+                        "quantity": 1,
+                    },
+                ],
+                mode="payment",
+                success_url="https://www.wahf.org/kohn/thanks/",
+                cancel_url="https://www.wahf.org/kohn/",
+                billing_address_collection="auto",
+                allow_promotion_codes=False,
+                metadata={"action": "kohn"},
+            )
+        except Exception as e:
+            # if hasattr(e, "user_message"):
+            #    # self.request.session["payment_error"] = e.user_message
+            if settings.SENTRY_DSN:
+                capture_exception(e)
+            return HttpResponseRedirect(reverse("kohn"))
+
+        response = HttpResponse(content="", status=303)
+        response["Location"] = checkout_session.url
+        return response

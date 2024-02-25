@@ -1,0 +1,803 @@
+{% extends "base.html" %}
+
+{% block title %}Leo J. Kohn - Photo Collection Digitization Project{% endblock %}
+
+
+{% block ogtitle %}
+<meta property="og:title" content="Leo J. Kohn - Photo Collection Digitization Project - Wisconsin Aviation Hall of Fame" >
+{% endblock %}
+
+{% block ogdescription %}
+<meta property="og:description" content="Your donation helps digitize, preserve, and share 30,000+ historic aviation images.">
+{% endblock %}
+
+{% block metadescription %}
+<meta name="description" content="Your donation helps digitize, preserve, and share 30,000+ historic aviation images." />
+{% endblock %}
+
+{% block ogimage %}
+<meta property="og:image" content="http://www.wahf.org/static/kohn/c7-467@3x.jpg" >
+{% endblock %}
+
+{% block content %}
+
+{% block extra_css %}
+<style type="text/css">
+.img-border {
+    border: 4px solid black;
+    margin: 4px;
+    padding: 0;
+}
+
+video {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    border-bottom: 1px dotted #cecece;
+}
+
+li {
+    padding: 5px;
+}
+
+figure,
+figcaption {
+  margin: 0;
+  padding: 0;
+}
+
+figure {
+  display: inline-block;
+  position: relative;
+}
+
+figure img {
+  display: block;
+}
+
+figure figcaption.lead {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+
+  background-color: rgba(13, 110, 253, 0.3);
+  color: #000;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+figure figcaption.lead h1 {
+    font-size: 3.2rem;
+}
+
+.lead h2 {
+    text-transform: uppercase;
+}
+
+.lead-small h2 {
+    text-transform: uppercase;
+    font-size: 1.2rem;
+}
+
+figure figcaption.imgtitle {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+
+    font-size: 2.8rem;
+
+    background-color: rgba(13, 110, 253, 0.3);
+    color: #000;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+figure figcaption.imgtitle-caption {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+
+    font-size: 1.8rem;
+
+    background-color: rgba(13, 110, 253, 0.9);
+    color: #000;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+figure figcaption.imgtitle-caption a {
+    color: #000;
+}
+
+figure figcaption.subtitle {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+}
+
+figure figcaption.subtitle-smaller {
+    font-size: smaller;
+}
+
+figure figcaption.subtitle-bottom {
+    font-size: 0.8rem;
+    background-color: rgba(0, 0, 0, 1.0);
+    color: #eee;
+    padding: 5px;
+    margin: -5px 4px 10px 4px;
+}
+
+.wrap-yellow {
+    background-color: #ffc107;
+}
+
+.wrap-blue {
+    background-color: #0dcaf0;
+}
+
+.wrap-green {
+    background-color: #343a40;
+}
+
+.wrap-red {
+    background-color: #dc3545;
+}
+
+.btn-success {
+    font-size: 1.8rem;
+    margin: 10px 5px 10px 5px;
+}
+
+.check-address {
+    border-left: 5px solid #cecece;
+    padding-left: 10px;
+}
+
+.thanks-generous {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #fcf8e3;
+    padding: 5px;
+}
+
+</style>
+{% endblock %}
+
+<div class="lead-small d-md-inline d-lg-none">
+    <h1>Leo J. Kohn Photography Collection</h1>
+    <h2>Digitization and Preservation Project</h2>
+</div>
+
+<figure>
+
+    <img
+        loading="lazy"
+        class="img-fluid img-border"
+        src="/static/kohn/440@1x.jpg"
+        srcset="/static/kohn/440@1x.jpg 1x,
+                /static/kohn/440@2x.jpg 2x,
+                /static/kohn/440@3x.jpg 3x">
+
+    <figcaption class="lead d-none d-lg-inline">
+        <h1>Leo J. Kohn Photography Collection</h1>
+        <h2>Digitization and Preservation Project</h2>
+    </figcaption>
+    <figcaption class="subtitle">
+        <b>#957</b> Boeing YB-29J, "Pacsuan Dreamboat", 44-84061. New York, NY. Photo by Larkins.
+    </figcaption>
+</figure>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-9">
+            <h3>About Leo J. Kohn</h3>
+            <p>
+                Leo J. Kohn was a pivotal figure in Wisconsin aviation history, known for his unparalleled passion for and dedication to documenting aircraft.
+                He played a key role in the formation of the Experimental Aircraft Association (EAA), becoming its fourth member.
+                However, it was his work on the ground as a photographer that truly distinguished him.
+                His extensive photographic coverage of aircraft from the 1940s, 50s, and beyond, encompassing over 34,000 images,
+                coupled with his meticulous notes on each plane, is a testament to his dedication.
+                The collection is truly a treasure trove for aviation enthusiasts.
+            </p>
+
+            <h3>What makes this collection unique?</h3>
+            <ul>
+                <li>The photos you see here are from Leo's personal and business collection of photos, which was gifted to WAHF for the purpose of sharing and preservation.</li>
+                <li>Most negatives are enclosed in individually numbered envelopes with detailed notes about the aircraft pictured. The envelope notes contain valuable details about locations, owners, engines, serial numbers, tail numbers, and more.</li>
+                <li>Leo took many of the photos. His collection also contains photographs from numerous other photographers.</li>
+            </ul>
+        </div>
+        <div class="col-sm-12 col-md-3 my-4">
+            <img class="img-fluid img-border" loading="lazy" src="/static/kohn/leo.jpg">
+        </div>
+
+    </div>
+</div>
+
+<div class="text-center mb-4">
+    <button class="btn btn-success btn-lg" onclick="window.location='#donate';">Donate to the WAHF Historical Preservation Fund</button>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/17639@1x.jpg"
+                srcset="/static/kohn/17639@1x.jpg 1x,
+                        /static/kohn/17639@2x.jpg 2x,
+                        /static/kohn/17639@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#17639</b> Cessna 210, N-9779X. Photo by Kohn.
+                </figcaption>
+            </figure>
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/22521@1x.jpg"
+                srcset="/static/kohn/22521@1x.jpg 1x,
+                        /static/kohn/22521@2x.jpg 2x,
+                        /static/kohn/22521@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#22521</b> Stinson SR-9, N18410, 8/1/1969. Photo by Kohn.
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+
+<div class="img-border my-4">
+    <figure>
+        <video id="kohn-preview" preload='none' loop muted autoplay poster="/static/kohn/kohn-preview-poster.jpg">
+            <source src="/static/kohn/kohn-preview.mp4" type="video/mp4">
+        </video>
+        <figcaption class="imgtitle">
+            <h4>Custom software has been created to digitize and catalog the entire collection.</h4>
+        </figcaption>
+    </figure>
+</div>
+
+
+<div class="wrap-blue p-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <figure>
+                    <img
+                    loading="lazy"
+                    class="img-fluid img-border"
+                    src="/static/kohn/555@1x.jpg"
+                    srcset="/static/kohn/555@1x.jpg 1x,
+                            /static/kohn/555@2x.jpg 2x,
+                            /static/kohn/555@3x.jpg 3x">
+
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/555-envelope@1x.jpg"
+                srcset="/static/kohn/555-envelope@1x.jpg 1x,
+                        /static/kohn/555-envelope@2x.jpg 2x,
+                        /static/kohn/555-envelope@3x.jpg 3x">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrap-green mt-4 p-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c3-560@1x.jpg"
+                srcset="/static/kohn/c3-560@1x.jpg 1x,
+                        /static/kohn/c3-560@2x.jpg 2x,
+                        /static/kohn/c3-560@3x.jpg 3x">
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c3-560-envelope@1x.jpg"
+                srcset="/static/kohn/c3-560-envelope@1x.jpg 1x,
+                        /static/kohn/c3-560-envelope@2x.jpg 2x,
+                        /static/kohn/c3-560-envelope@3x.jpg 3x">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrap-yellow my-4 p-3">
+    <figure>
+        <img
+        loading="lazy"
+        class="img-fluid img-border"
+        src="/static/kohn/460@1x.jpg"
+        srcset="/static/kohn/460@1x.jpg 1x,
+                /static/kohn/460@2x.jpg 2x,
+                /static/kohn/460@3x.jpg 3x">
+
+        <figcaption class="imgtitle">
+            <h4>The negatives are huge. At 4.25" x 2.5" inches, they captured incredible rivet-level details.</h4>
+        </figcaption>
+
+        <figcaption class="subtitle">
+            <b>#969</b> Sikorsky R-5D, 4346610. 1947. Photo by Larkins.
+        </figcaption>
+    </figure>
+
+    <img
+    loading="lazy"
+    class="img-fluid img-border"
+    src="/static/kohn/460-crowd@1x.jpg"
+    srcset="/static/kohn/460-crowd@1x.jpg 1x,
+            /static/kohn/460-crowd@2x.jpg 2x,
+            /static/kohn/460-crowd@3x.jpg 3x">
+
+</div>
+
+
+<div class="container wrap-blue py-3 mb-3">
+    <div class="row">
+        <div class="col-12">
+            <figure>
+
+                <figcaption class="imgtitle" style="z-index:99999">
+                    <h4>Junkers JU-52</h4>
+                </figcaption>
+
+                <div id="carouselJunkers" class="carousel slide img-border" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="8" aria-label="Slide 9"></button>
+                        <button type="button" data-bs-target="#carouselJunkers" data-bs-slide-to="9" aria-label="Slide 10"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/static/kohn/junkers-1.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-envelope.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-2.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-3.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-4.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-5.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-6.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-7.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-8.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/junkers-9.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselJunkers" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselJunkers" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <figcaption class="subtitle-bottom">
+                    <b>#1092 to #1102</b> Junkers JU-52, CF-ARM, July 1947. Brandon Avenue Seaplane Base, Winnipeg, Manitoba, Canada. Photographs by Kohn.
+                    A replica was rebuilt and is displayed at the <a href="https://royalaviationmuseum.com/aircraft/ju-52-1m-cf-arm-retrofit/" target="_blank">Royal Aviation Museum of Western Canada.</a>
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+
+<div class="container wrap-yellow py-3 mb-3">
+    <div class="row">
+        <div class="col-12">
+            <figure>
+
+                <figcaption class="imgtitle" style="z-index:99999">
+                    <h4>1947 Cleveland Air Races</h4>
+                </figcaption>
+
+                <div id="carouselCleveland" class="carousel slide img-border" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="8" aria-label="Slide 9"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="9" aria-label="Slide 10"></button>
+                        <button type="button" data-bs-target="#carouselCleveland" data-bs-slide-to="9" aria-label="Slide 11"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/static/kohn/cleveland1.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland-envelope.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland2.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland3.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland4.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland5.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland6.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland7.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland8.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland9.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/cleveland10.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselCleveland" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselCleveland" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <figcaption class="subtitle-bottom">
+                    Numerous images from the Cleveland Air Races in August 1947. Photographs by Kohn and Trask.
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container wrap-red py-3 mb-3">
+    <div class="row">
+        <div class="col-12">
+            <figure>
+
+                <figcaption class="imgtitle" style="z-index:99999">
+                    <h4>Bill Brennand + Buster</h4>
+                </figcaption>
+
+                <div id="carouselBrennand" class="carousel slide img-border" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselBrennand" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselBrennand" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselBrennand" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselBrennand" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselBrennand" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/static/kohn/brennand1.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/brennand-envelope.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/brennand2.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/brennand3.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/static/kohn/brennand4.jpg" loading="lazy" class="d-block w-100" alt="">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBrennand" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselBrennand" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <figcaption class="subtitle-bottom">
+                    Images of Bill Brennand and Buster in Milwaukee and Oshkosh. Winner of the 1947 Goodyear Trophy Race. Photographs by Kohn.
+                    Buster is preserved at the Smithsonian Air &amp; Space Museum.
+                    <a href="https://airandspace.si.edu/collection-objects/wittman-special-20-buster/nasm_A19550104000" target="_blank">Read more about Buster</a>
+                    and <a href="/hall-of-fame/william-brennand/" taget="_blank">Bill Brennand</a>.</p>
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c0-250@1x.jpg"
+                srcset="/static/kohn/c0-250@1x.jpg 1x,
+                        /static/kohn/c0-250@2x.jpg 2x,
+                        /static/kohn/c0-250@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#250</b> Rearwin 8135 "Cloudster", NC-32445, Feb. 1946. Curtiss-Wright Airport (now Timmerman Field) in Milwaukee, WI. Photo by Kohn.
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c1-448@1x.jpg"
+                srcset="/static/kohn/c1-448@1x.jpg 1x,
+                        /static/kohn/c1-448@2x.jpg 2x,
+                        /static/kohn/c1-448@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#962</b> Lockheed P-80B-1-LO "Shooting Star", 45-8499, 1947. Photo by Larkins,
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c2-19369@1x.jpg"
+                srcset="/static/kohn/c2-19369@1x.jpg 1x,
+                        /static/kohn/c2-19369@2x.jpg 2x,
+                        /static/kohn/c2-19369@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#19369</b> Vickers-Armstrong V-745 "Viscount", N-7431.
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c4-464@1x.jpg"
+                srcset="/static/kohn/c4-464@1x.jpg 1x,
+                        /static/kohn/c4-464@2x.jpg 2x,
+                        /static/kohn/c4-464@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#972</b> - Grumman N-F6F-5 "Hellcat", V-72153, 1947, Naval Air Station in Oakland, CA. Photo by Larkins.
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c5-552@1x.jpg"
+                srcset="/static/kohn/c5-552@1x.jpg 1x,
+                        /static/kohn/c5-552@2x.jpg 2x,
+                        /static/kohn/c5-552@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#1178</b> Lockheed P-38L-5-LO, NX-34992, 1946. Photo by Larkins.
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c6-19633@1x.jpg"
+                srcset="/static/kohn/c6-19633@1x.jpg 1x,
+                        /static/kohn/c6-19633@2x.jpg 2x,
+                        /static/kohn/c6-19633@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#19633</b> Tupolev TU-104, SSSR-42391.
+                </figcaption>
+            </figure>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4" id="donate">
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+            <h3>You Can Help!</h3>
+            <ul>
+                <li>We have ambitious plans for this photo collection!</li>
+                <li>We are excited to announce that <b>a dedicated public website for the entire collection is under development.</b></li>
+                <li>The extensive data on the envelopes allows us to make the entire collection easily searchable.</li>
+                <li>We are working on museum displays, history presentations, and making plans to publish a book.</li>
+                <li>The large size of the negatives allows us to <b>capture and preserve incredibly high-resolution digital images</b> from the source media. These large images are more costly to store and preserve.</li>
+            </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-inline">
+            <img class="img-fluid img-border" loading="lazy" src="/static/kohn/webby.png">
+        </div>
+    </div>
+</div>
+
+<div class="text-center thanks-generous">
+    Your generosity is much appreciated for this important mission!
+</div>
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3></h3>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12  mt-3 text-center">
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/25';">$25</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/50';">$50</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/100';">$100</button>
+
+            <br>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/250';">$250</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/500';">$500</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/750';">$750</button>
+
+            <br>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/1000';">$1,000</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/2000';">$2,000</button>
+
+            <br>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate';">Custom $</button>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-3 text-center">
+            <h4>Sponsor a Stack of Negatives</h4>
+
+            <p>Donate $3,000 or more, receive one 8" x 10" printed photo of your choice from the collection.</p>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/3000';">$3,000</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/5000';">$5,000</button>
+
+            <br>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/7500';">$7,500</button>
+
+            <button class="btn btn-success btn-lg" onclick="window.location='/kohn/donate/10000';">$10,000</button>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
+            <h4>Donate by Check</h4>
+
+            <p>Make your check payable to <b>"Wisconsin Aviation Hall of Fame Inc".</b> Please write <i>"Kohn Collection"</i> in the memo of your check and mail to:</p>
+
+            <p class="check-address">
+                WAHF C/O Colleen Weber<br>
+                240 Marina Ct #10<br>
+                Waterford WI 53185<br>
+            </p>
+
+            <p><i>The Wisconsin Aviation Hall of Fame is listed as a 501(c)(3) organization for donation and tax purposes.</i></p>
+        </div>
+
+        <div class="col-lg-12 col-md-6 col-sm-12 my-3">
+            <h3>Questions?</h3>
+            <p>Email us if you have questions or comments about the photo collection, digitization project, donations, or media requests:</p>
+            <p>
+                <a href="mailto:kohn@wahf.org" style="font-size:1.4rem;">kohn@wahf.org</a>
+            </p>
+        </div>
+
+        <div class="col-lg-12 text-center thanks-generous mt-2 mb-4">
+            Thank you for your support!
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/c7-467@1x.jpg"
+                srcset="/static/kohn/c7-467@1x.jpg 1x,
+                        /static/kohn/c7-467@2x.jpg 2x,
+                        /static/kohn/c7-467@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#974</b> North American SNJ-5 "Texan", 43068. June 1947. Photo by Larkins.
+                </figcaption>
+            </figure>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

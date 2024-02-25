@@ -53,7 +53,14 @@ def get_wahf_group():
     return group
 
 
-def send_email(to, subject, body, context={}, body_html=None):
+def send_email(
+    to,
+    subject,
+    body,
+    context={},
+    body_html=None,
+    from_email=settings.DEFAULT_FROM_EMAIL,
+):
     if type(to) is str:
         to = [to]
 
@@ -67,7 +74,6 @@ def send_email(to, subject, body, context={}, body_html=None):
         {"body": body_html, "environment_name": settings.ENVIRONMENT_NAME},
     )
     plain_message = strip_tags(html_message)
-    from_email = settings.DEFAULT_FROM_EMAIL
 
     mail.send_mail(
         subject,

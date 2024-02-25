@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
+
+{% block title %}
+Leo J. Kohn Photography Collection - Thanks for your donation!
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+.img-border {
+    border: 4px solid black;
+    margin: 4px;
+    padding: 0;
+}
+
+
+figure,
+figcaption {
+  margin: 0;
+  padding: 0;
+}
+
+figure {
+  display: inline-block;
+  position: relative;
+}
+
+figure img {
+  display: block;
+}
+
+figure figcaption.subtitle {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+}
+
+.thanks-thanks {
+    font-size: 1.5rem;
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9">
+
+            <h1>Thank you for joining the effort to preserve this important collection.</h1>
+
+            <div class="thanks-thanks">
+
+                <p><b>Your support means a lot to us</b> and will help us preserve these historic aviation images for future generations.</p>
+
+                <p>With your help, we are one step closer to our goal of digitizing this valuable collection and making it accessible to aviation enthusiasts, researchers, and the public.</p>
+
+                <p>We deeply appreciate your contribution and are grateful for your support of our efforts. <b>Thank you again for your generosity.</b></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/thanks-22752@1x.jpg"
+                srcset="/static/kohn/thanks-22752@1x.jpg 1x,
+                        /static/kohn/thanks-22752@2x.jpg 2x,
+                        /static/kohn/thanks-22752@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#22752</b> C47. US Air Force. 0-52555. 10/11/1968. Photo by Lucabaugh.
+                </figcaption>
+            </figure>
+
+        </div>
+        <div class="col-md-12 col-lg-6">
+
+            <figure>
+                <img
+                loading="lazy"
+                class="img-fluid img-border"
+                src="/static/kohn/thanks-19210@1x.jpg"
+                srcset="/static/kohn/thanks-19210@1x.jpg 1x,
+                        /static/kohn/thanks-19210@2x.jpg 2x,
+                        /static/kohn/thanks-19210@3x.jpg 3x">
+
+                <figcaption class="subtitle">
+                    <b>#19210</b> Lincoln PTK, N275N. Photo by Kohn.
+                </figcaption>
+            </figure>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12 mt-3">
+            <figure>
+                <img class="img-fluid img-border" src="/static/kohn/leo-desk.jpg">
+
+                <figcaption class="subtitle">
+                    Leo Kohn at his desk. Photo provided by Bill Kohn.
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -37,12 +37,14 @@
       {% endblock %}
     </title>
 
+    {% block metadescription %}
     {% if page.search_description %}
     <meta name="description" content="{{ page.search_description }}" />
     {% endif %}
+    {% endblock %}
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}">
+
     {% if page.search_description %}
     <meta name="twitter:description" content="{{ page.search_description }}">
     {% endif %}
@@ -51,7 +53,10 @@
     <meta name="twitter:image" content="https://www.wahf.org{{ og_tw_image.url }}">
     {% endif %}
 
+    {% block ogtitle %}
     <meta property="og:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}" >
+    <meta name="twitter:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}">
+    {% endblock %}
     <meta property="og:type" content="website" >
     <meta property="og:url" content="https://www.wahf.org{{ request.path }}" >
 
@@ -62,9 +67,12 @@
     {% endif %}
     {% endblock %}
 
+    {% block ogdescription %}
     {% if page.search_description %}
     <meta property="og:description" content="{{ page.search_description }}" >
     {% endif %}
+    {% endblock %}
+
     {% if current_site.site_name %}
     <meta property="og:site_name" content="{{ current_site.site_name }}" >
     {% endif %}

@@ -50,6 +50,8 @@ def process_stripe_webhook(request):
             process_donation_payment(event.data.object, session)
         elif action == "banquet":
             process_banquet_tickets(event.data.object, session)
+        elif action == "kohn":
+            process_kohn_donation(event.data.object, session)
 
     elif event.type in [
         "customer.subscription.created",
@@ -498,3 +500,46 @@ def process_subscription_delete(obj):
         f"WAHF Membership Subscription Cancelled - {member} {member.email}",
         f"Stripe notified us that payments failed or subscription was cancelled for {member.pk} {member} {member.email}",
     )
+
+
+def process_kohn_donation(obj, session):
+    # Total amount paid
+    amount_total = session["amount_total"] / 100.0
+
+    name = session["customer_details"]["name"]
+    email = session["customer_details"]["email"]
+
+    stripe_id = session["id"]
+
+    confirmation_body = render_to_string(
+        "emails/kohn_thanks.html",
+        {
+            "amount": amount_total,
+            "name": name,
+            "transaction_id": stripe_id,
+        },
+    )
+
+    send_email(
+        to=[email],
+        subject="Thanks for your support - Leo J. Kohn Photograph Collection",
+        body=None,
+        body_html=confirmation_body,
+        context={
+            "email": email,
+        },
+        from_email="kohn@wahf.org",
+    )
+
+    send_email(
+        to=["kohn@wahf.org"],
+        subject="Thanks for your support - Leo J. Kohn Photograph Collection",
+        body=None,
+        body_html=confirmation_body,
+        context={
+            "email": email,
+        },
+        from_email="kohn@wahf.org",
+    )
+
+    return

@@ -19,6 +19,26 @@ urlpatterns = [
     path("cms/", include(wagtailadmin_urls)),
     # WAGTAIL DOCUMENT VIEWER
     path("documents/", include(wagtaildocs_urls)),
+    path(
+        "kohn/",
+        TemplateView.as_view(template_name="kohn/kohn.html"),
+        name="kohn",
+    ),
+    path(
+        "kohn/donate",
+        membership_views.KohnDonateRedirect.as_view(),
+        name="kohn_donate_redirect",
+    ),
+    path(
+        "kohn/donate/<int:price>",
+        membership_views.KohnDonateRedirect.as_view(),
+        name="kohn_donate_redirect",
+    ),
+    path(
+        "kohn/thanks",
+        TemplateView.as_view(template_name="kohn/kohn-thanks.html"),
+        name="kohn_thanks",
+    ),
     # MEMBERSHIP
     # ACCOUNT UPDATES
     path(
