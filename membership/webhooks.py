@@ -528,7 +528,7 @@ def process_kohn_donation(obj, session):
         context={
             "email": email,
         },
-        from_email="kohn@wahf.org",
+        from_email="WAHF/Kohn <kohn@wahf.org>",
     )
 
     send_email(
@@ -539,7 +539,7 @@ def process_kohn_donation(obj, session):
         context={
             "email": email,
         },
-        from_email="kohn@wahf.org",
+        from_email="WAHF/Kohn <kohn@wahf.org>",
     )
 
     return
