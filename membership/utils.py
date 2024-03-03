@@ -26,6 +26,28 @@ def get_stripe_secret_key():
     return settings.STRIPE_TEST_SECRET_KEY
 
 
+def get_stripe_public_key_donations():
+    if settings.STRIPE_LIVE_MODE:
+        if not settings.STRIPE_LIVE_PUBLIC_KEY_DONATIONS:
+            raise Exception("STRIPE_LIVE_PUBLIC_KEY_DONATIONS not set")
+        return settings.STRIPE_LIVE_PUBLIC_KEY_DONATIONS
+
+    if not settings.STRIPE_TEST_PUBLIC_KEY_DONATIONS:
+        raise Exception("STRIPE_TEST_PUBLIC_KEY_DONATIONS not set")
+    return settings.STRIPE_TEST_PUBLIC_KEY_DONATIONS
+
+
+def get_stripe_secret_key_donations():
+    if settings.STRIPE_LIVE_MODE:
+        if not settings.STRIPE_LIVE_SECRET_KEY_DONATIONS:
+            raise Exception("STRIPE_LIVE_SECRET_KEY_DONATIONS not set")
+        return settings.STRIPE_LIVE_SECRET_KEY_DONATIONS
+
+    if not settings.STRIPE_TEST_SECRET_KEY_DONATIONS:
+        raise Exception("STRIPE_TEST_SECRET_KEY_DONATIONS not set")
+    return settings.STRIPE_TEST_SECRET_KEY_DONATIONS
+
+
 def send_membership_error_email(subject, error):
     alert_body = render_to_string("emails/membership_error.html", {"error": error})
 

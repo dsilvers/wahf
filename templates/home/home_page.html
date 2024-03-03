@@ -18,6 +18,69 @@ figcaption {
     padding-top: 3px;
     color: #aeaeae;
 }
+
+.kohn-container-desktop {
+    background-image:url('/static/kohn/440@3xfp-@2x.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    min-height:400px;
+    cursor: pointer;
+    border: 1px solid #8e8e8e;
+}
+
+.kohn-container-desktop .kohn-text {
+    margin: 20px 0 0 30px;
+}
+
+.kohn-container-desktop .kohn-text h2 {
+    font-size: 3.5rem;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-desktop .kohn-text h3 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-desktop .kohn-text button {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+
+
+.kohn-container-mobile {
+    background-image:url('/static/kohn/440@3xfp-@1x.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:left;
+    min-height:400px;
+    cursor: pointer;
+    border: 1px solid #8e8e8e;
+}
+
+.kohn-container-mobile .kohn-text {
+    margin: 20px 0 0 30px;
+}
+
+.kohn-container-mobile .kohn-text h2 {
+    font-size: 2.2rem;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-mobile .kohn-text h3 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-mobile .kohn-text button {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
 </style>
 
 
@@ -71,6 +134,38 @@ figcaption {
 </div>
 
 <div class="row mb-2">
+
+    <!-- desktop -->
+    <div class="col-12 d-none d-lg-inline">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col d-flex flex-column position-static kohn-container-desktop" onclick="window.location='/kohn';">
+                <div class="kohn-text">
+                    <h2>Leo J. Kohn Photography Collection</h2>
+                    <h3>Digitization and Preservation Project</h3>
+                    <a href="/kohn">
+                        <button class="btn btn-success btn-lg">Project Details</button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- mobile -->
+    <div class="col-12 d-sm-block d-lg-none">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col d-flex flex-column position-static kohn-container-mobile" onclick="window.location='/kohn';">
+                <div class="kohn-text">
+                    <h2>Leo J. Kohn Photography Collection</h2>
+                    <h3>Digitization and Preservation Project</h3>
+                    <a href="/kohn">
+                        <button class="btn btn-success btn-lg">Project Details</button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     {% for card in page.home_page_cards.all %}
     <div class="col-md-6">

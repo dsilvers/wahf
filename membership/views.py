@@ -380,20 +380,20 @@ class KohnDonateRedirect(View):
     def get(self, *args, **kwargs):
         price_lookup = kwargs.get("price", None)
 
-        default = "price_1Onlr2Kymtko2mUA2q57jpdj"
+        default = "price_1Op2YKE1FfEWhMfKEIuTGPxO"
         price_map = {
-            25: "price_1OnlnMKymtko2mUApH9ZdiFo",
-            50: "price_1OnlnyKymtko2mUAo1jFujQe",
-            100: "price_1OnloCKymtko2mUAl5ZMxbJA",
-            250: "price_1OnloaKymtko2mUAG0WdzoaS",
-            500: "price_1OnloaKymtko2mUAG0WdzoaS",
-            750: "price_1OnlomKymtko2mUA2v01z29T",
-            1000: "price_1OnloxKymtko2mUAjkoqIIfK",
-            2000: "price_1OnlpBKymtko2mUABLvJDPWo",
-            3000: "price_1OnlpnKymtko2mUALZ3y0Vyx",
-            5000: "price_1Onlq3Kymtko2mUA7UlYVMFR",
-            7500: "price_1OnlqDKymtko2mUA2U3wPKs0",
-            10000: "price_1OnlqOKymtko2mUAforXj1PX",
+            25: "price_1Op2YjE1FfEWhMfKGbARLuMz",
+            50: "price_1Op2YvE1FfEWhMfKUSC0RCaO",
+            100: "price_1Op2Z6E1FfEWhMfKNZ6TutWv",
+            250: "price_1Op2ZIE1FfEWhMfKPNNNwmr3",
+            500: "price_1Op2ZSE1FfEWhMfKzYlQxr4F",
+            750: "price_1Op2ZfE1FfEWhMfKmizSBjyg",
+            1000: "price_1Op2ZpE1FfEWhMfKTkchmcY1",
+            2000: "price_1Op2ZyE1FfEWhMfKc5xjLukk",
+            3000: "price_1Op2aBE1FfEWhMfKFelTo00Z",
+            5000: "price_1Op2aTE1FfEWhMfKAQjgkRg2",
+            7500: "price_1Op2ahE1FfEWhMfKFCzm1dDD",
+            10000: "price_1Op2awE1FfEWhMfKng7AGISe",
         }
 
         price_id = price_map.get(price_lookup, default)

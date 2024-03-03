@@ -50,6 +50,8 @@ def process_stripe_webhook(request):
             process_donation_payment(event.data.object, session)
         elif action == "banquet":
             process_banquet_tickets(event.data.object, session)
+        # Kohn used to be on the main membership account, it is now separated into its
+        # own stripe account, but still exists here in posterity
         elif action == "kohn":
             process_kohn_donation(event.data.object, session)
 
