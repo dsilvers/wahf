@@ -10,6 +10,7 @@ from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_url
 
 from content import views as content_views
 from membership import views as membership_views
+from membership import views_donations as membership_views_donations
 from membership import webhooks as membership_webhook_views
 
 urlpatterns = [
@@ -26,12 +27,12 @@ urlpatterns = [
     ),
     path(
         "kohn/donate",
-        membership_views.KohnDonateRedirect.as_view(),
+        membership_views_donations.KohnDonateRedirect.as_view(),
         name="kohn_donate_redirect",
     ),
     path(
         "kohn/donate/<int:price>",
-        membership_views.KohnDonateRedirect.as_view(),
+        membership_views_donations.KohnDonateRedirect.as_view(),
         name="kohn_donate_redirect",
     ),
     path(
