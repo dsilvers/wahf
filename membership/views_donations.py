@@ -7,8 +7,6 @@ from sentry_sdk import capture_exception
 
 from membership.utils import get_stripe_secret_key_donations
 
-stripe.api_key = get_stripe_secret_key_donations()
-
 
 class KohnDonateRedirect(View):
     permanent = False
@@ -49,6 +47,7 @@ class KohnDonateRedirect(View):
                 billing_address_collection="auto",
                 allow_promotion_codes=False,
                 metadata={"action": "kohn"},
+                api_key=get_stripe_secret_key_donations(),
             )
         except Exception as e:
             # if hasattr(e, "user_message"):

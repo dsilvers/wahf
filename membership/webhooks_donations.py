@@ -10,10 +10,6 @@ from membership.models import MembershipEmailTemplateSnippet
 from membership.utils import get_stripe_secret_key_donations
 from users.utils import send_email
 
-# FOR DONATIONS ONLY HERE
-# This stripe account is dedicated towards donations.
-stripe.api_key = get_stripe_secret_key_donations()
-
 
 @csrf_exempt
 def process_stripe_webhook(request):
@@ -24,7 +20,9 @@ def process_stripe_webhook(request):
     event = None
 
     try:
-        event = stripe.Event.construct_from(json.loads(payload), stripe.api_key)
+        event = stripe.Event.construct_from(
+            json.loads(payload), get_stripe_secret_key_donations()
+        )
     except ValueError:
         return HttpResponse(status=400)
 
@@ -32,6 +30,7 @@ def process_stripe_webhook(request):
         session = stripe.checkout.Session.retrieve(
             event.data.object["id"],
             expand=["line_items", "subscription"],
+            api_key=get_stripe_secret_key_donations(),
         )
 
         action = session.metadata.get("action", None)
