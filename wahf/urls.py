@@ -12,6 +12,7 @@ from content import views as content_views
 from membership import views as membership_views
 from membership import views_donations as membership_views_donations
 from membership import webhooks as membership_webhook_views
+from membership import webhooks_donations as membership_webhook_views_donations
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -62,6 +63,10 @@ urlpatterns = [
         name="membership-renew-thanks",
     ),
     path("stripe-webhooks/", membership_webhook_views.process_stripe_webhook),
+    path(
+        "stripe-webhooks-donations/",
+        membership_webhook_views_donations.process_stripe_webhook,
+    ),
     path(
         "account/member-profile/",
         membership_views.MemberProfileView.as_view(),
