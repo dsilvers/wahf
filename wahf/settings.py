@@ -15,7 +15,6 @@ PRODUCTION = env.bool("PRODUCTION", default=False)
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
-ALLOWED_HOSTS = ["e844-184-60-26-164.ngrok-free.app", "localhost"]
 
 ENVIRONMENT_NAME = env("ENVIRONMENT_NAME", default="production")
 
