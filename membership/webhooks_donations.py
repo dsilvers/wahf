@@ -74,7 +74,7 @@ def process_kohn_donation(obj, session):
 
     send_email(
         to=["dan@wahf.org", "rose@wahf.org"],
-        subject="Thanks for your support - Leo J. Kohn Photograph Collection",
+        subject=f"Thanks for your support - Leo J. Kohn Photograph Collection - {name}",
         body=None,
         body_html=confirmation_body,
         context={
