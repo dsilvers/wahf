@@ -1,10 +1,13 @@
 import json
 
 import stripe
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from html2text import html2text
 
 from membership.models import MembershipEmailTemplateSnippet
 from membership.utils import get_stripe_secret_key_donations
@@ -48,11 +51,11 @@ def process_kohn_donation(obj, session):
     amount_total = session["amount_total"] / 100.0
 
     name = session["customer_details"]["name"]
-    email = session["customer_details"]["email"]
+    to_email = session["customer_details"]["email"]
 
     stripe_id = session["id"]
 
-    confirmation_body = render_to_string(
+    html_body = render_to_string(
         "emails/kohn_thanks.html",
         {
             "amount": amount_total,
@@ -61,27 +64,20 @@ def process_kohn_donation(obj, session):
         },
     )
 
-    send_email(
-        to=[email],
-        subject="Thanks for your support - Leo J. Kohn Photograph Collection",
-        body=None,
-        body_html=confirmation_body,
-        context={
-            "email": email,
-        },
-        from_email="WAHF/Kohn <kohn@wahf.org>",
+    html_message = render_to_string(
+        "emails/base.html",
+        {"body": html_body, "environment_name": settings.ENVIRONMENT_NAME},
     )
 
-    send_email(
-        to=["dan@wahf.org", "rose@wahf.org"],
-        subject=f"Thanks for your support - Leo J. Kohn Photograph Collection - {name}",
-        body=None,
-        body_html=confirmation_body,
-        context={
-            "email": email,
-        },
-        from_email="WAHF/Kohn <kohn@wahf.org>",
+    msg = EmailMultiAlternatives(
+        "Thanks for your support - Leo J. Kohn Photography Collection",
+        html2text(html_message),
+        "WAHF/Kohn <kohn@wahf.org>",
+        [to_email],
+        cc=["dan@wahf.org", "rose@wahf.org"],
     )
+    msg.attach_alternative(html_message, "text/html")
+    msg.send()
 
     return
 
