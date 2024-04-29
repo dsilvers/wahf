@@ -196,12 +196,83 @@ figcaption {
 }
 
 .swap {
-    margin-top: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     border: 1px solid #aeaeae;
     padding: 3px;
     width: 100%;
+    cursor: pointer;
 }
 
+
+.credits {
+    text-align: center;
+    border-top: 4px solid #aeaeae;
+
+}
+
+
+.kohn-container-desktop {
+    background-image:url('/static/kohn/440@3xfp-@2x.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    min-height:600px;
+    cursor: pointer;
+    border: 1px solid #8e8e8e;
+}
+
+.kohn-container-desktop .kohn-text {
+    margin: 20px 0 0 30px;
+}
+
+.kohn-container-desktop .kohn-text h2 {
+    font-size: 3.5rem;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-desktop .kohn-text h3 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-desktop .kohn-text button {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+
+
+.kohn-container-mobile {
+    background-image:url('/static/kohn/440@3xfp-@1x.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:left;
+    min-height:400px;
+    cursor: pointer;
+    border: 1px solid #8e8e8e;
+}
+
+.kohn-container-mobile .kohn-text {
+    margin: 20px 0 0 30px;
+}
+
+.kohn-container-mobile .kohn-text h2 {
+    font-size: 2.2rem;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-mobile .kohn-text h3 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
+}
+
+.kohn-container-mobile .kohn-text button {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
 
 
     </style>
@@ -251,14 +322,17 @@ figcaption {
                 </nav>
             </div>
 
-            <img src="/static/kohn-article/555-negative-original.jpg" class="img-fluid" style="position: relative; z-index: 2; display: inline-block; border: 10px solid black;">
+            <img    src="/static/kohn-article/555-negative-original@1x.jpg"
+                srcset="/static/kohn-article/555-negative-original@1x.jpg 1500w,
+                        /static/kohn-article/555-negative-original@2x.jpg 2250w,
+                        /static/kohn-article/555-negative-original@3x.jpg 3000w" class="img-fluid" style="position: relative; z-index: 2; display: inline-block; border: 10px solid black;">
 
             <div class="d-none d-lg-inline" style="position:absolute; top: 100px; left: 30%; z-index: 3; max-width: 70%; text-align: center;   background-color: rgba(13, 110, 253, 0.3); padding: 20px; color: #1e1e1e;  display: inline; border-radius:30px;">
                 <h1 class="courgette-regular">Capturing Aviation</h1>
                 <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
             </div>
 
-            <div class="lead-small d-md-inline d-lg-none p-3">
+            <div class="lead-small d-md-inline d-lg-none p-3" style="text-align:center;">
                 <h1 class="courgette-regular">Capturing Aviation</h1>
                 <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
             </div>
@@ -303,7 +377,12 @@ figcaption {
                     </div>
 
                     <div class="col-md-12 col-10-lg">
-                        <img src="/static/kohn-article/555-envelope-original.jpg?2" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy"
+                                    src="/static/kohn-article/555-envelope-original@1x.jpg"
+                            srcset="/static/kohn-article/555-envelope-original@1x.jpg 921w,
+                                    /static/kohn-article/555-envelope-original@2x.jpg 1381w,
+                                    /static/kohn-article/555-envelope-original@3x.jpg 1841w"
+                                    class="img-fluid" style="border: 4px solid #3e3e3e">
 
                         <figcaption>
                             A Beech Bonanza 35, at Maitland Field, Milwaukee, in 1947, pictured at the top of this page, as noted on the envelope.
@@ -336,7 +415,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap preview-swap">
                         </div>
 
                         <p>
@@ -352,7 +431,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap preview-swap">
                         </div>
 
                         <p>
@@ -372,10 +451,10 @@ figcaption {
 
                     </div>
 
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/03.jpg" topSrc="/static/kohn-article/prints/03.jpg" bottomSrc="/static/kohn-article/prints/03e.jpg"  class="swap">
+                    <div class="col-4 d-none d-lg-inline">
+                        <img loading="lazy" src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap preview-swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap preview-swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/03.jpg" topSrc="/static/kohn-article/prints/03.jpg" bottomSrc="/static/kohn-article/prints/03e.jpg"  class="swap preview-swap">
                     </div>
 
                 </div>
@@ -391,7 +470,7 @@ figcaption {
                     </div>
 
                     <div class="col-md-12 col-lg-5 mt-3" style="text-align:center;">
-                        <img src="/static/kohn-article/leo-first-solo-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+                        <img loading="lazy" src="/static/kohn-article/leo-first-solo-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
 
                         <figcaption>
                             Leo soloed a J-3 Cub in 1945 at age 18.
@@ -400,7 +479,7 @@ figcaption {
                     </div>
 
                     <div class="col-md-12 col-lg-5 mt-3 d-none d-md-inline" style="text-align:center;">
-                        <img src="/static/kohn-article/leo-kohn-ang-camp.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+                        <img loading="lazy" src="/static/kohn-article/leo-kohn-ang-camp.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
 
                         <figcaption>
                             Leo J. Kohn at Army National Guard camp in 1949.
@@ -453,7 +532,7 @@ figcaption {
                     </div>
 
                     <div class="col-md-12 col-lg-8" style="text-align:center;">
-                        <img src="/static/kohn-article/leo-eaa-office-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+                        <img loading="lazy" src="/static/kohn-article/leo-eaa-office-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
 
                         <figcaption>
                             Leo J. Kohn working at his desk in the original EAA basement office.
@@ -510,7 +589,12 @@ figcaption {
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12">
-                        <img src="/static/kohn-article/prints-banner.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" class="img-fluid" style="border: 4px solid #3e3e3e"
+                            src="/static/kohn-article/prints-banner@1x.jpg"
+                            srcset="/static/kohn-article/prints-banner@1x.jpg 900w,
+                                    /static/kohn-article/prints-banner@2x.jpg 1500w,
+                                    /static/kohn-article/prints-banner@3x.jpg 3000w">
+
                     </div>
                 </div>
             </div>
@@ -519,14 +603,14 @@ figcaption {
 
                 <div class="row">
 
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
+                    <div class="col-4 d-none d-lg-inline">
+                        <img loading="lazy" src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
                     </div>
 
-                    <div class="col-md-12 col-lg-8">
+                    <div class="col-md-12 col-lg-8 mt-4">
 
                         <p>
                             Leo’s family observed their dad’s techniques in the dark
@@ -538,7 +622,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3 ">
-                            <img src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -554,7 +638,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -567,7 +651,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -582,7 +666,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -598,16 +682,24 @@ figcaption {
                 </div>
             </div>
 
-            <div class="container mt-3">
+            <div class="container mt-3" style="max-width: none;">
                 <div class="row">
 
                     <div class="col-md-12 col-lg-6">
-                        <img src="/static/kohn-article/274-image.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy"
+                                src="/static/kohn-article/274-image@1x.jpg"
+                                srcset="/static/kohn-article/274-image@1x.jpg 1000w,
+                                        /static/kohn-article/274-image@2x.jpg 1500w,
+                                        /static/kohn-article/274-image@3x.jpg 2000w"
+                                class="img-fluid" style="border: 4px solid #3e3e3e">
 
                     </div>
 
                     <div class="col-md-12 col-lg-6">
-                        <img src="/static/kohn-article/274-envelope.jpg" class="img-fluid">
+                        <img loading="lazy" src="/static/kohn-article/274-envelope@1x.jpg"
+                        srcset="/static/kohn-article/274-envelope@1x.jpg 1195w,
+                                /static/kohn-article/274-envelope@2x.jpg 1593w"
+                        class="img-fluid">
                     </div>
 
                     <div class="col-12">
@@ -633,7 +725,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
                                     </div>
 
                                     <p>
@@ -644,7 +736,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
                                     </div>
 
                                     <p>
@@ -663,7 +755,7 @@ figcaption {
                         <div class="container mt-3">
                             <div class="row">
                                 <div class="col-12" style="text-align:center;">
-                                    <img src="/static/kohn-article/billwcamerabag.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 550px;">
+                                    <img loading="lazy" src="/static/kohn-article/billwcamerabag.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 550px;">
 
                                     <figcaption>
                                         Bill Kohn, son of aviation photographer Leo Kohn, carries his father's camera bag at an airshow, a poignant reminder of Bill’s childhood.
@@ -674,7 +766,7 @@ figcaption {
                         </div>
 
 
-                        <div class="container mt-3">
+                        <div class="container mt-4">
                             <div class="row">
                                 <div class="col-12">
                                     <p>
@@ -685,7 +777,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
                                     </div>
 
                                     <p>
@@ -697,7 +789,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
                                     </div>
 
                                     <p>
@@ -708,7 +800,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
                                     </div>
 
                                     <p>
@@ -719,7 +811,7 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
                                     </div>
                                     <p>
                                         “The images captured by Leo are special for several reasons,” said Streicher. “Leo took high-quality photos that documented details.
@@ -731,37 +823,38 @@ figcaption {
                                     </p>
 
                                     <div class="d-md-inline d-lg-none mb-3">
-                                        <img src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
+                                        <img loading="lazy" src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
+                    <div class="col-4 d-none d-lg-inline">
+                        <img loading="lazy" src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
                     </div>
                 </div>
             </div>
 
 
-            <div class="container mt-5">
+            <div class="container p-3 mt-4 mb-4" style="border: 1px solid #7e7e7e; background-color: #242424; color: #eaeaea">
+
                 <div class="row">
 
                     <div class="col-4">
-                        <img src="/static/kohn-article/498.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" src="/static/kohn-article/498.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
                     </div>
                     <div class="col-4">
-                        <img src="/static/kohn-article/499.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" src="/static/kohn-article/499.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
                     </div>
                     <div class="col-4">
-                        <img src="/static/kohn-article/500.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" src="/static/kohn-article/500.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
                     </div>
 
                 </div>
@@ -779,9 +872,9 @@ figcaption {
 
                 <div class="row">
 
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
+                    <div class="col-4 d-none d-lg-inline">
+                        <img loading="lazy" src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
                     </div>
 
                     <div class="col-md-12 col-lg-8">
@@ -790,7 +883,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -801,7 +894,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -818,14 +911,23 @@ figcaption {
                 </div>
             </div>
 
-
-            <div class="mt-3 container">
+            <div class="mt-3 container" style="max-width: none;">
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
-                        <img src="/static/kohn-article/play-images.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy"
+                            src="/static/kohn-article/play-images@1x.jpg"
+                            srcset="/static/kohn-article/play-images@1x.jpg 1x,
+                                    /static/kohn-article/play-images@2x.jpg 2x,
+                                    /static/kohn-article/play-images@3x.jpg 3x"
+                            class="img-fluid" style="border: 4px solid #3e3e3e">
                     </div>
-                    <div class="col-md-12 col-lg-6 d-none d-md-inline">
-                        <img src="/static/kohn-article/play-backs.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    <div class="col-md-12 col-lg-6 d-none d-lg-inline">
+                        <img loading="lazy"
+                            src="/static/kohn-article/play-backs@1x.jpg"
+                            srcset="/static/kohn-article/play-backs@1x.jpg 1x,
+                                    /static/kohn-article/play-backs@2x.jpg 2x,
+                                    /static/kohn-article/play-backs@3x.jpg 3x"
+                            class="img-fluid" style="border: 4px solid #3e3e3e">
                     </div>
                 </div>
             </div>
@@ -843,7 +945,7 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
                         </div>
 
                         <p>
@@ -857,47 +959,57 @@ figcaption {
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
                         </div>
 
                         <p>
                             Reflecting on their father’s lifelong passion for photography, Leo’s son, Bill, and daughter, Mary Ellen, expressed
-                            their pride in his work and are grateful to learn of the Wisconsin
-                            Aviation Hall of Fame’s efforts of preserving their dad’s collection. But perhaps more importantly, Bill and Mary Ellen know
+                            their pride in his work and are grateful to learn of the <a href="/kohn">Wisconsin
+                            Aviation Hall of Fame’s efforts of preserving their dad’s collection</a>. But perhaps more importantly, Bill and Mary Ellen know
                             that their dad would want to be remembered for the quality of
                             his work and its comprehensive nature.
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
-                            <img src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
+                            <img loading="lazy" src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
                         </div>
 
                         <p>
                             <mark>“He never aspired to be the superstar of aviation photography, but he would be incredibly pleased that his photographs
                             will now become easily accessible to the public,”</mark> Bill said.
                         </p>
+                        <div style="text-align:center" class="mt-3 mb-3 ">
+                            <a href="/kohn">
+                                <button class="btn btn-success btn-lg">Project Details / Donate</button>
+                            </a>
+                        </div>
                         <p>
                             Added Mary, “I am so excited to see you all giving him the
                             recognition that I feel he deserves. I am so very, very proud of
                             my Dad!"
                         </p>
                     </div>
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
-                        <img src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
+                    <div class="col-4 d-none d-lg-inline">
+                        <img loading="lazy" src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
+                        <img loading="lazy" src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
                     </div>
                 </div>
             </div>
 
-            <div class="container mt-5">
+            <div class="container mt-5" style="max-width: none;">
                 <div class="row">
 
                     <div class="col-1 d-none d-md-inline">
                     </div>
 
                     <div class="col-md-12 col-lg-10">
-                        <img src="/static/kohn-article/264-image.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" class="img-fluid" style="border: 4px solid #3e3e3e; width: 100%;"
+                        src="/static/kohn-article/264-image@2x.jpg"
+                        srcset="/static/kohn-article/264-image@2x.jpg 1x,
+                                /static/kohn-article/264-image@3x.jpg 2x,
+                                /static/kohn-article/264-image@3x.jpg 3x">
+
 
                         <figcaption>
                             Leo J. Kohn Collection, Image #19361. N45CK. Lockheed PV-1, serial number 5333.
@@ -955,19 +1067,72 @@ figcaption {
 
             </div>
 
-            <div class="mt-5">
+            <div class="mt-5 mb-5">
                 <div class="row">
-                    <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/camera0.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    <div class="col-4 d-none d-md-inline" style="text-align:right;">
+                        <img loading="lazy" src="/static/kohn-article/camera0.jpg" class="img-fluid" style="border: 4px solid #3e3e3e;max-height: 300px;">
                     </div>
-                    <div class="col-md-12 col-lg-4">
-                        <img src="/static/kohn-article/camera2.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    <div class="col-md-12 col-lg-4" style="text-align:center;">
+                        <img loading="lazy" src="/static/kohn-article/camera2.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 300px;">
                     </div>
                     <div class="col-4 d-none d-md-inline">
-                        <img src="/static/kohn-article/camera3.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                        <img loading="lazy" src="/static/kohn-article/camera3.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 300px;">
                     </div>
                 </div>
             </div>
+
+
+            <div class="credits p-3 mt-3 mb-3">
+                <p>
+                    Story by <strong>Rose Dorcey</strong> -- Layout and Design by <strong>Dan Silvers</strong>
+                </p>
+
+                <h4>----</h4>
+
+                <p>
+                    Aircraft photos from the <a href="/kohn">Leo J. Kohn Photography Collection.</a><br>
+                    Photos of Leo J. Kohn genorously provided by <strong>Bill Kohn</strong>.<br>
+                    Kodak Six-16 camera photos by Dan Silvers.<br>
+                </p>
+
+            </div>
+
+
+
+
+            <div class="col-12 d-none d-lg-inline">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col d-flex flex-column position-static kohn-container-desktop" onclick="window.location='/kohn';">
+                        <div class="kohn-text">
+                            <h2>Leo J. Kohn Photography Collection</h2>
+                            <h3>Digitization and Preservation Project</h3>
+                            <a href="/kohn">
+                                <button class="btn btn-success btn-lg">Project Details / Donate</button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- mobile -->
+            <div class="col-12 d-sm-block d-lg-none">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col d-flex flex-column position-static kohn-container-mobile" onclick="window.location='/kohn';">
+                        <div class="kohn-text">
+                            <h2>Leo J. Kohn Photography Collection</h2>
+                            <h3>Digitization and Preservation Project</h3>
+                            <a href="/kohn">
+                                <button class="btn btn-success btn-lg">Project Details / Donate</button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
 
         </div> <!-- end container -->
     </main>
@@ -1023,6 +1188,7 @@ figcaption {
 
     <script>
 
+        var debounce = null;
         var inTop = false;
         var inBottom = false;
 
@@ -1034,7 +1200,7 @@ figcaption {
                     let el = $(entry.target)
 
                     if (!entry.isIntersecting) {
-                        console.log('demo has LEFT the top ');
+                        ///('demo has LEFT the top ');
                         inTop = false;
 
                         if(!inTop && !inBottom) {
@@ -1042,7 +1208,7 @@ figcaption {
                         }
                     }
                     else {
-                        console.log('demo has ENTERED the top ');
+                        ///console.log('demo has ENTERED the top ');
                         inTop = true;
                         inBottom = false;
                         handleImage(el);
@@ -1059,7 +1225,7 @@ figcaption {
                     let el = $(entry.target)
 
                     if (!entry.isIntersecting) {
-                        console.log('demo has LEFT the bottom ');
+                        ////console.log('demo has LEFT the bottom ');
                         inBottom = false;
 
                         if(!inTop && !inBottom) {
@@ -1067,7 +1233,7 @@ figcaption {
                         }
                     }
                     else {
-                        console.log('demo has ENTERED the bottom ');
+                        //////console.log('demo has ENTERED the bottom ');
                         inBottom = true;
                         inTop = false;
                         handleImage(el);
@@ -1079,16 +1245,14 @@ figcaption {
         }, {rootMargin: "60% 0px 0px 0px"} );
 
 
-        const swapImages = document.querySelectorAll('.swap');
+        const swapImages = document.querySelectorAll('.preview-swap');
         swapImages.forEach(image => {
-            //observerBottom.observe(document.querySelector(".swap"));
-            //observerTop.observe(document.querySelector(".swap"));
+            observerBottom.observe(image);
+            observerTop.observe(image);
         });
 
         function handleImage(el) {
             let src = null;
-
-            console.log(el)
 
             if((inTop && !inBottom) || (!inTop && !inBottom) || (inTop && inBottom)) {
                 src = el.attr("bottomSrc");
@@ -1099,8 +1263,6 @@ figcaption {
 
             let existingSrc = el.attr("src");
 
-            console.log(inTop, inBottom, src, existingSrc);
-
             if(src === existingSrc) {
                 return;
             }
@@ -1108,17 +1270,26 @@ figcaption {
             transitionSwap(el, src)
         }
 
-        let swapImage = function() {
-            el = $(this);
-            let newSrc = null;
-            if (el.attr("src") === el.attr("topSrc")) {
-                newSrc = el.attr("bottomSrc");
-            } else {
-                newSrc = el.attr("topSrc");
+        let swapImage = function(el, enter_bool) {
+            clearTimeout(debounce);
+
+            let useTop = true;
+            if(typeof enter_bool === 'undefined' && el.attr("src") === el.attr("topSrc")) {
+                useTop = false;
+            } else if(enter_bool === false) {
+                useTop = false;
             }
 
-            transitionSwap(el, newSrc)
+            let newSrc = null;
+            if (useTop) {
+                newSrc = el.attr("topSrc");
+            } else {
+                newSrc = el.attr("bottomSrc");
+            }
 
+            debounce = setTimeout(function() {
+                transitionSwap(el, newSrc)
+            }, 75);
         }
 
         function transitionSwap(el, src) {
@@ -1127,8 +1298,10 @@ figcaption {
             })
         }
 
-        $(".swap").on("mouseenter", swapImage);
-        $(".swap").on("mouseleave", swapImage);
+        $(".swap").on("mouseenter", function() { swapImage($(this), false) });
+        $(".swap").on("mouseleave", function() { swapImage($(this), true) });
+        $(".swap").on("tap", function() { swapImage($(this))} );
+        $(".swap").on("click", function() { swapImage($(this))} );
 
     </script>
   </body>
