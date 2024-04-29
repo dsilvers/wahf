@@ -1,0 +1,1135 @@
+{% load i18n static wagtailcore_tags wagtailuserbar wagtailimages_tags %}
+{% load menu_tags %}
+{% load magazine_tags %}
+
+{% get_site_root as site_root %}
+{% get_current_magazine_issue as current_magazine_issue %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZNT3NBBJT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RZNT3NBBJT');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon/site.webmanifest">
+
+    <title>Capturing Aviation - Leo J. Kohn - Wisconsin Aviation Hall of Fame</title>
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-03-11-2023.css' %}">
+
+    <style type="text/css">
+        .ibm-plex-mono-thin {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 100;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-extralight {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 200;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-light {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 300;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-regular {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 400;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-medium {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 500;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-semibold {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 600;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-bold {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            font-style: normal;
+          }
+
+          .ibm-plex-mono-thin-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 100;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-extralight-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 200;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-light-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 300;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-regular-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 400;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-medium-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 500;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-semibold-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 600;
+            font-style: italic;
+          }
+
+          .ibm-plex-mono-bold-italic {
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            font-style: italic;
+          }
+
+
+          .courgette-regular {
+            font-family: "Courgette", cursive;
+            font-weight: 400;
+            font-style: normal;
+          }
+
+
+
+.nav-link {
+    color: #3e3e3e;
+    margin-right: 4px;
+    font-decoration: underline;
+}
+
+
+h1 {
+    font-size: 4.4rem;
+}
+
+p {
+    line-height: 160%;
+
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 300;
+    font-style: normal;
+    text-justify: inter-word;
+}
+
+p {
+    font-size: larger;
+}
+
+p.lead {
+    font-size: larger;
+    border-left: 5px solid #ffd8b7;
+    padding-left: 15px;
+}
+
+p.quote {
+    background: rgba(255, 244, 68, 0.5);
+}
+
+p.subhead::first-letter {
+    float: left;
+    font-family: Georgia, serif;
+    font-size: 75px;
+    padding: 3px;
+}
+
+strong {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 700;
+    font-style: normal;
+}
+
+figcaption {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.byline {
+    font-size: 1.1rem;
+    color: #3e3e3e;
+}
+
+.byline span {
+    font-size: .8rem;
+}
+
+.swap {
+    margin-top: 15px;
+    border: 1px solid #aeaeae;
+    padding: 3px;
+    width: 100%;
+}
+
+
+
+    </style>
+
+  </head>
+
+  <body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
+    <main class="flex-shrink-0">
+        <div class="container" style="width:100%;max-width: none; padding:0">
+
+            <div style="position:absolute; top: 20px left: 20px; z-index: 4">
+
+                <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="border-bottom: none !important;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="/">
+                            <img src="/static/kohn-article/logo-transparent.png" alt="Wisconsin Aviation Hall of Fame" style="width:75%">
+                        </a>
+
+                        <!--
+
+                        <li class="nav-link px-2 link-dark">
+                            <a href="/membership/" class="nav-link" >
+                            Membership
+                            </a>
+                        </li>
+
+                        <li class="nav-link px-2 link-dark">
+                            <a href="/hall-of-fame/" class="nav-link" >
+                            Inductees
+                            </a>
+                        </li>
+
+                        <li class="nav-link px-2 link-dark">
+                            <a href="/forward-in-flight-all-issues/" class="nav-link" >
+                            Forward in Flight
+                            </a>
+                        </li>
+
+                        <li class="nav-link px-2 link-dark">
+                            <a href="/donate/" class="nav-link" >
+                            Donate
+                            </a>
+                        </li>
+
+                         -->
+                    </div>
+                </nav>
+            </div>
+
+            <img src="/static/kohn-article/555-negative-original.jpg" class="img-fluid" style="position: relative; z-index: 2; display: inline-block; border: 10px solid black;">
+
+            <div class="d-none d-lg-inline" style="position:absolute; top: 100px; left: 30%; z-index: 3; max-width: 70%; text-align: center;   background-color: rgba(13, 110, 253, 0.3); padding: 20px; color: #1e1e1e;  display: inline; border-radius:30px;">
+                <h1 class="courgette-regular">Capturing Aviation</h1>
+                <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
+            </div>
+
+            <div class="lead-small d-md-inline d-lg-none p-3">
+                <h1 class="courgette-regular">Capturing Aviation</h1>
+                <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
+            </div>
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-8-lg">
+
+                        <div class="byline mt-3 mb-5 ">
+                            By Rose Dorcey<br>
+                            <span>Published April 30, 2024 - <i>Forward in Flight</i> Magazine</span>
+                        </div>
+
+                        <p class="lead subhead">In the vibrant world of aviation photography, success hinges on
+                            a unique blend of creativity, an eye for detail, and a crucial element — patience.
+                            While creativity may come natural for some, true mastery comes when waiting for just the right moment. <strong>Leo
+                            J. Kohn</strong> elevated aviation photography because of his extraordinary patience.
+                            His extensive career is captured in more than <u>34,000</u> mostly unobstructed airplane shots, along with the meticulous
+                            details he captured about every plane. The Leo J. Kohn Aviation Photography
+                            Collection shows his dedication to preserving those details, and it's what sets him apart in the realm of
+                            mid-twentieth century aviation photography.
+                        </p>
+                    </div>
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="container mt-3">
+                <div class="row">
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-10-lg">
+                        <img src="/static/kohn-article/555-envelope-original.jpg?2" class="img-fluid" style="border: 4px solid #3e3e3e">
+
+                        <figcaption>
+                            A Beech Bonanza 35, at Maitland Field, Milwaukee, in 1947, pictured at the top of this page, as noted on the envelope.
+                            Kohn typed aircraft details on protective envelopes, where he stored each individual negative.
+                            Local entrepreneur Tony Lange leased the Maitland property from 1937-’46.
+                        </figcaption>
+
+                    </div>
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="container mt-4">
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-8">
+                        <p>
+                            His incredible patience is what his son, <strong>Bill Kohn</strong>, and
+                            daughter, <strong>Mary Ellen Kohn-Buday</strong>, most remember about their dad's photography.
+                            “He would wait around at airports and airshows for people to clear away from an airplane so he could get
+                            the perfect shot with no people in it,” Bill said. “If the sun or a
+                            cloud moved enough to ruin the shot, he would wait another
+                            hour or so.”
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            Leo Kohn was born in Milwaukee in March 1927, one of
+                            six children. His oldest brother, Greg Kohn (later Krohn) shared
+                            his passion for aviation. Even before reaching their teenage
+                            years, Leo and Greg were already building model airplanes.
+                            Greg grew up and joined the Army Air Corps to help the efforts
+                            of World War II. Leo, listening to his brother’s war experience
+                            as an engineer on a B-29, and his own interest in aviation, led to
+                            his enthusiasm for photographing airplanes. Leo joined the Wisconsin Air National Guard after World War II. As part of the
+                            Guard he had access to many post-war aircraft on the flight line.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            When Greg returned after the war, the brothers went from
+                            building model airplanes to buying their own plane. In November 1945, Leo soloed at age 18 in a J-3 Cub. A look at his logbook shows that he also flew a Cessna 120, and a Luscombe 8A,
+                            among others. While Bill doesn’t know all of the details, he
+                            knows of a ground loop incident that led to Leo shifting his focus from flying to aviation photography. His girlfriend Mary,
+                            who became his wife—they married in 1950—was understandably concerned. Alongside his new marriage and the aspiration to
+                            start a family, Leo directed his available funds toward his family’s needs—and photography.
+                        </p>
+
+                        <!--
+                        <div class="d-md-inline d-lg-none">
+                            <img src="/static/kohn-article/prints/03.jpg" topSrc="/static/kohn-article/prints/03.jpg" bottomSrc="/static/kohn-article/prints/03e.jpg"  class="swap">
+                        </div>
+                        -->
+
+                    </div>
+
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/prints/01.jpg" topSrc="/static/kohn-article/prints/01.jpg" bottomSrc="/static/kohn-article/prints/01e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/02.jpg" topSrc="/static/kohn-article/prints/02.jpg" bottomSrc="/static/kohn-article/prints/02e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/03.jpg" topSrc="/static/kohn-article/prints/03.jpg" bottomSrc="/static/kohn-article/prints/03e.jpg"  class="swap">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="container mt-3">
+                <div class="row">
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-5 mt-3" style="text-align:center;">
+                        <img src="/static/kohn-article/leo-first-solo-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+
+                        <figcaption>
+                            Leo soloed a J-3 Cub in 1945 at age 18.
+                        </figcaption>
+
+                    </div>
+
+                    <div class="col-md-12 col-lg-5 mt-3 d-none d-md-inline" style="text-align:center;">
+                        <img src="/static/kohn-article/leo-kohn-ang-camp.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+
+                        <figcaption>
+                            Leo J. Kohn at Army National Guard camp in 1949.
+                        </figcaption>
+
+                    </div>
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="container mt-4">
+
+                <div class="row">
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8">
+                        <p>
+                            While in the Guard, Leo met the young <strong>Paul Poberezny</strong>.
+                            Their mutual obsession for aviation led to Leo becoming a
+                            founding member of Paul’s fledgling Experimental Aircraft
+                            Association - <a href="https://www.eaa.org/~/media/files/eaa/educationresources/experimenter/1403.pdf#page=7" target="_blank">Leo was EAA Number 4</a>. Leo took photos at early
+                            meetings and became EAA’s first photographer. He left EAA in
+                            1972 to start his own magazine, <i>Armchair Aviator</i>, producing it
+                            for about two years. Leo was a well-regarded aviation photographer and historian throughout his career and served as a director
+                            of the <a href="https://www.mitchellgallery.org/" target="_blank">Mitchell Gallery of Flight Museum in Milwaukee.</a> And
+                            even when he worked for Delco Electronics after his career at
+                            EAA, Leo always had his camera bag in the car. You could say
+                            that aviation photography became a way of life for the Kohns.
+                        </p>
+                    </div>
+
+                    <div class="d-none d-md-inline">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="container mt-5">
+                <div class="row">
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8" style="text-align:center;">
+                        <img src="/static/kohn-article/leo-eaa-office-from-bill.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 450px;">
+
+                        <figcaption>
+                            Leo J. Kohn working at his desk in the original EAA basement office.
+                        </figcaption>
+
+                    </div>
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="container mt-5">
+
+                <div class="row">
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8">
+
+                        <p class="quote">
+                            “It was a family affair in many ways,” said Bill. “The
+                            whole family would make stops along the way on vacations to
+                            photograph an airplane at some small, out of the way airport.”
+                        </p>
+                        <p>
+                            Bill said that any airplane his dad could get close enough
+                            to photograph was his favorite at the moment, particularly if it
+                            was unencumbered by tie-downs and other distracting elements.
+                        </p>
+                        <p class="quote">
+                            “In the ’60s and ’70s as I was tagging along it seemed he
+                            focused on the golden era aircraft. The late 1920s, ’30s, and
+                            even the early ’40s,” Bill said. “He appreciated the beauty of a
+                            polished aluminum executive aircraft, with minimal trim paint
+                            and a big radial engine.”
+                        </p>
+                        <p>
+                            Bill remembers his dad using “a small spiral notebook and
+                            a pencil—the camera bag was full of them—to record all the
+                            information on each airplane.” His dad’s method, Bill said, “was
+                            to take several pictures, stop, and write everything down.”
+                        </p>
+                    </div>
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <img src="/static/kohn-article/prints-banner.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-4">
+
+                <div class="row">
+
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8">
+
+                        <p>
+                            Leo’s family observed their dad’s techniques in the dark
+                            room, and both his wife, Mary, and their children helped with
+                            the classification and filing system of Leo’s growing collection.
+                            The first darkroom that Bill remembers—Leo had three in different
+                            homes—is from the 1960s, when they lived in West Allis,
+                            the “heyday of his work,” Bill says. He vividly recalls the darkroom setup.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3 ">
+                            <img src="/static/kohn-article/prints/04.jpg" topSrc="/static/kohn-article/prints/04.jpg" bottomSrc="/static/kohn-article/prints/04e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            “It was a set of dull red living room drapes hung from the
+                            floor joists in the basement,” he recalls. “In the approximate 6’
+                            x 6’ space was a light fixture hung from the ceiling with a red
+                            bulb. The table was basically a card table. The contact picture
+                            developing trays were set up left to right and there was an old
+                            desk lamp with a low-watt, white bulb sitting on the table. There
+                            were three or four boxes of Velox contact paper—F1 to F4—to
+                            choose from. He would work in batches of four to eight prints at
+                            a time.”
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/05.jpg" topSrc="/static/kohn-article/prints/05.jpg" bottomSrc="/static/kohn-article/prints/05e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            Bill fondly recalls another small but significant detail. A
+                            small transistor radio, “with a 9-volt battery and volume control
+                            on the right side, and a big dial on the front.” It was AM only,
+                            and tuned to Chicago’s WBBM or PBS while his dad worked.
+                            “It was always talk-radio or easy-listening, contemporary
+                            music,” Bill added.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/06.jpg" topSrc="/static/kohn-article/prints/06.jpg" bottomSrc="/static/kohn-article/prints/06e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            Leo developed photos one night a week, typically from 6
+                            until 11 p.m. <mark>“The part that astounds me is that I can’t remember
+                            a single instance of him telling me to get out,”</mark> Bill remembers.
+                            “While he went about this process he also had to listen to
+                            whatever a 5-year-old to 12-year-old boy could think of.”
+                        </p>
+                        <p>
+                            There’s that patience again.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/07.jpg" topSrc="/static/kohn-article/prints/07.jpg" bottomSrc="/static/kohn-article/prints/07e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            Bill said that his dad also went to The Darkroom photography store,
+                            located at 722 North Milwaukee Street in Milwaukee, to process his
+                            Kodak Six-16 roll film into negatives. Next
+                            he would transcribe his written notes onto a small envelope, in
+                            which the negative would be kept for further duplication. Each
+                            envelope was numbered. A separate list by aircraft type/model
+                            was maintained that referenced which envelopes contain negatives of that type and model.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-3">
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-6">
+                        <img src="/static/kohn-article/274-image.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+
+                    </div>
+
+                    <div class="col-md-12 col-lg-6">
+                        <img src="/static/kohn-article/274-envelope.jpg" class="img-fluid">
+                    </div>
+
+                    <div class="col-12">
+                        <figcaption>
+                            Leo J. Kohn Collection, Image #2306. North American A-36A-NA "Beguine" N4845N at the Cleveland Air Races in 1949.
+                        </figcaption>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>
+                                        It’s this mindfulness and data on each airplane photograph
+                                        that makes Leo Kohn’s collection so valuable. He didn’t simply
+                                        photograph airplanes; he meticulously documented each aircraft.
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
+                                    </div>
+
+                                    <p>
+                                        “His nature was to be meticulous,” explained Bill. <mark>“Taking
+                                        the picture was not sufficient; every detail needed to be recorded
+                                        somehow for future reference.</mark> You looked at a photograph [and
+                                        envelope] and had no questions about it. All the needed information was there.”
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
+                                    </div>
+
+                                    <p>
+                                        Bill recalls going to airports and airshows carrying his
+                                        dad’s large, heavy camera bag around when he was young. “I
+                                        couldn’t even get it off the ground,” he says. The worn bottom
+                                        edges of the leather bag are a testament to the adventures they
+                                        shared, and the invaluable role Bill played in supporting his father’s
+                                        passion for aviation photography from an early age.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="container mt-3">
+                            <div class="row">
+                                <div class="col-12" style="text-align:center;">
+                                    <img src="/static/kohn-article/billwcamerabag.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 550px;">
+
+                                    <figcaption>
+                                        Bill Kohn, son of aviation photographer Leo Kohn, carries his father's camera bag at an airshow, a poignant reminder of Bill’s childhood.
+                                    </figcaption>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="container mt-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>
+                                        It’s a relic from the past, as well as his dad’s desk, that Bill
+                                        has hung onto since his dad passed away in 2014. Inside the
+                                        camera bag is a treasure, one of the cameras his dad used, the
+                                        Kodak Six-16.
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
+                                    </div>
+
+                                    <p>
+                                        “Considering today’s cameras, this one would be a huge
+                                        challenge,” Bill said. “A roll of 616 took about eight pictures. I
+                                        can recall times where as he took pictures he would need to stop,
+                                        reload, and by then, a crowd, clouds, or something else would
+                                        spoil the shot.”
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
+                                    </div>
+
+                                    <p>
+                                        It harkens back to what he said previously about his dad’s
+                                        persistence, and the photographic challenges of the time. “With
+                                        no digital options the picture you snapped is what you were
+                                        stuck with,” Bill added.
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
+                                    </div>
+
+                                    <p>
+                                        But “stuck with” isn’t how today’s viewers of Leo’s pho-
+                                        tography collection describe it. <strong>Bill Streicher</strong>, who worked with
+                                        Leo on the Friends of the Mitchell Gallery of Flight board, marvels
+                                        at the incredible detail captured in Leo’s aviation photographs.
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
+                                    </div>
+                                    <p>
+                                        “The images captured by Leo are special for several reasons,” said Streicher. “Leo took high-quality photos that documented details.
+                                        These were most often static photos of the aircraft parked at an airfield. <mark>When able, he often took several images
+                                        of the same aircraft from different angles.</mark> This enabled
+                                        most of the aircraft’s distinctive features and markings to be
+                                        clearly visible. <mark>His images were always sharply focused with
+                                        minimal obstructions in the camera’s field of view.”</mark>
+                                    </p>
+
+                                    <div class="d-md-inline d-lg-none mb-3">
+                                        <img src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/prints/08.jpg" topSrc="/static/kohn-article/prints/08.jpg" bottomSrc="/static/kohn-article/prints/08e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/09.jpg" topSrc="/static/kohn-article/prints/09.jpg" bottomSrc="/static/kohn-article/prints/09e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/10.jpg" topSrc="/static/kohn-article/prints/10.jpg" bottomSrc="/static/kohn-article/prints/10e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/11.jpg" topSrc="/static/kohn-article/prints/11.jpg" bottomSrc="/static/kohn-article/prints/11e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/12.jpg" topSrc="/static/kohn-article/prints/12.jpg" bottomSrc="/static/kohn-article/prints/12e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/13.jpg" topSrc="/static/kohn-article/prints/13.jpg" bottomSrc="/static/kohn-article/prints/13e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/14.jpg" topSrc="/static/kohn-article/prints/14.jpg" bottomSrc="/static/kohn-article/prints/14e.jpg"  class="swap">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container mt-5">
+                <div class="row">
+
+                    <div class="col-4">
+                        <img src="/static/kohn-article/498.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                    <div class="col-4">
+                        <img src="/static/kohn-article/499.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                    <div class="col-4">
+                        <img src="/static/kohn-article/500.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+                    <figcaption>
+                        Leo J. Kohn Collection, Images #1004, #1005, #1006. Example of an aircraft photographed by Kohn from multiple angles. North American AT-6 "The Weaker Six", N57799, flown by Jane Page at the Cleveland Air Races for the Halle Trophy Race in 1947.
+                    </figcaption>
+                </div>
+
+            </div>
+
+
+            <div class="container mt-3">
+
+                <div class="row">
+
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8">
+                        <p>
+                            Bill should know, he purchased photos from Leo long before they were on the MGOF board together.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/15.jpg" topSrc="/static/kohn-article/prints/15.jpg" bottomSrc="/static/kohn-article/prints/15e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            But it wasn’t just how he photographed those aircraft.
+                            Leo’s keen eye for detail went beyond just capturing the subject;
+                            he understood that the background in his photos was important
+                            as well.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/16.jpg" topSrc="/static/kohn-article/prints/16.jpg" bottomSrc="/static/kohn-article/prints/16e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            <mark>“I felt that the background visible in Leo’s photos was
+                            often as relevant and revealing as the subject itself,”</mark> Streicher
+                            added. “It captures a point in time, providing an important historical context for the subject in the photo. For example, Leo’s
+                            photos at the Cleveland National Air Races in the late 1940s are
+                            set in a historical atmosphere of old hangars, grandstands, period vehicles, banners, and signs. This is also true for his photos
+                            of aircraft taken near buildings or at locations that no longer
+                            exist.”
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mt-3 container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <img src="/static/kohn-article/play-images.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                    <div class="col-md-12 col-lg-6 d-none d-md-inline">
+                        <img src="/static/kohn-article/play-backs.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container mt-3">
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-8">
+                        <p>
+                            Leo Kohn was more than a photographer; he was a storyteller. While many are defined by their professions or social
+                            roles, Leo’s lens also captured a narrative of family life that was
+                            as meaningful, or more so, as any of his professional work.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            <mark>“Dad’s photography was a significant part of his person,”</mark>
+                            Bill added. “Most people are identified by their job or place in
+                            society, dad was a photographer. He would quickly add, ‘not a
+                            photographer of people,’ but our countless family albums of his
+                            wife and kids on holidays and vacations indicate otherwise. For
+                            much of my formative years I got to know him through the photography the way other kids bonded with their father through
+                            sports, hunting, or fishing.”
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            Reflecting on their father’s lifelong passion for photography, Leo’s son, Bill, and daughter, Mary Ellen, expressed
+                            their pride in his work and are grateful to learn of the Wisconsin
+                            Aviation Hall of Fame’s efforts of preserving their dad’s collection. But perhaps more importantly, Bill and Mary Ellen know
+                            that their dad would want to be remembered for the quality of
+                            his work and its comprehensive nature.
+                        </p>
+
+                        <div class="d-md-inline d-lg-none mb-3">
+                            <img src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
+                        </div>
+
+                        <p>
+                            <mark>“He never aspired to be the superstar of aviation photography, but he would be incredibly pleased that his photographs
+                            will now become easily accessible to the public,”</mark> Bill said.
+                        </p>
+                        <p>
+                            Added Mary, “I am so excited to see you all giving him the
+                            recognition that I feel he deserves. I am so very, very proud of
+                            my Dad!"
+                        </p>
+                    </div>
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/prints/17.jpg" topSrc="/static/kohn-article/prints/17.jpg" bottomSrc="/static/kohn-article/prints/17e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/18.jpg" topSrc="/static/kohn-article/prints/18.jpg" bottomSrc="/static/kohn-article/prints/18e.jpg"  class="swap">
+                        <img src="/static/kohn-article/prints/19.jpg" topSrc="/static/kohn-article/prints/19.jpg" bottomSrc="/static/kohn-article/prints/19e.jpg"  class="swap">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="row">
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-10">
+                        <img src="/static/kohn-article/264-image.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+
+                        <figcaption>
+                            Leo J. Kohn Collection, Image #19361. N45CK. Lockheed PV-1, serial number 5333.
+                        </figcaption>
+
+                    </div>
+
+                    <div class="col-1 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container mt-3">
+
+                <div class="row">
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                    <div class="col-md-12 col-lg-8">
+
+
+                        <h3>
+                            The Kodak Six-16
+                        </h3>
+                        <p>
+                            Introduced in 1932 alongside the Kodak Six-20, the Kodak Six-16 was a standout camera of the Art Deco era. That’s likely why
+                            Leo and many other photographers of the day enjoyed using it.
+                            While nearly identical to its counterpart, the Six-16 was larger
+                            but still compact. Its Art Deco design is evident in the octagonal
+                            face plate, red highlights, chrome struts, and angled body with
+                            nickel and black enamel sides. It’s a striking piece.
+                        </p>
+                        <p>
+                            Despite its aesthetic appeal, the Kodak Six-16’s performance was hindered by its limited shutter speeds. However,
+                            scanning experiments have shown that the film’s resolution
+                            compares favorably with today’s high-quality digital cameras.
+                            The camera garnered admiration for its design and nostalgic
+                            charm. The last cameras
+                            were produced in the late
+                            1940s, and the film was discontinued in 1984. The Kodak Six-16 remains highly
+                            sought-after by collectors
+                            today, prized for its unique
+                            Art Deco design and historical significance.
+                        </p>
+
+                    </div>
+
+                    <div class="col-2 d-none d-md-inline">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-5">
+                <div class="row">
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/camera0.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                    <div class="col-md-12 col-lg-4">
+                        <img src="/static/kohn-article/camera2.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                    <div class="col-4 d-none d-md-inline">
+                        <img src="/static/kohn-article/camera3.jpg" class="img-fluid" style="border: 4px solid #3e3e3e">
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- end container -->
+    </main>
+
+    <!-- begin footer -->
+    <footer class="footer mt-auto py-3 pt-5">
+        <div class="container border-top">
+            <div class="row py-3">
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Membership</h5>
+                    {% get_footer_menu slug="footer_membership" parent=site_root calling_page=self %}
+                </div>
+
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Hall of Fame</h5>
+                    {% get_footer_menu slug="footer_hall_of_fame" parent=site_root calling_page=self %}
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>About WAHF</h5>
+                    {% get_footer_menu slug="footer_about" parent=site_root calling_page=self %}
+                </div>
+
+                {% if current_magazine_issue.cover %}
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
+                        <a href="{% slugurl current_magazine_issue.slug %}">
+                            {% image current_magazine_issue.cover height-300 class="img-thumbnail img-fluid" %}
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                <p class="text-muted"><small>&copy; {% now 'Y' %} Wisconsin Aviation Hall of Fame</small></p>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js" integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.7.1.min.js"
+			  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			  crossorigin="anonymous"></script>
+    <script>
+      feather.replace()
+    </script>
+
+    <script>
+
+        var inTop = false;
+        var inBottom = false;
+
+
+        var observerTop = new IntersectionObserver(function (entries) {
+
+            entries.forEach(entry => {
+                if(entry.intersectionRatio > 0) {
+                    let el = $(entry.target)
+
+                    if (!entry.isIntersecting) {
+                        console.log('demo has LEFT the top ');
+                        inTop = false;
+
+                        if(!inTop && !inBottom) {
+                            handleImage(el);
+                        }
+                    }
+                    else {
+                        console.log('demo has ENTERED the top ');
+                        inTop = true;
+                        inBottom = false;
+                        handleImage(el);
+                    }
+                }
+            });
+
+        },  {rootMargin: "0px 0px -60% 0px"} );
+
+        var observerBottom = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if(entry.intersectionRatio > 0) {
+
+                    let el = $(entry.target)
+
+                    if (!entry.isIntersecting) {
+                        console.log('demo has LEFT the bottom ');
+                        inBottom = false;
+
+                        if(!inTop && !inBottom) {
+                            handleImage(el);
+                        }
+                    }
+                    else {
+                        console.log('demo has ENTERED the bottom ');
+                        inBottom = true;
+                        inTop = false;
+                        handleImage(el);
+                    }
+                }
+
+            });
+
+        }, {rootMargin: "60% 0px 0px 0px"} );
+
+
+        const swapImages = document.querySelectorAll('.swap');
+        swapImages.forEach(image => {
+            //observerBottom.observe(document.querySelector(".swap"));
+            //observerTop.observe(document.querySelector(".swap"));
+        });
+
+        function handleImage(el) {
+            let src = null;
+
+            console.log(el)
+
+            if((inTop && !inBottom) || (!inTop && !inBottom) || (inTop && inBottom)) {
+                src = el.attr("bottomSrc");
+            }
+            else {
+                src = el.attr("topSrc");
+            }
+
+            let existingSrc = el.attr("src");
+
+            console.log(inTop, inBottom, src, existingSrc);
+
+            if(src === existingSrc) {
+                return;
+            }
+
+            transitionSwap(el, src)
+        }
+
+        let swapImage = function() {
+            el = $(this);
+            let newSrc = null;
+            if (el.attr("src") === el.attr("topSrc")) {
+                newSrc = el.attr("bottomSrc");
+            } else {
+                newSrc = el.attr("topSrc");
+            }
+
+            transitionSwap(el, newSrc)
+
+        }
+
+        function transitionSwap(el, src) {
+            el.fadeOut(100, function() {
+                $(this).attr("src", src).fadeIn(100);
+            })
+        }
+
+        $(".swap").on("mouseenter", swapImage);
+        $(".swap").on("mouseleave", swapImage);
+
+    </script>
+  </body>
+</html>
