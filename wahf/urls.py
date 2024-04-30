@@ -42,9 +42,9 @@ urlpatterns = [
         name="kohn_thanks",
     ),
     path(
-        "leo-kohn-draft",
+        "articles/leo-kohn-capturing-aviation/",
         TemplateView.as_view(template_name="kohn/leo-kohn-article.html"),
-        name="leo_kohn",
+        name="leo_kohn_capturing_aviation",
     ),
     # MEMBERSHIP
     # ACCOUNT UPDATES

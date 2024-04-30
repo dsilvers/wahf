@@ -28,7 +28,11 @@
     <link rel="manifest" href="/static/favicon/site.webmanifest">
 
     <title>Capturing Aviation - Leo J. Kohn - Wisconsin Aviation Hall of Fame</title>
-    <meta name="description" content="">
+    <meta name="description" content="Leo J. Kohn's extensive career is captured in more than 34,000 mostly unobstructed airplane shots, along with the meticulous details he captured about every plane.">
+
+    <meta property="og:title" content="Capturing Aviation - Leo J. Kohn - Wisconsin Aviation Hall of Fame<" >
+    <meta property="og:description" content="Leo J. Kohn's extensive career is captured in more than 34,000 mostly unobstructed airplane shots, along with the meticulous details he captured about every plane.">
+    <meta property="og:image" content="http://www.wahf.org/static/kohn-article/555-negative-original@3x.jpg" >
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -132,6 +136,12 @@
             font-style: normal;
           }
 
+          .courgette-bold {
+            font-family: "Courgette", cursive;
+            font-weight: bold;
+            font-style: normal;
+          }
+
 
 
 .nav-link {
@@ -151,7 +161,12 @@ p {
     font-family: "IBM Plex Mono", monospace;
     font-weight: 300;
     font-style: normal;
+    text-align: justify;
     text-justify: inter-word;
+}
+
+.row {
+    margin-right: 0 !important;
 }
 
 p {
@@ -172,7 +187,7 @@ p.subhead::first-letter {
     float: left;
     font-family: Georgia, serif;
     font-size: 75px;
-    padding: 3px;
+    padding: 5px 5px 0 0;
 }
 
 strong {
@@ -288,7 +303,7 @@ figcaption {
                 <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="border-bottom: none !important;">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="/">
-                            <img src="/static/kohn-article/logo-transparent.png" alt="Wisconsin Aviation Hall of Fame" style="width:75%">
+                            <img src="/static/kohn-article/logo-transparent.png" alt="Wisconsin Aviation Hall of Fame">
                         </a>
 
                         <!--
@@ -327,13 +342,13 @@ figcaption {
                         /static/kohn-article/555-negative-original@2x.jpg 2250w,
                         /static/kohn-article/555-negative-original@3x.jpg 3000w" class="img-fluid" style="position: relative; z-index: 2; display: inline-block; border: 10px solid black;">
 
-            <div class="d-none d-lg-inline" style="position:absolute; top: 100px; left: 30%; z-index: 3; max-width: 70%; text-align: center;   background-color: rgba(13, 110, 253, 0.3); padding: 20px; color: #1e1e1e;  display: inline; border-radius:30px;">
-                <h1 class="courgette-regular">Capturing Aviation</h1>
+            <div class="d-none d-lg-inline" style="position:absolute; top: 60px; left: 30%; z-index: 3; max-width: 70%; text-align: center;   background-color: rgba(13, 110, 253, 0.3); padding: 20px; color: #1e1e1e;  display: inline; border-radius:30px;">
+                <h1 class="courgette-bold">Capturing Aviation</h1>
                 <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
             </div>
 
             <div class="lead-small d-md-inline d-lg-none p-3" style="text-align:center;">
-                <h1 class="courgette-regular">Capturing Aviation</h1>
+                <h1 class="courgette-bold">Capturing Aviation</h1>
                 <h2 class="ibm-plex-mono-regular">The Legacy of Leo J. Kohn</h2>
             </div>
 
@@ -344,7 +359,7 @@ figcaption {
                     <div class="col-2 d-none d-md-inline">
                     </div>
 
-                    <div class="col-md-12 col-8-lg">
+                    <div class="col-md-12 col-lg-8">
 
                         <div class="byline mt-3 mb-5 ">
                             By Rose Dorcey<br>
@@ -352,10 +367,10 @@ figcaption {
                         </div>
 
                         <p class="lead subhead">In the vibrant world of aviation photography, success hinges on
-                            a unique blend of creativity, an eye for detail, and a crucial element — patience.
+                            a unique blend of creativity, an eye for detail, and a crucial element &mdash; patience.
                             While creativity may come natural for some, true mastery comes when waiting for just the right moment. <strong>Leo
                             J. Kohn</strong> elevated aviation photography because of his extraordinary patience.
-                            His extensive career is captured in more than <u>34,000</u> mostly unobstructed airplane shots, along with the meticulous
+                            His extensive career is captured in more than <mark>34,000</mark> mostly unobstructed airplane shots, along with the meticulous
                             details he captured about every plane. The Leo J. Kohn Aviation Photography
                             Collection shows his dedication to preserving those details, and it's what sets him apart in the realm of
                             mid-twentieth century aviation photography.
@@ -376,7 +391,7 @@ figcaption {
                     <div class="col-1 d-none d-md-inline">
                     </div>
 
-                    <div class="col-md-12 col-10-lg">
+                    <div class="col-md-12 col-lg-10">
                         <img loading="lazy"
                                     src="/static/kohn-article/555-envelope-original@1x.jpg"
                             srcset="/static/kohn-article/555-envelope-original@1x.jpg 921w,
@@ -387,7 +402,7 @@ figcaption {
                         <figcaption>
                             A Beech Bonanza 35, at Maitland Field, Milwaukee, in 1947, pictured at the top of this page, as noted on the envelope.
                             Kohn typed aircraft details on protective envelopes, where he stored each individual negative.
-                            Local entrepreneur Tony Lange leased the Maitland property from 1937-’46.
+                            Local entrepreneur Tony Lange leased the Maitland property from 1937&mdash;’46.
                         </figcaption>
 
                     </div>
@@ -507,7 +522,7 @@ figcaption {
                             While in the Guard, Leo met the young <strong>Paul Poberezny</strong>.
                             Their mutual obsession for aviation led to Leo becoming a
                             founding member of Paul’s fledgling Experimental Aircraft
-                            Association - <a href="https://www.eaa.org/~/media/files/eaa/educationresources/experimenter/1403.pdf#page=7" target="_blank">Leo was EAA Number 4</a>. Leo took photos at early
+                            Association &mdash; <a href="https://www.eaa.org/~/media/files/eaa/educationresources/experimenter/1403.pdf#page=7" target="_blank">Leo was EAA Number 4</a>. Leo took photos at early
                             meetings and became EAA’s first photographer. He left EAA in
                             1972 to start his own magazine, <i>Armchair Aviator</i>, producing it
                             for about two years. Leo was a well-regarded aviation photographer and historian throughout his career and served as a director
@@ -557,26 +572,26 @@ figcaption {
 
                     <div class="col-md-12 col-lg-8">
 
-                        <p class="quote">
-                            “It was a family affair in many ways,” said Bill. “The
+                        <p>
+                            <mark>“It was a family affair in many ways,” said Bill. “The
                             whole family would make stops along the way on vacations to
-                            photograph an airplane at some small, out of the way airport.”
+                            photograph an airplane at some small, out of the way airport.”</mark>
                         </p>
                         <p>
                             Bill said that any airplane his dad could get close enough
                             to photograph was his favorite at the moment, particularly if it
                             was unencumbered by tie-downs and other distracting elements.
                         </p>
-                        <p class="quote">
-                            “In the ’60s and ’70s as I was tagging along it seemed he
+                        <p>
+                            <mark>"In the ’60s and ’70s as I was tagging along it seemed he
                             focused on the golden era aircraft. The late 1920s, ’30s, and
                             even the early ’40s,” Bill said. “He appreciated the beauty of a
                             polished aluminum executive aircraft, with minimal trim paint
-                            and a big radial engine.”
+                            and a big radial engine.”</mark>
                         </p>
                         <p>
                             Bill remembers his dad using “a small spiral notebook and
-                            a pencil—the camera bag was full of them—to record all the
+                            a pencil&mdash;the camera bag was full of them&mdash;to record all the
                             information on each airplane.” His dad’s method, Bill said, “was
                             to take several pictures, stop, and write everything down.”
                         </p>
@@ -587,9 +602,9 @@ figcaption {
             </div>
 
             <div class="mt-4">
-                <div class="row">
-                    <div class="col-12">
-                        <img loading="lazy" class="img-fluid" style="border: 4px solid #3e3e3e"
+                <div class="row p-0">
+                    <div class="col-12 p-0">
+                        <img loading="lazy" class="img-fluid" style="border-top: 4px solid #3e3e3e; border-bottom: 4px solid #3e3e3e;"
                             src="/static/kohn-article/prints-banner@1x.jpg"
                             srcset="/static/kohn-article/prints-banner@1x.jpg 900w,
                                     /static/kohn-article/prints-banner@2x.jpg 1500w,
@@ -612,12 +627,12 @@ figcaption {
 
                     <div class="col-md-12 col-lg-8 mt-4">
 
-                        <p>
+                        <p class="subhead">
                             Leo’s family observed their dad’s techniques in the dark
                             room, and both his wife, Mary, and their children helped with
                             the classification and filing system of Leo’s growing collection.
-                            The first darkroom that Bill remembers—Leo had three in different
-                            homes—is from the 1960s, when they lived in West Allis,
+                            The first darkroom that Bill remembers&mdash;Leo had three in different
+                            homes&mdash;is from the 1960s, when they lived in West Allis,
                             the “heyday of his work,” Bill says. He vividly recalls the darkroom setup.
                         </p>
 
@@ -632,7 +647,7 @@ figcaption {
                             bulb. The table was basically a card table. The contact picture
                             developing trays were set up left to right and there was an old
                             desk lamp with a low-watt, white bulb sitting on the table. There
-                            were three or four boxes of Velox contact paper—F1 to F4—to
+                            were three or four boxes of Velox contact paper&mdash;F1 to F4&mdash;to
                             choose from. He would work in batches of four to eight prints at
                             a time.”
                         </p>
@@ -682,10 +697,10 @@ figcaption {
                 </div>
             </div>
 
-            <div class="container mt-3" style="max-width: none;">
-                <div class="row">
+            <div class="container mt-3 p-0" style="max-width: none;">
+                <div class="row m-0">
 
-                    <div class="col-md-12 col-lg-6">
+                    <div class="col-md-12 col-lg-6 pr-1">
                         <img loading="lazy"
                                 src="/static/kohn-article/274-image@1x.jpg"
                                 srcset="/static/kohn-article/274-image@1x.jpg 1000w,
@@ -695,7 +710,7 @@ figcaption {
 
                     </div>
 
-                    <div class="col-md-12 col-lg-6">
+                    <div class="col-md-12 col-lg-6 p-0">
                         <img loading="lazy" src="/static/kohn-article/274-envelope@1x.jpg"
                         srcset="/static/kohn-article/274-envelope@1x.jpg 1195w,
                                 /static/kohn-article/274-envelope@2x.jpg 1593w"
@@ -718,7 +733,7 @@ figcaption {
                         <div class="container">
                             <div class="row">
                                 <div class="col-12">
-                                    <p>
+                                    <p class="subhead">
                                         It’s this mindfulness and data on each airplane photograph
                                         that makes Leo Kohn’s collection so valuable. He didn’t simply
                                         photograph airplanes; he meticulously documented each aircraft.
@@ -754,7 +769,11 @@ figcaption {
 
                         <div class="container mt-3">
                             <div class="row">
-                                <div class="col-12" style="text-align:center;">
+
+                                <div class="col-3 d-none d-md-inline">
+                                </div>
+
+                                <div class="col-lg-6 col-md-12" style="text-align:center;">
                                     <img loading="lazy" src="/static/kohn-article/billwcamerabag.jpg" class="img-fluid" style="border: 4px solid #3e3e3e; max-height: 550px;">
 
                                     <figcaption>
@@ -878,8 +897,8 @@ figcaption {
                     </div>
 
                     <div class="col-md-12 col-lg-8">
-                        <p>
-                            Bill should know, he purchased photos from Leo long before they were on the MGOF board together.
+                        <p class="subhead">
+                            Streicher should know, he purchased photos from Leo long before they were on the MGOF board together.
                         </p>
 
                         <div class="d-md-inline d-lg-none mb-3">
@@ -938,7 +957,7 @@ figcaption {
                 <div class="row">
 
                     <div class="col-md-12 col-lg-8">
-                        <p>
+                        <p class="subhead">
                             Leo Kohn was more than a photographer; he was a storyteller. While many are defined by their professions or social
                             roles, Leo’s lens also captured a narrative of family life that was
                             as meaningful, or more so, as any of his professional work.
@@ -1037,7 +1056,7 @@ figcaption {
                         <h3>
                             The Kodak Six-16
                         </h3>
-                        <p>
+                        <p class="subhead">
                             Introduced in 1932 alongside the Kodak Six-20, the Kodak Six-16 was a standout camera of the Art Deco era. That’s likely why
                             Leo and many other photographers of the day enjoyed using it.
                             While nearly identical to its counterpart, the Six-16 was larger
@@ -1068,7 +1087,7 @@ figcaption {
             </div>
 
             <div class="mt-5 mb-5">
-                <div class="row">
+                <div class="row m-0">
                     <div class="col-4 d-none d-md-inline" style="text-align:right;">
                         <img loading="lazy" src="/static/kohn-article/camera0.jpg" class="img-fluid" style="border: 4px solid #3e3e3e;max-height: 300px;">
                     </div>
@@ -1082,16 +1101,16 @@ figcaption {
             </div>
 
 
-            <div class="credits p-3 mt-3 mb-3">
-                <p>
-                    Story by <strong>Rose Dorcey</strong> -- Layout and Design by <strong>Dan Silvers</strong>
+            <div class="credits p-3 mt-3 mb-3" style="background-color: #3e3e3e;color: #eaeaea">
+                <h4>Credits</h4>
+                <p style="text-align: center;">
+                    Story by <strong>Rose Dorcey</strong><br>
+                    Layout and Design by <strong>Dan Silvers</strong>
                 </p>
 
-                <h4>----</h4>
-
-                <p>
+                <p style="text-align: center;"">
                     Aircraft photos from the <a href="/kohn">Leo J. Kohn Photography Collection.</a><br>
-                    Photos of Leo J. Kohn genorously provided by <strong>Bill Kohn</strong>.<br>
+                    Photos of Leo J. Kohn generously provided by <strong>Bill Kohn</strong>.<br>
                     Kodak Six-16 camera photos by Dan Silvers.<br>
                 </p>
 
@@ -1289,19 +1308,34 @@ figcaption {
 
             debounce = setTimeout(function() {
                 transitionSwap(el, newSrc)
-            }, 75);
+            }, 150);
         }
 
         function transitionSwap(el, src) {
-            el.fadeOut(100, function() {
-                $(this).attr("src", src).fadeIn(100);
-            })
+            if(el.attr("src") !== src) {
+                el.fadeOut(100, function() {
+                    $(this).attr("src", src).fadeIn(100);
+                })
+            }
+
+
         }
 
         $(".swap").on("mouseenter", function() { swapImage($(this), false) });
         $(".swap").on("mouseleave", function() { swapImage($(this), true) });
         $(".swap").on("tap", function() { swapImage($(this))} );
         $(".swap").on("click", function() { swapImage($(this))} );
+
+        // lazy loading hack to make hover images pre-load
+        $('.swap').on('load',function(){
+            let src = $(this).attr("src")
+
+            if(!src.endsWith("e.jpg")) {
+                let cachedImage = new Image();
+                cachedImage.src = src.replace(".jpg", "e.jpg");
+            }
+        });
+
 
     </script>
   </body>
