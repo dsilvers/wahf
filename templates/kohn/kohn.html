@@ -170,6 +170,23 @@ figure figcaption.subtitle-bottom {
 </style>
 {% endblock %}
 
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+    let hash = window.location.hash.substring(1);
+    if (hash === "donate") {
+        scrollToDonate();
+    }
+
+});
+
+function scrollToDonate() {
+    let element = document.getElementById("donate");
+    element.scrollIntoView();
+}
+</script>
+{% endblock %}
+
 <div class="lead-small d-md-inline d-lg-none">
     <h1>Leo J. Kohn Photography Collection</h1>
     <h2>Digitization and Preservation Project</h2>
@@ -228,7 +245,7 @@ figure figcaption.subtitle-bottom {
 </div>
 
 <div class="text-center mb-4">
-    <button class="btn btn-success btn-lg" onclick="document.getElementById('donate').scrollIntoView();">Donate to the WAHF Historical Preservation Fund</button>
+    <button class="btn btn-success btn-lg" onclick="scrollToDonate()">Donate to the WAHF Historical Preservation Fund</button>
 </div>
 
 <div class="container">
