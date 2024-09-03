@@ -3,10 +3,12 @@ from datetime import datetime
 
 import pytz
 import stripe
+from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from html2text import html2text
 
 from membership.models import (
     BanquetPayment,
@@ -117,7 +119,7 @@ def process_banquet_tickets(obj, session):
         elif cf["key"] == "eaamuseumdocentguidedtour":
             docent_tour = (
                 "Yes, will attend the docent tour."
-                if cf["dropdown"]["value"] and cf["dropdown"]["value"].startswith("no")
+                if cf["dropdown"]["value"] and cf["dropdown"]["value"].startswith("yes")
                 else "No, we will not attend the docent tour."
             )
 
@@ -138,25 +140,15 @@ def process_banquet_tickets(obj, session):
         },
     )
 
-    send_email(
-        to=[email, "president@wahf.org"],
-        subject=f"WAHF 2023 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
-        body=None,
-        body_html=confirmation_body,
-        context={
-            "email": email,
-        },
+    msg = EmailMultiAlternatives(
+        f"WAHF 2024 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
+        html2text(confirmation_body),
+        "Rose Dorcey <rose@wahf.org>",
+        [email],
+        cc=["dan@wahf.org", "rose@wahf.org", "president@wahf.org"],
     )
-
-    send_email(
-        to=["dan@wahf.org", "rosedorceyFIF@gmail.com"],
-        subject=f"WAHF 2023 Investiture Dinner and Ceremony - RSVP Confirmation - {name}",
-        body=None,
-        body_html=confirmation_body,
-        context={
-            "email": email,
-        },
-    )
+    msg.attach_alternative(confirmation_body, "text/html")
+    msg.send()
 
     BanquetPayment.objects.create(
         stripe_id=stripe_id,
