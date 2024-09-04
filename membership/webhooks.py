@@ -42,6 +42,7 @@ def process_stripe_webhook(request):
         )
 
         action = session.metadata.get("action", None)
+        success_url = event.data.object.get("success_url", None)
 
         if action == "signup":
             process_membership_signup(event.data.object, session)
@@ -50,7 +51,7 @@ def process_stripe_webhook(request):
             process_membership_renewal(event.data.object, session)
         elif action == "donation":
             process_donation_payment(event.data.object, session)
-        elif action == "banquet":
+        elif success_url and "rsvp" in success_url:  # action == "banquet":
             process_banquet_tickets(event.data.object, session)
         # Kohn used to be on the main membership account, it is now separated into its
         # own stripe account, but still exists here in posterity
@@ -73,13 +74,6 @@ def process_stripe_webhook(request):
 
 
 def process_banquet_tickets(obj, session):
-    #
-    #
-    # THE ENTRIES AT STRIPE NEED TO BE UPDATED FOR 2024
-    #
-    #
-    #
-
     # Total amount paid
     amount_total = session["amount_total"] / 100.0
 
