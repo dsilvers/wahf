@@ -46,6 +46,11 @@ urlpatterns = [
         TemplateView.as_view(template_name="kohn/leo-kohn-article.html"),
         name="leo_kohn_capturing_aviation",
     ),
+    path(
+        "articles/stories-that-soared/",
+        TemplateView.as_view(template_name="articles/stories-that-soared.html"),
+        name="article_stories_that_soared",
+    ),
     # MEMBERSHIP
     # ACCOUNT UPDATES
     path(

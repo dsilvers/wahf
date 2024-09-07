@@ -1,0 +1,886 @@
+{% load i18n static wagtailcore_tags wagtailuserbar wagtailimages_tags %}
+{% load menu_tags %}
+{% load magazine_tags %}
+
+{% get_site_root as site_root %}
+{% get_current_magazine_issue as current_magazine_issue %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZNT3NBBJT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RZNT3NBBJT');
+    </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon/site.webmanifest">
+
+    <title>Stories that Soared - Wisconsin Aviation Hall of Fame</title>
+    <meta name="description" content="desc">
+
+    <meta property="og:title" content="Stories that Soared - Wisconsin Aviation Hall of Fame">
+    <meta property="og:description" content="desc">
+    <meta property="og:image" content="url">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-03-11-2023.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=News+Cycle:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+
+<style type="text/css">
+
+.news-cycle-regular {
+  font-family: "News Cycle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.news-cycle-bold {
+  font-family: "News Cycle", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.newsreader-400 {
+    font-family: "Newsreader", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.big-container {
+    width:100%;
+    max-width: none;
+    padding:0;
+}
+
+.navbar {
+    background: black;
+}
+
+.navbar-brand {
+    background: white;
+}
+
+.header-row {
+    border-bottom: 1px solid black;
+    text-align: right;
+}
+
+.header-date {
+    padding-right: 40px;
+}
+
+.header-publication {
+    text-align: left;
+}
+
+.header-date span {
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.top-thumbs {
+    text-align: center;
+}
+
+.top-thumbs img {
+    margin-left: 8px;
+}
+
+.top-right-thumbs img {
+    margin-top: 16px;
+}
+
+.reveal {
+    opacity: 0;
+}
+
+
+figcaption {
+    font-size: smaller;
+    color: #bebebe;
+    text-transform: uppercase;
+    text-align: right;
+    font-family: "News Cycle", sans-serif;
+    font-size: 1.0rem;
+}
+
+h1 {
+    font-size: 8.0rem;
+}
+
+
+
+.byline {
+    font-size: 1.2rem;
+}
+
+.alert {
+    text-align: center;
+}
+
+.top-blurb {
+    font-size: 2.0rem;
+}
+
+.story {
+    font-size: 1.4rem;
+}
+
+.section-lead {
+    font-size: 1.6rem;
+    text-transform: uppercase
+}
+
+hr {
+    border-top: 3px solid #0a58ca;
+    margin: 70px 0 40px 0;
+}
+
+.right-column {
+    padding-top: 90px;
+}
+
+.right-column img {
+    border: 2px solid #666;
+    margin-bottom: 20px;
+}
+
+
+.left-padding-image {
+    margin-left: 12px;
+    max-width: 300px;
+}
+
+
+
+</style>
+
+  </head>
+
+  <body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
+    <main class="flex-shrink-0 newsreader-400">
+        <div class="container big-container">
+            <div style="position:relative; top: 20px left: 20px; z-index: 4">
+
+                <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="border-bottom: none !important;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="/">
+                            <img src="/static/kohn-article/logo-transparent.png" alt="Wisconsin Aviation Hall of Fame">
+                        </a>
+
+                    </div>
+                </nav>
+            </div>
+        <div>
+
+
+        <div class="container big-container p-3">
+            <div class="row header-row p-1 news-cycle-regular">
+                <div class="col-6 header-publication">
+                    Forward in Flight - Fall 2024 - SPECIAL FEATURE
+                </div>
+                <div class="col-3 header-final">
+                    F
+                </div>
+                <div class="col-3 header-date">
+                    Wednesday, September 4, 2024
+                    <span class="news-cycle-bold">1B</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="top-thumbs px-2">
+            <img src="/static/sts-article/thumb-kelch.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-zien.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-lotzer.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-bosley.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-dereszynski.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-gallatin.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-healy.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-kapus.jpg" class="reveal">
+            <img src="/static/sts-article/thumb-lovell.jpg" class="reveal">
+
+        </div>
+
+        <div class="container story">
+            <div class="row">
+                <div class="col-8">
+                    <hr>
+
+                    <div class="title newsreader-400">
+                        <h1 class="p-0 my-3">Stories that Soared</h1>
+                    </div>
+
+                    <div class="title-sub newsreader-400">
+                        <h2>Remembering the pilots and aviation experts whose obituaries made headlines
+                    </div>
+
+                    <div class="byline news-cycle-bold mt-3">
+                        By AMY RABIDEAU SILVERS
+                    </div>
+
+                    <hr>
+
+                    <div class="my-5 top-blurb">
+                        <div>
+                            In my years writing obituaries as a Milwaukee Journal Sentinel reporter, there were plenty of preachers and politicians,
+                            assorted professionals and quirky characters, but one category always made for an especially good story. They were the
+                            pilots and people involved in aviation, seemingly flying into history or whatever was most interesting.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-1"></div>
+                <div class="col-2 top-right-thumbs" >
+                    <img src="/static/sts-article/thumb-marge3.jpg" class="reveal"><br>
+                    <img src="/static/sts-article/thumb-marge2.jpg" class="reveal"><br>
+                    <img src="/static/sts-article/thumb-marge1.jpg" class="reveal"><br>
+                    <img src="/static/sts-article/thumb-marge4.jpg" class="reveal"><br>
+                    <img src="/static/sts-article/thumb-malecki.jpg" class="reveal"><br>
+                    <img src="/static/sts-article/thumb-scholz.jpg" class="reveal">
+                </div>
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-kelch.jpg" class="img-fluid" id="kelch">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, September 30, 2004</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/kelch.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        Some of the names are well known, old friends to those in aviation circles.
+                        <b>Alfred Kelch Jr.</b> was first introduced to flying at 6 by an uncle, Percy Bricker, back in young Alfred’s Iowa hometown.
+                    </p>
+
+                    <p>
+                        Uncle Percy, he later said, gave <mark>“me an incurable disease that’s very expensive.”</mark>
+                    </p>
+
+                    <p>
+                        The same uncle gave him his first flying lesson while Alfred was still in junior high.
+                        Kelch grew up to become an inventor and manufacturer—and bought his first plane as soon as he could afford it.
+                    </p>
+
+                    <p>
+                        It was an antique Piper Cub, the first of many vintage models.
+                    </p>
+
+                    <p>
+                        “He loved antique aircraft—it had to be antique,” said wife Lois.
+                        Kelch eventually moved his aircraft to the airport in Brodhead Airport (C37), now the home of the <a href="https://www.kelchmuseum.org/" target="_blank">Kelch Aviation Museum</a>, in Brodhead, Wisconsin.
+                        Other Kelch calls to fame included early and active involvement in the <a href="https://eaavintage.org/alfred-kelch/" target="_blank">Experimental Aircraft Association’s Vintage Aircraft</a> division and editing its <a href="https://www.eaa.org/eaa/news-and-publications/eaa-magazines-and-publications/vintage-airplane-magazine" target="_blank">Vintage Airplane</a> magazine with Lois.
+                    </p>
+
+                    <p class="alert alert-warning p-1 my-4">
+                        <a href="https://web.archive.org/web/20041019073154/http://www.jsonline.com/news/nobits/sep04/262810.asp" target="_blank">
+                            <button type="button" class="btn btn-primary btn-lg m-3">
+                                Read Kelch's Obituary
+                            </button>
+                        </a>
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-kelch.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+                <div class="col-8">
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-lotzer.jpg" class="img-fluid" id="lotzer">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, April 4, 2003</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/lotzer2.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        William J. Lotzer began flight training in 1939, part of a government program to train civilian pilots,
+                        then served as a wartime instructor of air cadets in the Navy’s flight training program.
+                    </p>
+
+                    <p>
+                        After the war, he showed up at Curtiss-Wright Airport, and asked about a part-time job as a pilot-instructor.
+                    </p>
+
+                    <p>
+                        “They talked me into the aviation business, and that was the end of law school for me,” Lotzer once explained.
+                        He began Gran-Aire Inc. at the airfield, now better known as Milwaukee County’s Timmerman Airport (KMWC).
+                    </p>
+
+                    <p>
+                        Over the years he taught something like 1,200 students, including military fliers, and logged more than 21,000 hours.
+                        For those efforts and more, he was <a href="https://www.wahf.org/hall-of-fame/william-j-bill-lotzer/">inducted into the Wisconsin Aviation Hall of Fame in 1991</a>.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-lotzer.jpg" class="img-fluid"><br>
+                </div>
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-gallatin.jpg" class="img-fluid" id="gallatin">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, September 30, 2004</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/gallatin.jpg" class="img-fluid float-end left-padding-image">
+
+                    <p>
+                        Well-known names included <b>Harold A. Gallatin</b>, one of the six founding members of the EAA.
+                    </p>
+
+                    <p>
+                        Harold and brother Oscar never forgot the sound of planes while hoeing the family cornfield in Illinois.
+                        The boys looked up and saw a plane flown by Charles Lindbergh, trailed by other pilots thrilled for the chance to say they flew with the famous pilot.
+                    </p>
+
+                    <p>
+                        “They leaned on their hoes, and they thought about the freedom, the speed, of flying,” daughter Ruth Bock said, telling the family story.
+                        “They just looked at each other and said, ‘That’s for me.’”
+                    </p>
+
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-gallatin.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-dereszynski.jpg" class="img-fluid" id="dereszynski">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, April 28, 2011 - Page 5B</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/dereszynski.jpg" class="img-fluid float-end left-padding-image">
+
+                    <p>
+                        Many others were veterans, including <b>Leonard Dereszynski</b>, who trained as a pilot with the Army Air Corps during World War II, and joined the Air Force Reserve after the war.
+                    </p>
+
+                    <p>
+                        Wartime service found him flying with the 1st Air Commandos in the China-Burma-India theater.
+                        He flew 80 combat missions, often into just cleared or captured jungle airstrips, at least one of which the Japanese were trying to keep.
+                    </p>
+
+                    <p>
+                        He flew 21 types of aircraft during his military career, including the B-25 Mitchell bomber.
+                    </p>
+
+                    <p>
+                        “And he found that he could get to fly P-40s and other fighters by volunteering to take them up for test flights after they
+                        had undergone engine replacements or other maintenance,” wrote Tom Heinen, a Milwaukee Journal Sentinel reporter, in a biography for the Dereszynski family.
+                    </p>
+
+                    <p class="alert alert-warning p-1 my-4">
+                        <a href="https://archive.jsonline.com/news/obituaries/120834054.html" target="_blank">
+                            <button type="button" class="btn btn-primary btn-lg m-3">
+                                Read Dereszynski's Obituary
+                            </button>
+                        </a>
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-dereszynski.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-healy.jpg" class="img-fluid" id="healy">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, ????</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/healy.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        In 1941, <b>William C. Healy</b> was stationed at Hickam Field adjacent to Pearl Harbor when the sky filled with Japanese planes and bombs. He helped fight the fires and tend to the wounded. By the next day, he was part of a special mission.
+                    </p>
+
+                    <p>
+                        The B-17s were gone. Some B-18s were waiting.
+                    </p>
+
+                    <p>
+                        “What they’d done is work all night and gotten this plane cannibalized,” he later said in a newspaper interview. “They had these great big smelly, rusty, old bombs.”
+                    </p>
+
+                    <p>
+                        The crews were ordered, Healy said, “to seek out and destroy the Japanese fleet.”
+                    </p>
+
+                    <p>
+                        “This is a completely suicidal mission,” he remembered thinking. “But we went anyway. We were damn fortunate we didn’t find anything.”
+                    </p>
+
+                    <p>
+                        They were less fortunate as they returned that night. Low on fuel, they found themselves under attack by American forces who thought the Japanese were returning. They managed to find another landing strip and survive another day.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-healy.jpg" class="img-fluid"><br>
+                </div>
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-5 top-blurb">
+                        <h3 style="text-transform:uppercase">More Ways to Serve</h3>
+                        <div>
+                            Some aviation obituaries featured those who worked in other roles. They were the people who kept the planes flying, taught pilots how to fly,
+                            and flew missions as navigators, tail gunners, and the like.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-4">
+                </div>
+
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-zien.jpg" class="img-fluid" id="zien">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, July 4, 2009</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/zien.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        <b>Allen Zien</b> joined the Army Air Corps, expecting to be a pilot. Instead, he served as an instructor specializing in teaching bombardiers how
+                        to use the top-secret Norden bombsight designed for more accurate bombing runs.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-zien.jpg" class="img-fluid"><br>
+                </div>
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-bosley.jpg" class="img-fluid" id="bosley">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, September 24, 2009 - Page 5B</figcaption>
+                    </div>
+
+                    <p>
+                        <b>Richard H. Bosley</b> trained as a pilot, serving with the Army Air Forces and the Air Force Reserve, including with the 440th Airlift Wing in Milwaukee.
+                        He made sure he was flying the C-119 Flying Boxcar the day his son, Richard R. Bosley, was making his first jumps during paratrooper training.
+                    </p>
+
+                    <p>
+                        “It scared the heck out of me, but I made sure I was right on the drop zone each time,” he said in subsequent news accounts.
+                        For the record, the younger Richard passed paratrooper training. The older Richard survived to age 91.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-bosley.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-malecki.jpg" class="img-fluid" id="malecki">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, December 2, 2011 - Page 3B</figcaption>
+                    </div>
+
+                    <p>
+                        <b>Walter Malecki</b>, a tail gunner during WWII, was wounded in missions over Germany and Austria, and knocked unconscious during a wild emergency landing on the Italian coast. The pilot pulled him from the smoking plane, a B-24.
+                    </p>
+
+                    <p>
+                        He remembered looking out during one mission and realizing that the famous Tuskegee Airmen were escorting their B-24.
+                    </p>
+
+                    <p>
+                        “He always said those guys were the best,” son Charles said. “They were always glad to see them.”
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-malecki.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-scholz.jpg" class="img-fluid" id="scholz">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, September 21, 2003 - Page 1B</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/scholz.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        <b>Allan E.V. Scholz</b> first served as an aircraft mechanic before completing flight training in 1943. He went on to become a flight instructor and a flight engineer on B-29s. He flew during the Korean War, piloting B-26 Invaders on night bombing runs to cut enemy supply lines. During the Vietnam War, he flew C-124 cargo planes that hauled tanks and bigger equipment.
+                    </p>
+
+                    <p>
+                        Like many pilots, he got his first taste of flying as a little kid.
+                    </p>
+
+                    <p>
+                        “His father took him to the Outagamie County Fair,” daughter Janet Zehren said. “An old  World War I pilot—with an equally old World War I plane—was giving rides.
+                    </p>
+
+                    <p>
+                        “Dad was hooked immediately,” she said.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-scholz.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-kapus.jpg" class="img-fluid" id="kapus">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, January 24, 2009 - Page 6B</figcaption>
+                    </div>
+
+                    <img src="/static/sts-article/kapus1.jpg" class="img-fluid  float-end left-padding-image ">
+
+                    <p>
+                        Women pilots included <b>Jeannette C. Kapus</b>, among those <a href="https://www.wahf.org/hall-of-fame/jeanette-c-kapus/">named to the Wisconsin Aviation Hall of Fame.</a>
+                        After earning her wings in the 1940s, she was allowed to leave her civilian defense job to enlist with the <a href="https://en.wikipedia.org/wiki/Women_Airforce_Service_Pilots" target="_blank">Women Airforce Service Pilots.</a>
+                    </p>
+
+                    <p>
+                        While many women applied, only about 1,100 served with WASP.
+                        All were already pilots who trained and flew under the direction of the Army Air Forces.
+                    </p>
+
+                    <p>
+                        Kapus flew BT-13s and many other aircraft, including co-piloting the B-17.
+                    </p>
+
+                    <p>
+                        “I was placed in ferrying and engineering test flying,” she said in the book,
+                        <a href="https://www.amazon.com/Hero-Next-Door-Returns/dp/1878569767" target="_blank">The Hero Next Door Returns: Stories from Wisconsin’s World War II Veterans by Kristin Gilpatrick.</a>
+                    </p>
+
+                    <p>
+                        “Test flying meant that I tested aircraft when replacement parts were put on, like a new wing, engine, or aileron.
+                        So if they put on a new wing, I had to go up and see if it would really fly.
+                    </p>
+
+                    <p>
+                        “We were all driven by a love of flying and a feeling of duty to serve the country for which our sons, brothers, husbands, and friends were fighting,” Kapus said.
+                    </p>
+
+                    <p>
+                        A total of 38 WASP pilots, then classified as civilians, died in service.
+                        Their bodies were returned at family expense and without military honors. After the WASP was disbanded, records were classified and sealed for decades.
+                        Military status and honors finally came in 1977 with an act of Congress, posthumous recognition for many.
+                    </p>
+
+                    <p>
+                        Kapus was a rare exception with veteran status. She received a commission with the U.S. Air Force, first with the reserve, after the war.
+                        Despite her skill—and breaking and rebreaking spin records—she was denied the chance to serve as a pilot.
+                    </p>
+
+                    <p>
+                        “I was told ‘only <i>male</i> personnel are rated’ to be pilots,” she said.
+                    </p>
+
+                </div>
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-kapus.jpg" class="img-fluid"><br>
+                    <img src="/static/sts-article/kapus2.jpg" class="img-fluid ">
+                </div>
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-lovell.jpg" class="img-fluid" id="lovell">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, ????</figcaption>
+                    </div>
+
+                    <p>
+                        One story proved too good to wait until the pilot was deceased.
+                        So it was that advance research for a future obituary on <b>James A. Lovell</b> became a piece for the 40th anniversary of the Apollo 13 mission.
+                        Astronaut Lovell, a Navy pilot who grew up in Milwaukee, talked about the mission now known as NASA’s “successful failure.”
+                    </p>
+
+                    <p>
+                        “People often ask us, ‘Did you panic at all?’ There was no sense to panicking.
+                        We just had to figure out how to get home,” Lovell said in that pre-obit interview.
+                    </p>
+
+                    <p>
+                        “The real meaning of 13 was the ability of people to handle the problems and get home safely,” he said, crediting the work of everyone involved with Mission Control.
+                        “Survival was the only thing on our minds at the time.”
+                    </p>
+
+                    <p>
+                        Still that most successful survival did not mean Lovell didn’t miss his chance to walk on the moon.
+                    </p>
+
+                    <p>
+                        “For several years after, I looked at it with a sense of frustration that I didn’t land on the moon,” he said.
+                    </p>
+
+                    <p>
+                        That changed with time.
+                    </p>
+
+                    <p>
+                        “I looked at it as a triumph of the human ability to snatch success from almost certain disaster,” Lovell said. “So there’s mixed emotions.”
+                    </p>
+
+                    <p>
+                        Like fellow astronaut <a href="https://www.wahf.org/hall-of-fame/donald-k-deke-slayton/">Donald “Deke” Slayton</a>, Lovell is <a href="https://www.wahf.org/hall-of-fame/james-a-jim-lovell-jr/">among the Wisconsin Hall of Fame inductees</a>.
+                    </p>
+
+                </div>
+
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-lovell.jpg" class="img-fluid"><br>
+                </div>
+
+
+
+                <div class="col-8">
+
+                    <hr>
+
+                    <div class="my-3">
+                        <img src="/static/sts-article/story-marge.jpg" class="img-fluid" id="marge">
+                        <figcaption figure-caption text-end>Milwaukee Journal Sentinel, ????</figcaption>
+                    </div>
+
+
+                    <p>
+                        Perhaps one of the most memorable stories was that of <b>Majorie Bong Drucker</b>, whose portrait was painted on the nose of a P-38 Lightning fighter during WWII. It was flown by Maj. Richard Bong.
+                    </p>
+
+                    <p>
+                        He came to be called America’s “Ace of Aces”—decades later, <a href="https://www.wahf.org/hall-of-fame/richard-bong/">named to the Wisconsin Aviation Hall of Fame.</a>
+                        She became known as his sweetheart and then bride, their wedding the stuff of Hollywood newsreels.
+                    </p>
+
+                    <p>
+                        Six months later, she was a widow after Bong died while testing the Air Force’s first jet, the F-80 Shooting Star, in 1945.
+                        She learned of his death while listening to the radio.
+                    </p>
+
+                    <p>
+                        After his funeral back home in northern Wisconsin, she disappeared from the public eye, returning to California where they had been stationed.
+                        She eventually remarried and became the mother of two daughters, who were surprised when they learned just how famous their mother and her first husband were.
+                    </p>
+
+                    <p>
+                        She returned to Wisconsin many years later to help dedicate the Richard I. Bong Memorial Bridge,
+                        connecting Superior with Duluth, Minnesota, and found new purpose working on behalf of veterans.
+                    </p>
+
+                    <p>
+                        I remember interviewing her family, working from the dining room table at home one evening in 2003.
+                        The next morning, I rushed to the newsroom, dropped my notes on the desk and went right to the Journal Sentinel photo library, hoping there would be an old file with Richard Bong’s name on it.
+                    </p>
+
+                    <p>
+                        There was.
+                    </p>
+
+                    <p>
+                        Dozens of photos spilled out.
+                        Marjorie taking cookies out of the oven for the returning hero.
+                        The happy couple leaving the church after their wedding.
+                        A solemn young widow walking between his mother and hers as they arrived for the funeral.
+                        And, of course, the photos of her face on the nose of his plane.
+                    </p>
+
+                    <p>
+                        The best Marjorie story, though, happened when she was visiting the EAA Aviation Museum.
+                        There was a P-38 Lightning, an exact replica of the “Marge” plane. A man near her wondered aloud whatever happened to Marge.
+                    </p>
+
+                    <p>
+                        Marjorie Bong Drucker stuck out her left hand, putting the fingers of her right hand on her pulse.
+                    </p>
+
+                    <p>
+                        “She’s still doing all right, as far as I can tell,” she told him.
+                    </p>
+
+                    <p>
+                        <mark>“Oh, my God, I’m talking to Marge!” the man responded.</mark>
+                    </p>
+
+                    <p>
+                        While she is no longer with us, she lives on in aviation history just as her famous husband does.
+                        So, too, do all the other high-flying heroes and enthusiasts, each contributing in their own ways to the history of flight.
+                        It is an honor—again—to share their stories.
+                    </p>
+
+                </div>
+
+
+                <div class="col-4 right-column">
+                    <img src="/static/sts-article/sts-bong4.jpg" class="img-fluid"><br><br>
+                    <img src="/static/sts-article/sts-bong5.jpg" class="img-fluid"><br>
+                </div>
+
+                <div class="col-12">
+                    <img src="/static/sts-article/bong-marge-wedding-wide.jpg" class="img-fluid">
+                </div>
+
+                <div class="col-16 p-3 my-4 credits">
+
+                    <p>
+                        <i>
+                        Amy Rabideau Silvers served as news obituary writer for the Milwaukee Journal Sentinel from 2000 to 2012.
+                        She enjoys flying as a passenger, including with pilot son Dan Silvers, now involved with the Leo J. Kohn Photography Collection.
+                        </i>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- begin footer -->
+    <footer class="footer mt-auto py-3 pt-5">
+        <div class="container border-top">
+            <div class="row py-3">
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Membership</h5>
+                    {% get_footer_menu slug="footer_membership" parent=site_root calling_page=self %}
+                </div>
+
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Hall of Fame</h5>
+                    {% get_footer_menu slug="footer_hall_of_fame" parent=site_root calling_page=self %}
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>About WAHF</h5>
+                    {% get_footer_menu slug="footer_about" parent=site_root calling_page=self %}
+                </div>
+
+                {% if current_magazine_issue.cover %}
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
+                        <a href="{% slugurl current_magazine_issue.slug %}">
+                            {% image current_magazine_issue.cover height-300 class="img-thumbnail img-fluid" %}
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                <p class="text-muted"><small>&copy; {% now 'Y' %} Wisconsin Aviation Hall of Fame</small></p>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js" integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.7.1.min.js"
+			  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			  crossorigin="anonymous"></script>
+    <script>
+      feather.replace()
+    </script>
+
+    <script>
+$(document).ready(function() {
+    $(".reveal").each(function(index) {
+        (function(that, i) {
+            var t = setTimeout(function() {
+                $(that).animate({opacity: 1}, 700);;
+            }, 200 + 90 * i);
+        })(this, index);
+    });
+
+});
+    </script>
+  </body>
+</html>
