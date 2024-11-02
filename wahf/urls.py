@@ -22,11 +22,6 @@ urlpatterns = [
     # WAGTAIL DOCUMENT VIEWER
     path("documents/", include(wagtaildocs_urls)),
     path(
-        "kohn/",
-        TemplateView.as_view(template_name="kohn/kohn.html"),
-        name="kohn",
-    ),
-    path(
         "kohn/donate",
         membership_views_donations.KohnDonateRedirect.as_view(),
         name="kohn_donate_redirect",

@@ -59,6 +59,48 @@ class ArticleListPage(OpenGraphMixin, Page):
     ]
 
 
+class KohnProjectPage(Page):
+    funding_percent_raised = models.FloatField(null=True, blank=True)
+    fundraising_status = RichTextField(
+        help_text="The description of the fundraising status of our project.",
+        blank=True,
+    )
+
+    show_donors_list = models.BooleanField(default=False)
+
+    business_donors = RichTextField(
+        help_text="A list of businesses that have donated.",
+        blank=True,
+    )
+
+    individual_donors = RichTextField(
+        help_text="A list of individuals that have donated.",
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("funding_percent_raised"),
+                FieldPanel("fundraising_status"),
+            ],
+            heading="Funding Status",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("show_donors_list"),
+                FieldPanel("business_donors"),
+                FieldPanel("individual_donors"),
+            ],
+            heading="Donors",
+        ),
+    ]
+
+    parent_page_type = [
+        "home.HomePage",
+    ]
+
+
 class ArticlePage(OpenGraphMixin, Page):
     author = models.ForeignKey(
         "content.ArticleAuthor", null=True, blank=True, on_delete=models.PROTECT

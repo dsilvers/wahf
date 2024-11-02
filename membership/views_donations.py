@@ -1,7 +1,6 @@
 import stripe
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.views.generic.base import View
 from sentry_sdk import capture_exception
 
@@ -54,7 +53,7 @@ class KohnDonateRedirect(View):
             #    # self.request.session["payment_error"] = e.user_message
             if settings.SENTRY_DSN:
                 capture_exception(e)
-            return HttpResponseRedirect(reverse("kohn"))
+            return HttpResponseRedirect("/kohn")
 
         response = HttpResponse(content="", status=303)
         response["Location"] = checkout_session.url
