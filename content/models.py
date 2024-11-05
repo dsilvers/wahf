@@ -78,6 +78,16 @@ class KohnProjectPage(Page):
         blank=True,
     )
 
+    silent_auction_donors = RichTextField(
+        help_text="A list of individuals that donated items to the silent auction.",
+        blank=True,
+    )
+
+    special_donors = RichTextField(
+        help_text="A list of special donors to be featured at the top of the page.",
+        blank=True,
+    )
+
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -89,8 +99,10 @@ class KohnProjectPage(Page):
         MultiFieldPanel(
             [
                 FieldPanel("show_donors_list"),
+                FieldPanel("special_donors"),
                 FieldPanel("business_donors"),
                 FieldPanel("individual_donors"),
+                FieldPanel("silent_auction_donors"),
             ],
             heading="Donors",
         ),

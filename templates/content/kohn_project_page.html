@@ -175,12 +175,22 @@ h2 {
     text-transform: uppercase;
 }
 
+.donors-list  p {
+    margin-bottom: 0;
+}
+
 .donors-list-businesses {
-    font-size: larger;
+    font-size: 1.2rem;
+    columns: auto 18em;
+}
+
+.donors-list-special {
+    font-size: 1.4rem;
+    columns: auto 18em;
 }
 
 .donors-list-individuals {
-    columns: 16em;
+    columns: auto 12em;
 }
 
 </style>
@@ -956,6 +966,17 @@ return elementBottom > viewportTop && elementTop < viewportBottom;
 </div>
 
 <div class="container donors p-3">
+    {% if page.special_donors %}
+    <div class="row">
+        <div class="col-12 donors-list donors-list-special nunito-sans-400">
+            {{ page.special_donors|safe }}
+        </div>
+    </div>
+
+    <hr>
+    {% endif %}
+
+    {% if page.business_donors %}
     <div class="row">
         <div class="col-12 donors-list donors-list-businesses nunito-sans-400">
             {{ page.business_donors|safe }}
@@ -963,11 +984,35 @@ return elementBottom > viewportTop && elementTop < viewportBottom;
     </div>
 
     <hr>
+    {% endif %}
 
+    {% if page.individual_donors%}
     <div class="row">
         <div class="col-12 donors-list donors-list-individuals nunito-sans-400">
             {{ page.individual_donors|safe }}
         </div>
+    </div>
+
+    <hr>
+    {% endif %}
+
+    {% if page.silent_auction_donors %}
+    <div class="row">
+        <div class="pb-3" style="font-weight:bold;">
+            SILENT AUCTION DONORS
+        </div>
+
+        <div class="col-12 donors-list donors-list-individuals nunito-sans-400">
+            {{ page.silent_auction_donors|safe }}
+        </div>
+
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <div class="p-3 mt-4">
+        🌹 = Inductee
     </div>
 </div>
 
