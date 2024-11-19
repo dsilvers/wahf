@@ -47,6 +47,17 @@ class KohnDonateRedirect(View):
                 allow_promotion_codes=False,
                 metadata={"action": "kohn"},
                 api_key=get_stripe_secret_key_donations(),
+                custom_fields=[
+                    {
+                        "key": "donor_credit",
+                        "label": {
+                            "type": "custom",
+                            "custom": "Donation In Honor/In Memory Of",
+                        },
+                        "type": "text",
+                        "optional": True,
+                    },
+                ],
             )
         except Exception as e:
             # if hasattr(e, "user_message"):

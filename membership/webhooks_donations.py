@@ -53,6 +53,12 @@ def process_kohn_donation(obj, session):
     name = session["customer_details"]["name"]
     to_email = session["customer_details"]["email"]
 
+    in_honor_of = None
+    custom_fields = session.get("custom_fields", [])
+    for field in custom_fields:
+        if field["key"] == "donor_credit":
+            in_honor_of = field.get("text", {}).get("value", None)
+
     stripe_id = session["id"]
 
     html_body = render_to_string(
@@ -60,6 +66,7 @@ def process_kohn_donation(obj, session):
         {
             "amount": amount_total,
             "name": name,
+            "in_honor_of": in_honor_of,
             "transaction_id": stripe_id,
         },
     )

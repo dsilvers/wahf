@@ -5,6 +5,10 @@
 <p><strong>Thank you so much for your generous donation of ${{ amount|floatformat:2 }} to the Leo J. Kohn Photography Collection Digitization Project.</strong>
 Your support means a lot to us and will help us preserve these historic aviation images for future generations.</p>
 
+{% if in_honor_of %}
+<p>Your donation was made in honor of <strong>{{ in_honor_of }}</strong>.</p>
+{% endif %}
+
 <p>With your help, we are one step closer to our goal of digitizing this valuable collection and making it accessible to aviation enthusiasts, researchers, and the public.</p>
 
 <p>We deeply appreciate your contribution and are grateful for your support of our efforts. <strong>Thank you again for your generosity.</strong></p>
