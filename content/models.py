@@ -138,6 +138,12 @@ class ArticlePage(OpenGraphMixin, Page):
         use_json_field=True,
     )
 
+    page_css = models.TextField(
+        "CSS/Style",
+        blank=True,
+        help_text="Leave blank if you don't know what CSS is. This is custom styling for this article.",
+    )
+
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -154,6 +160,12 @@ class ArticlePage(OpenGraphMixin, Page):
             ],
             heading="Article Contents",
         ),
+        MultiFieldPanel(
+            [
+                FieldPanel("page_css"),
+            ],
+            heading="Article Style",
+        ),
     ]
 
     parent_page_type = [
@@ -162,6 +174,11 @@ class ArticlePage(OpenGraphMixin, Page):
 
     class Meta:
         ordering = ["-date"]
+
+    def get_graph_image(self):
+        if self.image:
+            return self.image
+        return super().get_graph_image()
 
 
 class ScholarshipPage(OpenGraphMixin, Page):

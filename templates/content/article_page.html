@@ -13,6 +13,9 @@
 .article-body {
     line-height: 200%;
 }
+
+{{ page.page_css }}
+
 </style>
 {% endblock %}
 
@@ -53,7 +56,7 @@
                 {% elif block.block_type == 'paragraph' %}
                     {{ block.value|richtext }}
                 {% elif block.block_type == 'image' %}
-                    {% image block.value original class="img-fluid" %}
+                    {% image block.value original class="img-fluid article-image" %}
                     {% caption block.value %}
                 {% endif %}
             {% endfor %}
