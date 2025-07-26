@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster
+FROM python:3.12-slim-bullseye
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -9,7 +9,7 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     git \
     build-essential \
     libpq-dev \
-    libmariadbclient-dev \
+    libmariadb-dev \
     libjpeg62-turbo-dev \
     zlib1g-dev \
     libwebp-dev \
