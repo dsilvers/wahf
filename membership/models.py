@@ -22,12 +22,12 @@ class BanquetRSVPThanksPage(OpenGraphMixin, Page):
 class BanquetPayment(models.Model):
     stripe_id = models.CharField(max_length=100)
     amount_total = models.DecimalField(max_digits=10, decimal_places=2)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, blank=True, null=True)
     email = models.CharField(max_length=200)
-    phone = models.CharField(max_length=200)
+    phone = models.CharField(max_length=200, blank=True, null=True)
     item = models.CharField(max_length=200)
     quantity = models.PositiveIntegerField()
-    attendee_names = models.CharField(max_length=250)
+    attendee_names = models.CharField(max_length=250, blank=True, null=True)
     docent_tour = models.CharField(max_length=250)
     signup_date = models.DateTimeField()
 
