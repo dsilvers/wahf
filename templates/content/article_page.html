@@ -11,7 +11,19 @@
     color: #9e9e9e;
 }
 .article-body {
-    line-height: 200%;
+    line-height: 180%;
+    font-size: 1.4rem;
+}
+
+.article-image-container {
+    border: 2px solid #eaeaea;
+    padding: 15px 15px 15px 15px;
+    margin-bottom: 15px;
+}
+
+figcaption {
+    color: white;
+    background: #1e1e1e;
 }
 
 {{ page.page_css }}
@@ -24,14 +36,6 @@
 <div class="container">
     <div class="row">
         <div class="col-xl-9">
-
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb p-2">
-                  <li class="breadcrumb-item"><a href="{% slugurl page.get_parent.slug %}">All Articles</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
-                </ol>
-            </nav>
-
 
             <p class="lead">
                 {% if page.author %}
@@ -54,8 +58,10 @@
                 {% elif block.block_type == 'paragraph' %}
                     {{ block.value|richtext }}
                 {% elif block.block_type == 'image' %}
-                    {% image block.value original class="img-fluid article-image" %}
-                    {% caption block.value %}
+                    <div class="article-image-container">
+                        {% image block.value original class="img-fluid article-image" %}
+                        {% caption block.value %}
+                    </div>
                 {% endif %}
             {% endfor %}
             </div>
@@ -88,6 +94,13 @@
                 </div>
             </div>
             {% endif %}
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-2">
+                  <li class="breadcrumb-item"><a href="{% slugurl page.get_parent.slug %}">All Articles</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
+                </ol>
+            </nav>
 
         </div>
     </div>
