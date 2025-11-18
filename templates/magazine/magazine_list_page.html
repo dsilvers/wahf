@@ -15,14 +15,12 @@
 
 {% block content %}
 
-<h1>{{ page.title }}</h1>
-
 
 <div class="container text-center">
     <div class="row">
         {% for magazine in magazine_list %}
         <div class="col-md-4">
-            <a href="{% slugurl magazine.slug %}" title="{{ magazine }}">{% image magazine.cover height-600 class="img-thumbnail img-fluid" alt=magazine %}</a>
+            <a href="{% slugurl magazine.slug %}" title="{{ magazine }}">{% image magazine.cover height-600 class="img-thumbnail img-fluid" alt=magazine loading="lazy"%}</a>
             {% caption magazine.cover %}
         </div>
         {% endfor %}

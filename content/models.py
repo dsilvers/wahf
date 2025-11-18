@@ -128,6 +128,11 @@ class ArticlePage(OpenGraphMixin, Page):
     short_description = models.TextField(
         help_text="A short description of this gallery, used for gallery list page and social media preview."
     )
+    top_badge = models.TextField(
+        help_text="A short tag placed over the image. Example 'WAHF: 40 YEARS, 40 STORIES",
+        blank=True,
+        null=True,
+    )
 
     body = StreamField(
         [

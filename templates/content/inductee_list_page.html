@@ -22,15 +22,13 @@
 
 {% block content %}
 
-<h1>{{ page.title }}</h1>
-
 <div class="container">
 {% for inductee in inductee_list %}
     <div class="row my-3 inductee-item" onclick="window.location='{% pageurl inductee %}';">
 
         <div class="col-md-auto col-3 col-auto">
             {% if inductee.photo %}
-                <a href="{% pageurl inductee %}">{% image inductee.photo fill-100x100 class="img-thumbnail img-fluid" %}</a>
+                <a href="{% pageurl inductee %}">{% image inductee.photo fill-100x100 class="img-thumbnail img-fluid" loading="lazy" %}</a>
             {% else %}
                 <a href="{% pageurl inductee %}">{% inductee_placeholder_image %}</a>
             {% endif %}

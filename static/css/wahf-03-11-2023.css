@@ -13,10 +13,6 @@ body {
     max-height: 80px;
 }
 
-h1 {
-    padding: 15px 0 5px 0;
-}
-
 h1, h2, h3, h4, h5 {
     font-family: "Lora", serif;
     font-weight: 700;
@@ -25,8 +21,6 @@ h1, h2, h3, h4, h5 {
 .header-nav {
     padding-left: 20px;
     padding-top: 40px;
-}
-.nav-link {
 }
 
 .card-date {
@@ -145,3 +139,18 @@ figcaption {
          url('/static/fonts/Lora/lora-v32-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
          url('/static/fonts/Lora/lora-v32-latin-700.svg#Lora') format('svg'); /* Legacy iOS */
   }
+
+
+.page-title-container {
+    border-top: 5px solid #0085cb;
+    padding: 16px 0 16px 0;
+    margin: 5px 0 25px 0;
+}
+
+.page-title-container h1 {
+    margin: 5px 0 5px 0;
+    padding: 5px;
+    color: black;
+    border-bottom: 1px dotted black;
+    display: inline;
+}

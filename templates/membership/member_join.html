@@ -9,6 +9,12 @@
 Membership
 {% endblock %}
 
+{% block page_title %}
+    {% with page_title="WAHF Membership - Sign Up" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
 {% block extra_css %}
 
 <style type="text/css">

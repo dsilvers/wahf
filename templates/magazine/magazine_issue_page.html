@@ -8,8 +8,6 @@
     <a href="{% slugurl page.get_parent.slug %}">Back to All Issues</a>
 </div>
 
-<h1>{{ page.title }}</h1>
-
 {% if page.volume_number and page.issue_number %}
 <span class="badge text-bg-secondary">
     Volume {{ page.volume_number }}, Issue {{ page.issue_number }}
