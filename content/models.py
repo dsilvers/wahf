@@ -146,7 +146,7 @@ class ArticlePage(OpenGraphMixin, Page):
     page_css = models.TextField(
         "CSS/Style",
         blank=True,
-        help_text="Leave blank if you don't know what CSS is. This is custom styling for this article.",
+        help_text="Leave blank if you do not have any custom CSS. This is custom styling for this article.",
     )
 
     content_panels = Page.content_panels + [
@@ -156,6 +156,7 @@ class ArticlePage(OpenGraphMixin, Page):
                 FieldPanel("date"),
                 FieldPanel("image"),
                 FieldPanel("short_description"),
+                FieldPanel("top_badge"),
             ],
             heading="Details and Preview",
         ),
