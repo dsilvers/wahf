@@ -7,12 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Noto+Serif&family=Quicksand&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-{% endblock %}
 
-{% block page_title %}
-{% endblock %}
-
-{% block content %}
 <style type="text/css">
 figcaption {
     font-size: smaller;
@@ -83,60 +78,166 @@ figcaption {
     font-size: 1.2rem;
 }
 
+.inductee-bar {
+    height: 60px;
+    overflow: hidden;
+    background: black;
+    padding: 5px 0 5px 0;
+    text-align: center;
+}
+
+.inductee-bar img {
+    margin-bottom: 10px;
+}
+
+.magazine-image {
+    background-position: top !important;
+}
+
+.dark-box {
+    background:
+}
+
+.taller-box .article-img {
+    height: 600px;
+}
+
+.taller-box {
+    height: 600px;
+}
+
+.article-title-smaller h2 {
+    font-size: calc(1.425rem + .9vw);
+}
+
 </style>
 
+{% endblock %}
 
-<div class="row p-4 mx-1 my-3 mb-3 rounded text-bg-dark">
+{% block page_title %}
+{% endblock %}
+
+{% block before_title %}
+    <div class="inductee-bar mb-3">
+    {% for inductee in inductee_bar %}
+        <a href="{% pageurl inductee %}">{% image inductee.photo fill-50x50 class="img-fluid" loading="lazy" %}</a>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <!-- magazine preview -->
     {% get_current_magazine_issue as current_magazine_issue %}
-    {% if user.pk > 0 and current_magazine_issue %}
-        <!-- magazine preview -->
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">{{ current_magazine_issue.headline }}</h1>
-            <p class="lead my-2">{{ current_magazine_issue.blurb|safe }}</p>
+    <div class="col-lg-6 col-md-6 mb-2 col-sm-12 ">
+        <div class="p-2 rounded text-bg-dark">
+            <div class="col-article" onclick="window.location='{% slugurl current_magazine_issue.slug %}';">
+                <div class="article-hide">
+                    <a href="{% slugurl current_magazine_issue.slug %}">{{ current_magazine_issue.headline }}</a>
+                </div>
 
-            <p class="lead mb-0">
-                <a href="{% slugurl current_magazine_issue.slug %}" class="text-white fw-bold">
-                    Read <i>Forward in Flight</i>
-                </a>
-            </p>
-        </div>
+                <div class="article-img-wrapper taller-box">
+                    {% image current_magazine_issue.cover fill-900x900 as magazine_image %}
+                    <div class="img-fluid article-img magazine-image" style="background-image: url('{{ magazine_image.url }}');">
+                    </div>
 
-        {% if current_magazine_issue.cover %}
-            <div class="col-md-6 px-0 mx-auto my-auto px-2 py-3 text-center">
-                <a href="{% slugurl current_magazine_issue.slug %}">
-                    {% image current_magazine_issue.cover height-400 class="img-thumbnail img-fluid" %}
-                    {% caption current_magazine_issue.cover %}
-                </a>
+                </div>
+
+                <div class="article-description">
+                        <p class="lead">
+                            {{ current_magazine_issue.blurb|safe }}
+
+                            <span class="read-more">
+                                Read <i>Forward in Flight</i>
+                            <span>
+                        </p>
+                </div>
             </div>
-        {% endif %}
-
-    {% else %}
-        <!-- anonymous sign in -->
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">{{ page.non_member_headline }}</h1>
-            <p class="lead my-3">{{ page.non_member_blurb|safe }}</p>
-
-            {% if page.non_member_link_page and page.non_member_link_text %}
-            <p class="lead mb-0">
-                <a href="{% slugurl page.non_member_link_page.slug %}" class="text-white fw-bold">
-                    {{ page.non_member_link_text }}
-                </a>
-            </p>
-            {% endif %}
         </div>
+    </div>
 
-        {% if page.non_member_image %}
-        <div class="col-md-6 px-0 mx-auto my-auto px-3 py-3 text-center">
-            {% image page.non_member_image fill-600x600 class="img-thumbnail img-fluid" %}
-            {% caption page.non_member_image %}
+
+    <div class="col-lg-6 col-md-6 col-sm-12 mb-2 rounded text-bg-dark">
+        <div class="p-2 rounded text-bg-dark">
+            <div class="col-article" onclick="window.location='{% slugurl page.non_member_link_page.slug %}';">
+                <div class="article-hide">
+                    <a href="{% slugurl page.non_member_link_page.slug %}">Become a WAHF Member</a>
+                </div>
+
+                <div class="article-img-wrapper taller-box">
+                    {% image page.non_member_image fill-900x900 as non_member_image %}
+                    <div class="img-fluid article-img" style="background-image: url('{{ non_member_image.url }}');">
+                    </div>
+
+                    <div class="article-title article-title-smaller">
+                        <h2>{{ page.non_member_headline }}</h2>
+                    </div>
+                </div>
+
+                <div class="article-description">
+                    <p class="lead">{{ page.non_member_blurb|safe }}</p>
+
+                    <span class="read-more">
+                        Become a Member
+                    <span>
+
+                    <a href="{% slugurl page.non_member_link_page.slug %}" class="text-white fw-bold">
+
+                    </a>
+                </div>
+            </div>
         </div>
-        {% endif %}
+    </div>
 
-    {% endif %}
+    {% for card in page.home_page_cards.all %}
+    <div class="col-lg-6 col-md-6 col-sm-12 p-2">
+        <div class="col-article rounded" onclick="window.location='{% slugurl card.link_page.slug %}';">
+            <div class="article-hide">
+                <a href="{% slugurl card.link_page.slug %}">{{ card.heading }}</a>
+            </div>
+
+            <div class="article-img-wrapper">
+                {% image card.image fill-900x900 as card_img %}
+                <div class="img-fluid article-img" style="background-image: url('{{ card_img.url }}');">
+                </div>
+
+                <div class="article-title">
+                    <h2>{{ card.heading }}</h2>
+                </div>
+            </div>
+
+            <div class="article-description">
+                    {% if card.badge_text %}
+                    <span class="badge text-bg-info">
+                        {{ card.badge_text }}
+                    </span>
+                    {% endif %}
+
+                    {% if card.date %}
+                    <span class="badge text-bg-secondary">
+                        {{ card.date|date:"N j" }}
+                    </span>
+                    {% endif %}
+
+                    <p class="lead">
+                        {{ card.blurb|safe }}
+
+                        <span class="read-more">
+                            Read&nbsp;More
+                        <span>
+                    </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
 </div>
 
-<div class="row mb-2">
 
+
+<div class="row mb-2">
     <!-- desktop -->
     <div class="col-12 d-none d-lg-inline">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -168,51 +269,6 @@ figcaption {
             </div>
         </div>
     </div>
-
-    {% for card in page.home_page_cards.all %}
-    <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col px-3 py-3 d-flex flex-column position-static">
-
-                <!--
-                <strong class="d-inline-block mb-2 text-primary">Featured Story</strong>
-                -->
-
-                <h3 class="my-0">{{ card.heading }}</h3>
-
-                {% if card.date or card.badge_text %}
-                    <p>
-                    {% if card.date %}
-                    <span class="badge rounded-pill bg-secondary">{{ card.date|date:"N j" }}</span>
-                    {% endif %}
-
-                    {% if card.badge_text %}
-                        <span class="badge rounded-pill bg-info text-dark">{{ card.badge_text }}</span>
-                    {% endif %}
-                    </p>
-                {% endif %}
-
-                <p class="card-text mb-auto">
-                    {{ card.blurb|safe }}
-                </p>
-
-
-
-                {% if card.link_page %}
-                <a href="{% slugurl card.link_page.slug %}" class="stretched-link">{{ card.link_text }}</a>
-                {% endif %}
-
-            </div>
-
-            {% if card.image %}
-            <div class="col-auto d-none d-lg-block">
-                {% image card.image fill-200x200 class="img-thumbnail img-fluid mx-2 my-2" %}
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
-
 </div>
 
 {% endblock content %}

@@ -316,6 +316,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         help_text="Main image for the inductee list and primary photo for their page.",
+        db_index=True,
     )
 
     gallery = StreamField(

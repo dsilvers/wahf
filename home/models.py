@@ -4,6 +4,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 
+from content.models import InducteeDetailPage
 from wahf.mixins import OpenGraphMixin
 
 
@@ -101,3 +102,12 @@ class HomePage(OpenGraphMixin, Page):
         if self.non_member_image:
             return self.non_member_image
         return super().get_graph_image()
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["inductee_bar"] = InducteeDetailPage.objects.filter(
+            photo__isnull=False
+        ).order_by("?")[0:36]
+
+        return context
