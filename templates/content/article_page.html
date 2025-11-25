@@ -5,11 +5,16 @@
 
 {% block extra_css %}
 <style type="text/css">
+.page-title-container {
+    margin-bottom: 10px;
+}
+
 .about-the-author {
     font-family: monospace;
     text-transform: uppercase;
     color: #9e9e9e;
 }
+
 .article-body {
     line-height: 180%;
     font-size: 1.4rem;
@@ -17,13 +22,43 @@
 
 .article-image-container {
     border: 2px solid #eaeaea;
-    padding: 15px 15px 15px 15px;
+    padding: 7px;
     margin-bottom: 15px;
 }
 
 figcaption {
-    color: white;
+    color: #eaeaea;
     background: #1e1e1e;
+    line-height: 140%;
+    padding: 4px 8px 4px 8px;
+}
+
+.image-credit {
+    color: #7e7e7e;
+    text-transform: uppercase;
+    font-size: smaller;
+}
+
+@media (min-width: 768px) {
+    .half-width {
+        width: 50%;
+    }
+
+    .float-left {
+        margin-right: 20px;
+        float: left !important;
+    }
+
+    .float-right {
+        margin-left: 20px;
+        float: right !important;
+    }
+
+    .double-wide {
+        float: left !important;
+        width: 48%;
+        margin-right: 15px;
+    }
 }
 
 {{ page.page_css }}
@@ -64,6 +99,8 @@ figcaption {
                     </div>
                 {% endif %}
             {% endfor %}
+
+                <div style="clear:both"></div>
             </div>
 
             {% if page.author %}

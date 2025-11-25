@@ -91,6 +91,7 @@ figcaption {
 }
 
 .magazine-image {
+    background-size: contain !important;
     background-position: top !important;
 }
 
@@ -139,7 +140,7 @@ figcaption {
                 </div>
 
                 <div class="article-img-wrapper taller-box">
-                    {% image current_magazine_issue.cover fill-900x900 as magazine_image %}
+                    {% image current_magazine_issue.cover width-900 as magazine_image %}
                     <div class="img-fluid article-img magazine-image" style="background-image: url('{{ magazine_image.url }}');">
                     </div>
 
