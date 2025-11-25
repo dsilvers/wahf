@@ -141,6 +141,14 @@ figcaption {
   }
 
 
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'RobotoCondensed';
+    font-style: normal;
+    font-weight: 200;
+    src: url('/static/fonts/Roboto_Condensed/RobotoCondensed-Light.ttf') format('truetype');
+  }
+
 .page-title-container {
     border-top: 5px solid #0085cb;
     padding: 16px 0 16px 0;
@@ -236,4 +244,15 @@ figcaption {
 .article-description .lead {
     font-size: 1.4rem;
     padding-top: 6px;
+}
+
+.navbar-nav, .nav {
+    font-family: "RobotoCondensed";
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: larger;
+}
+
+.nav-link .active {
+    border-bottom: 2px solid black;
 }
