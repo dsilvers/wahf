@@ -155,7 +155,7 @@ class ArticlePage(OpenGraphMixin, Page):
             (
                 "paragraph",
                 blocks.RichTextBlock(
-                    features=["bold", "italic", "link", "text-highlight"]
+                    # features=["bold", "italic", "link", "text-highlight"]
                 ),
             ),
             ("image", ImageChooserBlock()),
