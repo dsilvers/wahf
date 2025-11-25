@@ -82,6 +82,12 @@ figcaption {
                 <span class="badge text-bg-secondary">
                     {{ page.date }}
                 </span>
+
+                {% if page.top_badge %}
+                    <span class="badge text-bg-warning">
+                        {{ page.top_badge }}
+                    </span>
+                {% endif %}
             </p>
 
             <hr class="border border-primary border-3 opacity-75">
@@ -117,6 +123,7 @@ figcaption {
                         </div>
                         {% endif %}
 
+                        {% if page.author and page.author.about_blurb %}
                         <div class="col p-2">
                             <h4>{{ page.author.name }}</h4>
 
@@ -127,6 +134,7 @@ figcaption {
                             <p>{{ page.author.about_blurb|safe }}</p>
 
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

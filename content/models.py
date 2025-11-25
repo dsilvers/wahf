@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -117,7 +119,19 @@ class ArticlePage(OpenGraphMixin, Page):
     author = models.ForeignKey(
         "content.ArticleAuthor", null=True, blank=True, on_delete=models.PROTECT
     )
-    date = models.DateField(null=True, blank=True)
+    date = models.DateField(
+        null=True,
+        blank=True,
+        help_text="The date this article was published somewhere. Only displayed on the website.",
+    )
+    website_publish_date = models.DateField(
+        null=True,
+        blank=True,
+        default=datetime.date.today,
+        db_index=True,
+        help_text="This date is used for sorting the articles on the website. It is not displayed on the website.",
+    )
+
     image = models.ForeignKey(
         "archives.WAHFImage",
         null=True,
@@ -154,6 +168,7 @@ class ArticlePage(OpenGraphMixin, Page):
             [
                 FieldPanel("author"),
                 FieldPanel("date"),
+                FieldPanel("website_publish_date"),
                 FieldPanel("image"),
                 FieldPanel("short_description"),
                 FieldPanel("top_badge"),
@@ -179,7 +194,7 @@ class ArticlePage(OpenGraphMixin, Page):
     ]
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ["-website_publish_date", "-pk"]
 
     def get_graph_image(self):
         if self.image:
