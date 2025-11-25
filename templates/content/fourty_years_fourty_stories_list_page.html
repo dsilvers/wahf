@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load image_tags %}
+{% load placeholder_tags %}
+
+{% block extra_css %}
+<style type="text/css">
+.article-40th-item {
+    cursor: pointer;
+    position: relative;
+    height: 140px;
+    cursor: pointer;
+}
+
+.item-text {
+    width: 100%;
+    z-index: 100;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    padding: 12px;
+}
+
+.item-text h2 {
+    font-size: calc(1.925rem + .9vw);
+    text-shadow: 0 1px 0 black;
+    margin-left: 8vw;
+}
+
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.image-wrapper img {
+  display: block;
+  width: 100%;
+  height: 150px;
+  border-bottom: 15px solid black;
+  object-fit: cover;
+}
+
+.image-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9">
+
+            {% for block in page.body %}
+                {% if block.block_type == 'heading' %}
+                    <h3>{{ block.value }}</h3>
+                {% elif block.block_type == 'paragraph' %}
+                    {{ block.value|richtext }}
+                {% elif block.block_type == 'image' %}
+                    {% image block.value original class="img-fluid" %}
+                    {% caption block.value %}
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
+
+
+{% for feature in articles_list %}
+    <div class="article-40th-item" onclick="window.location='{% slugurl feature.article.slug %}'">
+        <div class="image-wrapper">
+            {% image feature.image fill-1200x125 class="" loading="lazy" %}
+        </div>
+        <div class="item-text p-3">
+            <h2>#{{ feature.article_number }} - {{ feature.short_title }}</h2>
+        </div>
+    </div>
+    <a class="d-none" href="{% slugurl feature.article.slug %}">{{ feature.short_title }}</a>
+
+{% endfor %}
+
+
+<div class="container">
+    <div class="content">
+
+
+
+{% endblock %}

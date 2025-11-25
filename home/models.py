@@ -93,6 +93,7 @@ class HomePage(OpenGraphMixin, Page):
         "content.ArticleListPage",
         "content.ScholarshipPage",
         "content.KohnProjectPage",
+        "content.FourtyYearsFourtyStoriesListPage",
         "archives.CollectionList",
         "membership.BanquetRSVPPage",
         "membership.BanquetRSVPThanksPage",

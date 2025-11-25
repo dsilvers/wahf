@@ -10,7 +10,7 @@ from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail.contrib.modeladmin.views import IndexView
 
 from archives.models import AircraftType, Location, Person
-from content.models import ArticleAuthor, ScholarshipRecipient
+from content.models import ArticleAuthor, FourtyYearsStory, ScholarshipRecipient
 from users.models import Member
 
 # https://parbhatpuri.com/add-download-csv-option-in-wagtail-modeladmin.html
@@ -146,6 +146,26 @@ class ArticleAuthorAdmin(ThumbnailMixin, ModelAdmin):
     )
     # list_filter = ('name', )
     # search_fields = ('name', )
+
+
+class FourtyYearsStoryAdmin(ThumbnailMixin, ModelAdmin):
+    model = FourtyYearsStory
+    base_url_path = "fourtyyears"  # customise the URL from default to admin/bookadmin
+    menu_item_name = "40th"
+    menu_icon = "pick"  # change as required
+    menu_order = 214  # will put in 3rd place (000 being 1st, 100 2nd)
+    # add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
+    exclude_from_explorer = (
+        False  # or True to exclude pages of this type from Wagtail's explorer view
+    )
+    # add_to_admin_menu = False  # or False to exclude your model from the menu
+    # https://stackoverflow.com/questions/73200676/is-there-a-way-to-show-images-in-a-wagtail-model-admin-record-listing-page
+    thumb_image_field_name = "image"
+    list_display = (
+        "short_title",
+        "article_number",
+        "admin_thumb",
+    )
 
 
 class PersonAdmin(ThumbnailMixin, ModelAdmin):
@@ -308,3 +328,4 @@ modeladmin_register(AircraftTypeAdmin)
 modeladmin_register(ScholarshipRecipientAdmin)
 modeladmin_register(ArticleAuthorAdmin)
 modeladmin_register(MemberTypeAdmin)
+modeladmin_register(FourtyYearsStoryAdmin)

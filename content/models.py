@@ -209,6 +209,63 @@ class ArticlePage(OpenGraphMixin, Page):
         return super().get_graph_image()
 
 
+class FourtyYearsStory(models.Model):
+    article_number = models.PositiveSmallIntegerField(unique=True)
+    article = models.OneToOneField(
+        "content.ArticlePage", related_name="fourty_article", on_delete=models.CASCADE
+    )
+    short_title = models.CharField(
+        max_length=250, help_text="Shorter version of the title for the 40th page."
+    )
+    image = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="Article Image",
+    )
+
+    class Meta:
+        ordering = ["-article_number"]
+
+    def __str__(self):
+        return f"#{self.article_number} - {self.short_title}"
+
+
+class FourtyYearsFourtyStoriesListPage(OpenGraphMixin, Page):
+    body = StreamField(
+        [
+            ("heading", blocks.CharBlock(form_classname="title")),
+            ("paragraph", blocks.RichTextBlock()),
+            ("image", ImageChooserBlock()),
+        ],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("body"),
+            ],
+            heading="Page Contents",
+        ),
+    ]
+
+    parent_page_type = [
+        "home.HomePage",
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["articles_list"] = FourtyYearsStory.objects.select_related(
+            "article", "image"
+        ).all()
+
+        return context
+
+
 class ScholarshipPage(OpenGraphMixin, Page):
     body = StreamField(
         [

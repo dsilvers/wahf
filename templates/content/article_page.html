@@ -74,6 +74,61 @@ blockquote {
     }
 }
 
+@media (min-width: 576px) {
+    .float-left {
+        margin-left: 0px;
+    }
+    .float-right {
+        margin-right: 0px;
+    }
+}
+@media (min-width: 768px) {
+    .float-left {
+        margin-left: 0px;
+    }
+    .float-right {
+        margin-right: -50px;
+    }
+}
+@media (min-width: 992px) {
+    .float-left {
+        margin-left: -60px;
+    }
+    .float-right {
+        margin-right: -80px;
+    }
+}
+@media (min-width: 1200px) {
+    .float-left {
+        margin-left: -80px;
+    }
+    .float-right {
+        margin-right: -180px;
+    }
+}
+@media (min-width: 1400px) {
+    .float-left {
+        margin-left: -80px;
+    }
+    .float-right {
+        margin-right: -220px;
+    }
+}
+
+@media (min-width: 1650px) {
+    .float-left {
+        margin-left: -120px;
+    }
+    .float-right {
+        margin-right: -260px;
+    }
+}
+
+.about-author {
+    padding: 0 1rem 1rem 1rem !important
+}
+
+
 {{ page.page_css }}
 
 </style>
@@ -125,7 +180,7 @@ blockquote {
             </div>
 
             {% if page.author and page.author.about_blurb  %}
-            <div class="border border-secondary rounded p-3 m-5">
+            <div class="border border-secondary rounded p-3 m-5 about-author">
                 <div class="about-the-author mx-1 my-2 p-2">
                     About The Author
                 </div>
