@@ -109,7 +109,7 @@ figcaption {
                 <div style="clear:both"></div>
             </div>
 
-            {% if page.author %}
+            {% if page.author and page.author.about_blurb  %}
             <div class="border border-secondary rounded p-3 m-5">
                 <div class="about-the-author mx-1 my-2 p-2">
                     About The Author
@@ -123,7 +123,6 @@ figcaption {
                         </div>
                         {% endif %}
 
-                        {% if page.author and page.author.about_blurb %}
                         <div class="col p-2">
                             <h4>{{ page.author.name }}</h4>
 
@@ -134,7 +133,6 @@ figcaption {
                             <p>{{ page.author.about_blurb|safe }}</p>
 
                         </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>

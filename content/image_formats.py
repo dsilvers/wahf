@@ -14,13 +14,13 @@ class CaptionedImageFormat(Format):
         elif self.name.endswith("_double"):
             container_classes = "double-wide"
 
-        if image.title:
+        if image.caption:
             source = (
                 f"<br><span class='image-credit'>{ image.source }</span>"
                 if image.source
                 else ""
             )
-            html = f"<div class='article-image-container {container_classes}'>{default_html}<figcaption>{image.title}{source}</figcaption></div>"
+            html = f"<div class='article-image-container {container_classes}'>{default_html}<figcaption>{image.caption}{source}</figcaption></div>"
         else:
             # no alt text
             html = f"<div class='article-image-container {container_classes}'>{default_html}</div>"

@@ -48,7 +48,7 @@ class ArticleListPage(OpenGraphMixin, Page):
             ArticlePage.objects.child_of(self)
             .live()
             .select_related("author")
-            .order_by("-date")
+            .order_by("-website_publish_date", "-pk")
         )
         return context
 
