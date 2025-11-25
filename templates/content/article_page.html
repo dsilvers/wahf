@@ -39,6 +39,19 @@ figcaption {
     font-size: smaller;
 }
 
+blockquote {
+  border-left: 7px solid #0085cb;
+  margin: 0.5rem 2.0rem 0.5rem 2.0rem;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-size: larger;
+}
+
+.text-highlight {
+    background: #ffef99;
+    border-radius: 2px;
+}
+
 @media (min-width: 768px) {
     .half-width {
         width: 50%;
@@ -103,6 +116,8 @@ figcaption {
                         {% image block.value original class="img-fluid article-image" %}
                         {% caption block.value %}
                     </div>
+                {% elif block.block_type == 'blockquote' %}
+                    {{ block }}
                 {% endif %}
             {% endfor %}
 

@@ -18,6 +18,7 @@ from wagtail.snippets.models import register_snippet
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from archives.models import Person
+from content.blocks import BlockQuoteBlock
 from wahf.mixins import OpenGraphMixin
 
 
@@ -151,8 +152,14 @@ class ArticlePage(OpenGraphMixin, Page):
     body = StreamField(
         [
             ("heading", blocks.CharBlock(form_classname="title")),
-            ("paragraph", blocks.RichTextBlock()),
+            (
+                "paragraph",
+                blocks.RichTextBlock(
+                    features=["bold", "italic", "link", "text-highlight"]
+                ),
+            ),
             ("image", ImageChooserBlock()),
+            ("blockquote", BlockQuoteBlock()),
         ],
         use_json_field=True,
     )
