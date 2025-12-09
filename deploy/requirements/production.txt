@@ -2,7 +2,6 @@ Django==5.2.9
 
 wagtail==7.2.1
 wagtail_modeladmin==2.2.0
-# git+https://github.com/wagtail/wagtail-autocomplete.git@refs/pull/143/head
 
 opencv-python==4.12.0.88
 gunicorn==23.0.0
@@ -24,5 +23,5 @@ git+https://github.com/dsilvers/usps-api.git
 html2text==2025.4.15
 stripe==14.0.1
 
-six
+six==1.17.0 # required for the csv package below
 django-queryset-csv==1.1.0

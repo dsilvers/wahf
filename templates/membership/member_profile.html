@@ -70,7 +70,7 @@ WAHF Account
                             <a href="{% url 'password_change' %}">Change My Password</a>
                         </li>
                         <li class="list-group-item px-3 py-3">
-                            <a href="{% url 'logout' %}">Logout</a>
+                            <a href='#' onclick="document.getElementById('logoutform').submit();">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -79,5 +79,9 @@ WAHF Account
     </div>
 </div>
 
+
+                        <form action="{% url 'logout' %}" method="post" id="logoutform">
+                            {% csrf_token %}
+                        </form>
 
 {% endblock %}
