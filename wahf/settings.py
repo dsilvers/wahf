@@ -84,7 +84,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "crispy_forms",
     "crispy_bootstrap5",
-    "wagtailautocomplete",
     "localflavor",
     "django.contrib.postgres",
 ]

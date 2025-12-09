@@ -40,32 +40,6 @@ class Person(ClusterableModel):
             return self.first_name
         return "NO NAME SET"
 
-    def save(self, *args, **kwargs):
-        skip_populate_image = kwargs.pop("skip_populate_image", None)
-
-        self.name_search = f"{self.first_name} {self.last_name}".strip()
-
-        # Update related InducteePage
-        original_image = None
-        if self.pk and not skip_populate_image:
-            original_person = Person.objects.get(pk=self.pk)
-            original_image = original_person.image
-
-            from content.models import InducteeDetailPage
-
-            inductee_page = InducteeDetailPage.objects.filter(people=self).first()
-            if (
-                inductee_page
-                and original_image
-                and self.image
-                and original_image != self.image
-                and inductee_page.photo == original_image
-            ):
-                inductee_page.photo = self.image
-                inductee_page.save(skip_populate_image=True)
-
-        super().save(*args, **kwargs)
-
     autocomplete_search_field = "name_search"
 
     def autocomplete_label(self):

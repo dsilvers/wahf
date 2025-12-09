@@ -6,7 +6,6 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
-from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 from content import views as content_views
 from membership import views as membership_views
@@ -17,7 +16,6 @@ from membership import webhooks_donations as membership_webhook_views_donations
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     # WAGTAIL ADMIN
-    path("cms/autocomplete/", include(autocomplete_admin_urls)),
     path("cms/", include(wagtailadmin_urls)),
     # WAGTAIL DOCUMENT VIEWER
     path("documents/", include(wagtaildocs_urls)),

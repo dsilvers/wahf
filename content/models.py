@@ -15,9 +15,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
-from wagtailautocomplete.edit_handlers import AutocompletePanel
 
-from archives.models import Person
 from content.blocks import BlockQuoteBlock
 from wahf.mixins import OpenGraphMixin
 
@@ -367,11 +365,28 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     )
     people = ParentalManyToManyField("archives.Person", related_name="inductee_people")
 
+    first_name = models.CharField(
+        max_length=100,
+        db_index=True,
+        null=True,
+        blank=True,
+        help_text="Used for sorting on the Inductee List page.",
+    )
+    last_name = models.CharField(
+        max_length=100,
+        db_index=True,
+        null=True,
+        blank=True,
+        help_text="Used for sorting on the Inductee List page.",
+    )
+
     name = models.CharField(
+        "Display Name",
         max_length=255,
         null=True,
         blank=True,
-        help_text="If multiple people are set above, you can customize thei name that is displayed here.",
+        db_index=True,
+        help_text="First and Last Name, or a custom name if they are multiple people.",
     )
 
     tagline = models.TextField(
@@ -414,7 +429,8 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     died_year = models.PositiveSmallIntegerField(null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        AutocompletePanel("people", target_model=Person),
+        FieldPanel("first_name"),
+        FieldPanel("last_name"),
         FieldPanel("name"),
         FieldPanel("tagline"),
         FieldPanel("body"),
@@ -442,42 +458,12 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         "content.InducteeListPage",
     ]
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        skip_populate_image = kwargs.pop("skip_populate_image", None)
-
-        # Assign a primary person for sorting behaviors
-        if not self.person:
-            self.person = self.people.first()
-
-        # Assign a default name if one is not set and a person is assigned
-        if self.person and self.name == "":
-            self.name = f"{self.person.first_name} {self.person.last_name}".strip()
-
-        # Copy the image from the person if one is not set
-        if self.person and self.person.image and not self.photo:
-            self.photo = self.person.image
-
-        # Update the image on the associated person
-        if not skip_populate_image:
-            original_page = InducteeDetailPage.objects.get(pk=self.pk)
-            if (
-                original_page
-                and original_page.photo
-                and self.photo
-                and original_page.photo != self.photo
-                and self.person
-                and (not self.person.image or self.person.image == original_page.photo)
-            ):
-                self.person.image = self.photo
-                self.person.save(skip_populate_image=True)
-
-        super().save()
+    class Meta:
+        ordering = ["last_name", "first_name", "name"]
 
     def get_graph_image(self):
-        if self.person.image:
-            return self.person.image
+        if self.photo:
+            return self.photo
         return super().get_graph_image()
 
 
