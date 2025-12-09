@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from djqscsv import render_to_csv_response
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
-from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
-from wagtail.contrib.modeladmin.views import IndexView
+from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
+from wagtail_modeladmin.mixins import ThumbnailMixin
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.views import IndexView
 
 from archives.models import AircraftType, Location, Person
 from content.models import ArticleAuthor, FourtyYearsStory, ScholarshipRecipient
