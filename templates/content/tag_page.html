@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load placeholder_tags %}
+
+
+{% block title %}{% if tag %}Tag - {{ tag }}{% else %}Tag Not Found{% endif %}{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+.inductee-detail {
+    display: inline-block;
+}
+
+.inductee-item {
+    cursor: pointer;
+}
+
+.inductee-item:hover div a img {
+    border-color: #c5ebff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if articles_found or inductees_found %}
+
+
+
+    {% if inductees_found %}
+    <div class="container">
+
+        {% for inductee in inductees.all %}
+            <div class="row my-3 inductee-item" onclick="window.location='{% pageurl inductee %}';">
+
+                <div class="col-md-auto col-3 col-auto">
+                    {% if inductee.photo %}
+                        <a href="{% pageurl inductee %}">{% image inductee.photo fill-100x100 class="img-thumbnail img-fluid" loading="lazy" %}</a>
+                    {% else %}
+                        <a href="{% pageurl inductee %}">{% inductee_placeholder_image %}</a>
+                    {% endif %}
+                </div>
+
+                <div class="col">
+                    <h2>{{ inductee.name }}</h2>
+
+                    {% if inductee.tagline %}
+                        <p class="lead d-none d-md-block">{{ inductee.tagline }}</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+    {% if inductees_found and articles_found %}
+        <hr>
+    {% endif %}
+
+    {% if articles_found %}
+    <div class="container">
+        <div class="row">
+            {% for article in articles.all %}
+            <div class="col-lg-6 col-md-6 col-sm-12 p-2">
+                <div class="col-article rounded" onclick="window.location='{% slugurl article.slug %}';">
+                    <div class="article-hide">
+                        <a href="{% slugurl article.slug %}">{{ article.title }}</a>
+                    </div>
+
+                    <div class="article-img-wrapper">
+                        {% image article.image fill-900x900 as tmp_img %}
+                        <div class="img-fluid article-img" style="background-image: url('{{ tmp_img.url }}');">
+                        </div>
+
+                        {% if article.top_badge %}
+                        <div class="top-badge">
+                            <span class="badge text-bg-warning">
+                                {{ article.top_badge }}
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <div class="article-title">
+                            <h2>{{ article.title }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="article-description">
+                            {% if article.author %}
+                            <span class="badge text-bg-info">
+                                {{ article.author.name }}
+                            </span>
+                            {% endif %}
+
+                            <span class="badge text-bg-secondary">
+                                {{ article.date }}
+                            </span>
+
+                            <p class="lead">
+                                {{ article.short_description }}
+
+                                <span class="read-more">
+                                    Read&nbsp;More
+                                <span>
+                            </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+{% else %}
+
+<h1>Page Not Found</h1>
+
+<p>Nothing was found for this tag.</p>
+
+{% endif %}
+
+{% endblock %}

@@ -122,6 +122,19 @@ blockquote {
         </div>
 
     </div>
+
+    <div class="row mt-5 mb-3">
+        <div class="col">
+            <h4>See Also:</h4>
+
+            {% for tag in page.tags.all %}
+                <a href="{% url "tag" slug=tag.slug %}" title="{{ tag.name }}">
+                    <span class="badge text-bg-info mr-3 p-2">{{ tag.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
     <!--
     <div class="row mt-5 mb-3">
         <div class="col">

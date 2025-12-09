@@ -44,6 +44,11 @@ urlpatterns = [
         TemplateView.as_view(template_name="articles/stories-that-soared.html"),
         name="article_stories_that_soared",
     ),
+    path(
+        "tag/<slug:slug>/",
+        content_views.TagView.as_view(),
+        name="tag",
+    ),
     # MEMBERSHIP
     # ACCOUNT UPDATES
     path(

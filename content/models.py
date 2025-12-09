@@ -4,6 +4,8 @@ from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+from modelcluster.tags import ClusterTaggableManager
+from taggit.models import TaggedItemBase
 from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
@@ -18,6 +20,18 @@ from wagtail.snippets.models import register_snippet
 
 from content.blocks import BlockQuoteBlock
 from wahf.mixins import OpenGraphMixin
+
+
+class PageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="tagged_pages"
+    )
+
+
+class LocationTag(TaggedItemBase):
+    content_object = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="tagged_locations"
+    )
 
 
 class ArticleAuthor(models.Model):
@@ -147,6 +161,8 @@ class ArticlePage(OpenGraphMixin, Page):
         null=True,
     )
 
+    tags = ClusterTaggableManager(through="content.PageTag", blank=True)
+
     body = StreamField(
         [
             ("heading", blocks.CharBlock(form_classname="title")),
@@ -177,6 +193,7 @@ class ArticlePage(OpenGraphMixin, Page):
                 FieldPanel("image"),
                 FieldPanel("short_description"),
                 FieldPanel("top_badge"),
+                FieldPanel("tags"),
             ],
             heading="Details and Preview",
         ),
@@ -424,11 +441,21 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     born_year = models.PositiveSmallIntegerField(null=True, blank=True)
     died_year = models.PositiveSmallIntegerField(null=True, blank=True)
 
+    tags = ClusterTaggableManager("Tags", through="content.PageTag", blank=True)
+    locations = ClusterTaggableManager(
+        "Locations",
+        through="content.LocationTag",
+        blank=True,
+        related_name="inductee_location_tag",
+        help_text="I think we just want this to be a city name for now. Example: 'Milwaukee', 'Waukesha', etc.",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("first_name"),
         FieldPanel("last_name"),
         FieldPanel("name"),
         FieldPanel("tagline"),
+        FieldPanel("tags"),
         FieldPanel("body"),
         MultiFieldPanel(
             [
@@ -445,6 +472,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
                 FieldPanel("inducted_date"),
                 FieldPanel("born_date"),
                 FieldPanel("died_date"),
+                FieldPanel("locations"),
             ],
             heading="Dates",
         ),
