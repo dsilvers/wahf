@@ -168,7 +168,7 @@ blockquote {
                     {{ block.value|richtext }}
                 {% elif block.block_type == 'image' %}
                     <div class="article-image-container">
-                        {% image block.value original class="img-fluid article-image" %}
+                        {% image block.value width-900 class="img-fluid article-image" %}
                         {% caption block.value %}
                     </div>
                 {% elif block.block_type == 'blockquote' %}

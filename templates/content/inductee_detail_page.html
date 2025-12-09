@@ -23,6 +23,36 @@ div iframe {
     width: 100%;
     height: 400px;
 }
+
+
+.article-image-container {
+    border: 2px solid #eaeaea;
+    padding: 7px;
+    margin-bottom: 15px;
+}
+
+figcaption {
+    color: #eaeaea;
+    background: #1e1e1e;
+    line-height: 140%;
+    padding: 4px 8px 4px 8px;
+}
+
+.image-credit {
+    color: #7e7e7e;
+    text-transform: uppercase;
+    font-size: smaller;
+}
+
+blockquote {
+  border-left: 7px solid #0085cb;
+  margin: 0.5rem 2.0rem 0.5rem 2.0rem;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-size: larger;
+}
+
+
 </style>
 {% endblock %}
 
@@ -39,10 +69,11 @@ div iframe {
         <div class="col-lg-9">
 
             {% if page.photo %}
-            <div class="float-end border rounded mt-3 ml-3 mb-3 p-0 w-50">
-                {% image page.photo width-600 class="img-fluid float-end p-1" %}
+            <div class="article-image-container float-end m-4" style="max-width:50%">
+                {% image page.photo width-900 class="img-fluid article-image w-100" %}
                 {% caption page.photo %}
             </div>
+
             {% endif %}
 
             {% if page.born_date or page.died_date or page.inducted_date %}
@@ -67,10 +98,10 @@ div iframe {
                 {% elif block.block_type == 'paragraph' %}
                     {{ block.value|richtext }}
                 {% elif block.block_type == 'image' %}
-                <div class="border rounded mt-3 ml-3 mb-3 p-0 w-50">
-                    {% image block.value width-600 class="img-fluid p-1" %}
-                    {% caption block.value %}
-                </div>
+                    <div class="article-image-container">
+                        {% image block.value width-900 class="img-fluid article-image" %}
+                        {% caption block.value %}
+                    </div>
                 {% endif %}
             {% endfor %}
 
@@ -79,8 +110,8 @@ div iframe {
                 <div class="row" data-masonry='{"percentPosition": true }'>
                     {% for img in page.gallery %}
                     <div class="col-lg-6">
-                        <div class="border rounded mt-3 ml-3 mb-3 p-0">
-                            {% image img.value width-600 class="img-fluid p-1" %}
+                        <div class="article-image-container">
+                            {% image img.value width-900 class="img-fluid article-image w-100" %}
                             {% caption img.value %}
                         </div>
                     </div>
