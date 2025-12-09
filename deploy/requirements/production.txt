@@ -3,7 +3,6 @@ Django==5.2.9
 wagtail==7.2.1
 wagtail_modeladmin==2.2.0
 
-opencv-python==4.12.0.88
 gunicorn==23.0.0
 
 django-environ==0.12.0
