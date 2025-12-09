@@ -4,7 +4,7 @@ from content.models import InducteeDetailPage
 
 
 def old_website_inductee_redirect(request, slug):
-    inductee = InducteeDetailPage.objects.filter(person__last_name__iexact=slug).first()
+    inductee = InducteeDetailPage.objects.filter(last_name__iexact=slug).first()
 
     if inductee:
         return HttpResponsePermanentRedirect(inductee.full_url)

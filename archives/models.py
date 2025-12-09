@@ -8,95 +8,10 @@ from wagtail.models import Page
 from wahf.mixins import OpenGraphMixin
 
 
-class Person(ClusterableModel):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    image = models.ForeignKey(
-        "archives.WAHFImage", null=True, blank=True, on_delete=models.SET_NULL
-    )
-
-    name_search = models.CharField(max_length=200, blank=True, default="")
-
-    panels = [
-        FieldPanel("first_name"),
-        FieldPanel("last_name"),
-        FieldPanel("image"),
-    ]
-
-    class Meta:
-        verbose_name_plural = "People"
-        ordering = ["last_name", "first_name"]
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def name(self):
-        if self.last_name and self.first_name:
-            return f"{self.last_name}, {self.first_name}"
-        if self.last_name:
-            return self.last_name
-        if self.first_name:
-            return self.first_name
-        return "NO NAME SET"
-
-    autocomplete_search_field = "name_search"
-
-    def autocomplete_label(self):
-        return self.name
-
-
-class Location(ClusterableModel):
-    name = models.CharField(max_length=200)
-    # airport_code = models.CharField(max_length=200)
-    # latitude
-    # longitude
-
-    autocomplete_search_field = "name"
-
-    def autocomplete_label(self):
-        return self.name
-
-
-class AircraftType(ClusterableModel):
-    name = models.CharField(max_length=200)
-
-    autocomplete_search_field = "name"
-
-    def autocomplete_label(self):
-        return self.name
-
-    @classmethod
-    def autocomplete_create(kls: type, value: str):
-        return kls.objects.create(name=value)
-
-
-class AircraftTailNumber(ClusterableModel):
-    name = models.CharField(max_length=200)
-
-    autocomplete_search_field = "name"
-
-    def autocomplete_label(self):
-        return self.name
-
-    @classmethod
-    def autocomplete_create(kls: type, value: str):
-        return kls.objects.create(name=value)
-
-
 class WAHFImage(ClusterableModel, AbstractImage):
     caption = models.CharField(max_length=255, blank=True)
     date = models.DateField(blank=True, null=True)
     source = models.CharField(max_length=255, blank=True)
-
-    people = models.ManyToManyField(Person, blank=True, verbose_name="People")
-    locations = models.ManyToManyField(Location, blank=True, verbose_name="Locations")
-    aircraft_type = models.ManyToManyField(
-        AircraftType, blank=True, verbose_name="Aircraft Types"
-    )
-    aircraft_registration = models.ManyToManyField(
-        AircraftTailNumber, blank=True, verbose_name="N Numbers"
-    )
 
     admin_form_fields = tuple(
         filter(lambda x: x != "tags", Image.admin_form_fields)
@@ -104,10 +19,6 @@ class WAHFImage(ClusterableModel, AbstractImage):
         "caption",
         "source",
         "date",
-        "people",
-        "locations",
-        "aircraft_type",
-        "aircraft_registration",
     )
 
 

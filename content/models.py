@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail import blocks
 from wagtail.admin.panels import (
@@ -342,8 +342,8 @@ class InducteeListPage(OpenGraphMixin, Page):
 
         context["inductee_list"] = (
             InducteeDetailPage.objects.child_of(self)
-            .select_related("person", "photo")
-            .order_by("person__last_name", "person__first_name")
+            .select_related("photo")
+            .order_by("last_name", "first_name")
             .live()
         )
 
@@ -359,12 +359,6 @@ class InducteeListPage(OpenGraphMixin, Page):
 
 
 class InducteeDetailPage(OpenGraphMixin, Page):
-    # Person is used for sorting, and will typically be the first assigned value for people
-    person = models.OneToOneField(
-        "archives.Person", on_delete=models.PROTECT, null=True, blank=True
-    )
-    people = ParentalManyToManyField("archives.Person", related_name="inductee_people")
-
     first_name = models.CharField(
         max_length=100,
         db_index=True,
@@ -372,6 +366,7 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         blank=True,
         help_text="Used for sorting on the Inductee List page.",
     )
+
     last_name = models.CharField(
         max_length=100,
         db_index=True,
