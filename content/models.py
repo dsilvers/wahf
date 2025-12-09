@@ -225,6 +225,7 @@ class FourtyYearsStory(models.Model):
 
     class Meta:
         ordering = ["-article_number"]
+        verbose_name_plural = "40/40 Stories"
 
     def __str__(self):
         return f"#{self.article_number} - {self.short_title}"
