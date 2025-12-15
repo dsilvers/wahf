@@ -24,3 +24,5 @@ stripe==14.0.1
 
 six==1.17.0 # required for the csv package below
 django-queryset-csv==1.1.0
+
+user-agents==2.2.0

@@ -5,20 +5,31 @@ from django.views.generic import TemplateView
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
-from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.documents import get_document_model
 
 from content import views as content_views
+from content.views import log_document_download_and_serve
 from membership import views as membership_views
 from membership import views_donations as membership_views_donations
 from membership import webhooks as membership_webhook_views
 from membership import webhooks_donations as membership_webhook_views_donations
+
+document_url_slug = get_document_model()._meta.app_label
+
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     # WAGTAIL ADMIN
     path("cms/", include(wagtailadmin_urls)),
     # WAGTAIL DOCUMENT VIEWER
-    path("documents/", include(wagtaildocs_urls)),
+    # path("documents/", include(wagtaildocs_urls)),
+    # WAGTAIL DOCUMENT VIEWER WITH DOWNLOAD LOGGING
+    path(
+        f"{document_url_slug}/<int:document_id>/<str:document_filename>",
+        log_document_download_and_serve,
+        name="wagtaildocs_serve",
+    ),
+    path("download-stats/", content_views.download_stats_view, name="download_stats"),
     path(
         "kohn/donate",
         membership_views_donations.KohnDonateRedirect.as_view(),

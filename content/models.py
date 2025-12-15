@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
@@ -13,6 +14,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.documents import get_document_model
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
@@ -20,6 +22,8 @@ from wagtail.snippets.models import register_snippet
 
 from content.blocks import BlockQuoteBlock
 from wahf.mixins import OpenGraphMixin
+
+Document = get_document_model()
 
 
 class PageTag(TaggedItemBase):
@@ -625,3 +629,38 @@ class Menu(ClusterableModel):
 
     def __str__(self):
         return self.title
+
+
+class DocumentDownloadLog(models.Model):
+    """
+    Tracks individual download events for Wagtail documents,
+    including browser information.
+    """
+
+    document = models.ForeignKey(
+        Document,
+        on_delete=models.CASCADE,
+        related_name="downloads",
+        verbose_name="Document",
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="User",
+    )
+    download_date = models.DateTimeField(
+        auto_now_add=True, verbose_name="Download Date"
+    )
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    browser_info = models.CharField(
+        max_length=255, blank=True, verbose_name="Browser/OS"
+    )
+
+    def __str__(self):
+        return f"{self.document.title} downloaded by {self.user or 'Anonymous'} on {self.download_date.strftime('%Y-%m-%d')}"
+
+    class Meta:
+        verbose_name = "Document Download Log"
+        verbose_name_plural = "Document Download Logs"

@@ -1,0 +1,51 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags %}
+
+{% block content %}
+    <header class="nice-padding">
+        <div class="row header-inner">
+            <div class="col6">
+                <h1>Document Download Statistics</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="nice-padding">
+        {% if document_stats %}
+            <table class="listing full-width">
+                <thead>
+                    <tr>
+                        <th class="title">Document Title</th>
+                        <th style="width: 100px; text-align: center;">Last 30 Days</th>
+                        <th style="width: 100px; text-align: center;">Last 90 Days</th>
+                        <th style="width: 100px; text-align: center;">Last Year</th>
+                        <th style="width: 100px; text-align: center;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in document_stats %}
+                    <tr class="document-row">
+                        <td class="title">
+                            <a href="{% url 'wagtaildocs_serve' doc.pk doc.filename %}">{{ doc.title }}</a>
+                        </td>
+                        <td style="text-align: center;">
+                            {{ doc.downloads_30d }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ doc.downloads_90d }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ doc.downloads_365d }}
+                        </td>
+                        <td style="text-align: center;">
+                            <strong>{{ doc.total_downloads }}</strong>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No documents found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

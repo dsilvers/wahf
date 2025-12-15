@@ -3,7 +3,10 @@ from django.urls import re_path as url
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from djqscsv import render_to_csv_response
+from wagtail import hooks
+from wagtail.admin.menu import MenuItem
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.documents import get_document_model
 from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail_modeladmin.mixins import ThumbnailMixin
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
@@ -16,6 +19,9 @@ from content.models import (
     ScholarshipRecipient,
 )
 from users.models import Member
+
+Document = get_document_model()
+
 
 # https://parbhatpuri.com/add-download-csv-option-in-wagtail-modeladmin.html
 # https://tkainrad.dev/posts/export-wagtail-modeladmin-tables-to-csv/
@@ -281,6 +287,17 @@ class MemberTypeAdmin(ExportModelAdminMixin, ThumbnailMixin, ModelAdmin):
             heading="Stripe Settings",
         ),
     ]
+
+
+@hooks.register("register_admin_menu_item")
+def register_download_stats_menu_item():
+    """Adds a 'Download Stats' link to the main Wagtail sidebar menu, restricted to Superusers."""
+    return MenuItem(
+        "Download Stats",
+        reverse("download_stats"),
+        icon_name="download",
+        order=1000,
+    )
 
 
 modeladmin_register(LocationTagAdmin)
