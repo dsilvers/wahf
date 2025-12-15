@@ -9,7 +9,12 @@ from wagtail_modeladmin.mixins import ThumbnailMixin
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail_modeladmin.views import IndexView
 
-from content.models import ArticleAuthor, FourtyYearsStory, ScholarshipRecipient
+from content.models import (
+    ArticleAuthor,
+    FourtyYearsStory,
+    LocationTag,
+    ScholarshipRecipient,
+)
 from users.models import Member
 
 # https://parbhatpuri.com/add-download-csv-option-in-wagtail-modeladmin.html
@@ -167,6 +172,25 @@ class FourtyYearsStoryAdmin(ThumbnailMixin, ModelAdmin):
     )
 
 
+class LocationTagAdmin(ModelAdmin):
+    model = LocationTag
+    base_url_path = "locations"  # customise the URL from default to admin/bookadmin
+    menu_icon = "globe"  # change as required
+    menu_order = 202  # will put in 3rd place (000 being 1st, 100 2nd)
+    exclude_from_explorer = (
+        False  # or True to exclude pages of this type from Wagtail's explorer view
+    )
+
+    list_display = (
+        "get_display_name",
+        "name",
+        "slug",
+        "location_name",
+        "latitude",
+        "longitude",
+    )
+
+
 class MemberTypeAdmin(ExportModelAdminMixin, ThumbnailMixin, ModelAdmin):
     index_template_name = "wagtailadmin/export_csv.html"
     model = Member
@@ -259,6 +283,7 @@ class MemberTypeAdmin(ExportModelAdminMixin, ThumbnailMixin, ModelAdmin):
     ]
 
 
+modeladmin_register(LocationTagAdmin)
 modeladmin_register(ScholarshipRecipientAdmin)
 modeladmin_register(ArticleAuthorAdmin)
 modeladmin_register(MemberTypeAdmin)

@@ -5,7 +5,7 @@ from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from modelcluster.tags import ClusterTaggableManager
-from taggit.models import TaggedItemBase
+from taggit.models import TagBase, TaggedItemBase
 from wagtail import blocks
 from wagtail.admin.panels import (
     FieldPanel,
@@ -28,10 +28,50 @@ class PageTag(TaggedItemBase):
     )
 
 
-class LocationTag(TaggedItemBase):
-    content_object = ParentalKey(
-        "wagtailcore.Page", on_delete=models.CASCADE, related_name="tagged_locations"
+class LocationTag(TagBase):
+    location_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="User-friendly name for the location (e.g., 'Eiffel Tower')",
     )
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        help_text="WGS 84 Latitude (-90 to +90)",
+    )
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        help_text="WGS 84 Longitude (-180 to +180)",
+    )
+
+    def get_display_name(self):
+        if self.location_name:
+            return self.location_name
+        return self.name
+
+    class Meta:
+        verbose_name = "Location Tag"
+        verbose_name_plural = "Location Tags"
+
+
+class TaggedLocation(TaggedItemBase):
+    tag = models.ForeignKey(
+        LocationTag, on_delete=models.CASCADE, related_name="tagged_locations"
+    )
+
+    content_object = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="location_tag_page"
+    )
+
+    class Meta:
+        # Prevents creation of duplicate tag relations for the same page/tag pair
+        unique_together = ("tag", "content_object")
 
 
 class ArticleAuthor(models.Model):
@@ -442,12 +482,9 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     died_year = models.PositiveSmallIntegerField(null=True, blank=True)
 
     tags = ClusterTaggableManager("Tags", through="content.PageTag", blank=True)
+
     locations = ClusterTaggableManager(
-        "Locations",
-        through="content.LocationTag",
-        blank=True,
-        related_name="inductee_location_tag",
-        help_text="I think we just want this to be a city name for now. Example: 'Milwaukee', 'Waukesha', etc.",
+        through=TaggedLocation, manager=LocationTag, verbose_name="Locations"
     )
 
     content_panels = Page.content_panels + [
