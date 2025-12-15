@@ -6,15 +6,18 @@ from djqscsv import render_to_csv_response
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.viewsets.pages import PageListingViewSet
 from wagtail.documents import get_document_model
 from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail_modeladmin.mixins import ThumbnailMixin
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail_modeladmin.views import IndexView
 
+from content.filters import InducteeDetailPageFilterSet
 from content.models import (
     ArticleAuthor,
     FourtyYearsStory,
+    InducteeDetailPage,
     LocationTag,
     ScholarshipRecipient,
 )
@@ -298,6 +301,34 @@ def register_download_stats_menu_item():
         icon_name="download",
         order=1000,
     )
+
+
+class InducteeDetailPageListingViewSet(PageListingViewSet):
+    # The model this viewset manages
+    model = InducteeDetailPage
+
+    # Configuration for the admin menu
+    icon = "tags"  # Use an appropriate icon
+    menu_label = "Inductee Locations Audit"
+    add_to_admin_menu = True  # Adds a new item to the main sidebar menu
+
+    # Crucially, assign your custom filterset class
+    filterset_class = InducteeDetailPageFilterSet
+
+    # Define which columns appear in the list view (optional, but good practice)
+    list_display = (
+        "admin_display_title",
+        "live",
+        "first_published_at",
+        "latest_revision_created_at",
+    )
+
+
+# Register the viewset with Wagtail
+@hooks.register("register_admin_viewset")
+def register_inductee_detail_page_tag_audit_listing_viewset():
+    # The first argument must be a unique name
+    return InducteeDetailPageListingViewSet("inductee_detail_page_audit_listing")
 
 
 modeladmin_register(LocationTagAdmin)
