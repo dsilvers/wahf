@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load placeholder_tags %}
+
+
+{% block extra_css %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              crossorigin=""/>
+
+        <style>
+            #map { width:100%; height: 100vh; }
+            .ctl { padding: 2px 10px 2px 10px; background: white; background: rgba(255,255,255,0.9); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; text-align: right; }
+            .title { font-size: 18pt; font-weight: bold; }
+            .src { font-size: 10pt; }
+            .leaflet-marker-icon { border: 3px solid white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
+            .photo-popup-content p { margin: 5px 0 0 0; font-style: italic; color: #555; }
+        </style>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                crossorigin=""></script>
+<script>
+    /* **** Leaflet 1.9.4 **** */
+
+    // White background tile layer
+    var white = L.tileLayer("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEX///+nxBvIAAAAH0lEQVQYGe3BAQ0AAADCIPunfg43YAAAAAAAAAAA5wIhAAAB9aK9BAAAAABJRU5ErkJggg==", {minZoom: 1, maxZoom: 12});
+
+    // Overlay layers (TMS)
+    var lyr = L.tileLayer('https://maptiles.wahf.org/tiles/1968/{z}/{x}/{y}.png', {tms: 1, opacity: 1.0, attribution: "1967 AeroChart", minZoom: 5, maxZoom: 12});
+
+    // Map Initialization
+    var map = L.map('map', {
+        center: [44.45949703069321, -90.15830918306479],
+        zoom: 8,
+        minZoom: 1,
+        maxZoom: 12,
+        layers: [white, lyr],
+        attributionControl: false,
+
+        // No need for specific mobile flags; 1.9.4 handles them well.
+    });
+
+    var basemaps = {"Without background": white}
+    var overlaymaps = {"1968 AeroChart": lyr}
+
+
+// --- START: ADD CUSTOM PHOTO ICONS ---
+
+    // 1. Define Zoom-to-Size Mapping
+    // This object maps the maximum zoom level for a given icon size.
+    const ZOOM_SIZES = [
+        { maxZoom: 6, size: 35 },  // Zoom 6 and below: 35x35 pixels (Small)
+        { maxZoom: 8, size: 55 },  // Zoom 7-8: 55x55 pixels (Medium)
+        { maxZoom: 12, size: 85 } // Zoom 9-12: 85x85 pixels (Large/Tap-Friendly)
+        // Note: Map maxZoom is 12, so 85 is the max size.
+    ];
+
+    // Array to hold references to all marker objects
+    const markers = [];
+
+// Object to track all markers at a given location (lat,lon)
+    const groupedLocations = {};
+
+    const photoLocations = {{ inductee_json|safe }};
+    photoLocations.forEach(data => {
+        const key = `${data.lat.toFixed(5)},${data.lon.toFixed(5)}`;
+        if (!groupedLocations[key]) {
+            groupedLocations[key] = [];
+        }
+        groupedLocations[key].push(data);
+    });
+
+
+    // --- 2. Function to Calculate Icon Size Based on Current Zoom ---
+    function getIconSize(currentZoom) {
+        // Iterate through the defined sizes and return the first size that matches the zoom
+        for (const zoomData of ZOOM_SIZES) {
+            if (currentZoom <= zoomData.maxZoom) {
+                const size = zoomData.size;
+                return { size: [size, size], anchor: [size / 2, size / 2] };
+            }
+        }
+        // Default to the largest size if zoom is higher than the max in ZOOM_SIZES
+        const maxData = ZOOM_SIZES[ZOOM_SIZES.length - 1];
+        const size = maxData.size;
+        return { size: [size, size], anchor: [size / 2, size / 2] };
+    }
+
+
+    const JITTER_RADIUS_DEG = 0.05; // Adjust this value (in degrees) for separation distance
+
+    Object.values(groupedLocations).forEach(group => {
+        const count = group.length;
+        const totalAngle = 2 * Math.PI; // 360 degrees in radians
+
+        group.forEach((data, index) => {
+            let finalLat = data.lat;
+            let finalLon = data.lon;
+
+            // Only apply jitter if there are 2 or more markers
+            if (count > 1) {
+                // Calculate the angle for this marker
+                const angle = totalAngle * (index / count);
+
+                // Calculate new coordinates using trigonometry
+                finalLat = data.lat + JITTER_RADIUS_DEG * Math.cos(angle);
+                finalLon = data.lon + JITTER_RADIUS_DEG * Math.sin(angle);
+            }
+
+            // --- 3. Marker Creation with Jittered Coordinates ---
+
+            const initialSize = getIconSize(map.getZoom());
+
+            const photoIcon = L.icon({
+                iconUrl: data.image,
+                iconSize: initialSize.size,
+                iconAnchor: initialSize.anchor,
+                className: 'photo-icon'
+            });
+
+            const popupContent = `
+                <div class="photo-popup-content">
+                    <h3>${data.name}</h3>
+                    <small>${data.location}</small>
+                    <p>${data.tagline}</p>
+                    <a href="${data.link}" target="_blank">
+                        <button type="button" class="btn btn-primary btn-sm">READ MORE</button>
+                    </a>
+                </div>
+            `;
+
+            // Use the calculated coordinates
+            const marker = L.marker([finalLat, finalLon], {icon: photoIcon})
+                .addTo(map)
+                .bindPopup(popupContent, {
+                    maxWidth: 350
+                });
+
+            markers.push(marker); // Store the marker reference
+        });
+    });
+
+
+    // --- 4. Event Listener for Dynamic Resizing ---
+    map.on('zoomend', function() {
+        const currentZoom = map.getZoom();
+        const newIconData = getIconSize(currentZoom);
+
+        markers.forEach(marker => {
+            // Create a new icon object with the updated size and anchor
+            const newIcon = L.icon({
+                iconUrl: marker.options.icon.options.iconUrl, // Use existing URL
+                iconSize: newIconData.size,
+                iconAnchor: newIconData.anchor,
+                className: 'photo-icon'
+            });
+
+            // Apply the new icon to the marker
+            marker.setIcon(newIcon);
+        });
+    });
+
+    // --- END: ADD CUSTOM PHOTO ICONS ---
+
+
+    // Note
+    var note = L.control({position: 'bottomleft'});
+    note.onAdd = function(map) {
+        this._div = L.DomUtil.create('div', 'ctl src');
+        this.update();
+        return this._div;
+    };
+    note.update = function(props) {
+        this._div.innerHTML = "WI BOA, WAHF";
+    };
+    note.addTo(map);
+
+    // Add base layers
+    // L.control.layers(basemaps, overlaymaps, {collapsed: false}).addTo(map);
+
+    // Fit to overlay bounds (SW and NE points with (lat, lon))
+    map.fitBounds([[42.25644743445924, -93.80236466472273], [46.662546626927174, -86.51425370140684]]);
+
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    </div>
+</div>
+
+    <div id="map"></div>
+
+<div class="container">
+    <div class="content">
+
+{% endblock %}

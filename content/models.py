@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -70,7 +71,9 @@ class TaggedLocation(TaggedItemBase):
     )
 
     content_object = ParentalKey(
-        "wagtailcore.Page", on_delete=models.CASCADE, related_name="location_tag_page"
+        "content.InducteeDetailPage",
+        on_delete=models.CASCADE,
+        related_name="location_tag_page",
     )
 
     class Meta:
@@ -488,7 +491,10 @@ class InducteeDetailPage(OpenGraphMixin, Page):
     tags = ClusterTaggableManager("Tags", through="content.PageTag", blank=True)
 
     locations = ClusterTaggableManager(
-        through=TaggedLocation, manager=LocationTag, verbose_name="Locations"
+        through=TaggedLocation,
+        manager=LocationTag,
+        verbose_name="Locations",
+        blank=True,
     )
 
     content_panels = Page.content_panels + [
@@ -664,3 +670,39 @@ class DocumentDownloadLog(models.Model):
     class Meta:
         verbose_name = "Document Download Log"
         verbose_name_plural = "Document Download Logs"
+
+
+@register_snippet
+class SectionalMap(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    year = models.PositiveSmallIntegerField(db_index=True)
+
+    attribution = models.TextField(blank=True)
+    attribution_link = models.TextField(blank=True)
+
+    tiles_url = models.CharField(max_length=255, blank=True, null=True)
+    min_zoom = models.PositiveSmallIntegerField(default=1)
+    max_zoom = models.PositiveSmallIntegerField(default=12)
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("slug"),
+        FieldPanel("year"),
+        FieldPanel("attribution"),
+        FieldPanel("attribution_link"),
+        FieldPanel("tiles_url"),
+        FieldPanel("min_zoom"),
+        FieldPanel("max_zoom"),
+    ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "Sectional Map Tile Configs"
+
+    def __str__(self):
+        return self.title

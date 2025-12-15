@@ -1,3 +1,4 @@
+import json
 from datetime import date, timedelta
 
 from django.contrib.auth.decorators import user_passes_test
@@ -11,7 +12,13 @@ from user_agents import parse
 from wagtail.documents import get_document_model
 from wagtail.documents.views.serve import serve as wagtail_serve
 
-from content.models import ArticlePage, DocumentDownloadLog, InducteeDetailPage, PageTag
+from content.models import (
+    ArticlePage,
+    DocumentDownloadLog,
+    InducteeDetailPage,
+    LocationTag,
+    PageTag,
+)
 
 Document = get_document_model()
 
@@ -148,3 +155,37 @@ def download_stats_view(request):
     }
 
     return render(request, "content/download_stats.html", context)
+
+
+def inductee_map_view(request):
+    locations_qs = LocationTag.objects.filter(
+        latitude__isnull=False,
+        longitude__isnull=False,
+    ).prefetch_related("tagged_locations")
+
+    data = []
+    tagged_uniques = []  # prevent duplicate inductee and map points
+
+    # { lat: 45.5, lon: -91.5, title: "name", imagePath: "photo/1.jpg", description: "desc" },
+    for location in locations_qs.all():
+        for tagged_location in location.tagged_locations.all():
+            inductee = tagged_location.content_object
+            unique = f"{location.pk}x{inductee.pk}"
+            if unique not in tagged_uniques and inductee.photo and inductee.name:
+                tagged_uniques.append(unique)
+
+                data.append(
+                    {
+                        "lat": float(location.latitude),
+                        "lon": float(location.longitude),
+                        "location": location.location_name,
+                        "name": inductee.name,
+                        "tagline": inductee.tagline,
+                        "link": inductee.url,
+                        "image": inductee.photo.get_rendition("fill-100x100").url,
+                    }
+                )
+
+    context = {"inductee_json": json.dumps(data)}
+
+    return render(request, "content/inductee_map.html", context)

@@ -56,6 +56,11 @@ urlpatterns = [
         name="article_stories_that_soared",
     ),
     path(
+        "hall-of-fame/inductee-map",
+        content_views.inductee_map_view,
+        name="inductees_map",
+    ),
+    path(
         "tag/<slug:slug>/",
         content_views.TagView.as_view(),
         name="tag",
