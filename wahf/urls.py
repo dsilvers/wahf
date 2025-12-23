@@ -70,7 +70,6 @@ urlpatterns = [
     path(
         "membership/", membership_views.MemberJoinView.as_view(), name="membership-join"
     ),
-    path("renew/", membership_views.RenewRedirect.as_view(), name="renew"),
     path(
         "renew/<uuid:uuid>/",
         membership_views.MemberRenewPublicPaymentView.as_view(),
@@ -81,32 +80,11 @@ urlpatterns = [
         membership_views.MemberJoinThanks.as_view(),
         name="membership-join-thanks",
     ),
-    path(
-        "renew/thanks/",
-        membership_views.MemberRenewThanks.as_view(),
-        name="membership-renew-thanks",
-    ),
     path("stripe-webhooks/", membership_webhook_views.process_stripe_webhook),
     path(
         "stripe-webhooks-donations/",
         membership_webhook_views_donations.process_stripe_webhook,
     ),
-    path(
-        "account/member-profile/",
-        membership_views.MemberProfileView.as_view(),
-        name="member_profile",
-    ),
-    path(
-        "account/member-update/",
-        membership_views.MemberUpdateFormView.as_view(),
-        name="member_update",
-    ),
-    path(
-        "account/member-renew/",
-        membership_views.MemberRenewPaymentView.as_view(),
-        name="member_renew",
-    ),
-    path("accounts/", include("django.contrib.auth.urls")),
     # SEARCH ENGINE STUFF
     path(
         "robots.txt",

@@ -4,8 +4,8 @@ from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from users.models import Member
-from users.utils import send_email
+from membership.models import Member
+from membership.utils import send_email
 
 
 def send_reminder(member):

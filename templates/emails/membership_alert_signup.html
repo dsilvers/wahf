@@ -8,38 +8,8 @@
     {% endif %}
 </p>
 
-{% if renewal %}
-<div style="font-size:18px;">
-    <b>NOTE:</b> Address and phone information may need to be updated. This information is from the website database and may no longer be current.
-</div>
-{% endif %}
-
-{% if update %}
-<div style="font-size:18px;">
-    <b>NOTE:</b> This is notification that something updated on Stripe's side of things. Possible automatic renewal?
-</div>
-{% endif %}
-
 <p>
-    <b>Name:</b> {{ member.first_name }} {{ member.last_name }}<br>
-    {% if member.spouse_name %}<b>Spouse:</b> {{ member.spouse_name }}<br>{% endif %}
-    {% if member.business_name %}<b>Business:</b> {{ member.business_name }}<br>{% endif %}
-    <b>Email:</b> {{ member.email }}<br>
-    <b>Phone:</b> {{ member.phone }}<br>
-</p>
-
-<p>
-    <b>Membership Level:</b> <u>{{ member.membership_level }}</u><br>
-    <b>Stripe Customer ID:</b> {{ member.stripe_customer_id }}<br>
-    <b>Stripe Subscription ID:</b> {{ member.stripe_subscription_id }}<br>
-    <b>Membership Join Date:</b> {{ member.membership_join_date }}<br>
-    <b>Membership Expiry Date:</b> {{ member.membership_expiry_date}}<br>
-</p>
-
-<p>
-    <b>Address 1:</b> {{ member.address_line1 }}<br>
-    {% if member.address_line2 %}<b>Address 2:</b> {{ member.address_line2 }}<br>{% endif %}
-    <b>City:</b> {{ member.city }}<br>
-    <b>State:</b> {{ member.state }}<br>
-    <b>Zip:</b> {{ member.zip }}<br>
+    <b>Name:</b> {{ name }}<br>
+    <b>Email:</b> {{ email }}<br>
+    <b>Membership Level:</b> <u>{{ level }}</u><br>
 </p>

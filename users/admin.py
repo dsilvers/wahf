@@ -1,24 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from users.models import Member
-
 User = get_user_model()
-
-
-# class WAHFMemberAdmin(admin.ModelAdmin):
-#    model = Member
-#    ordering = ("last_name", "first_name")
-#    search_fields = ("first_name", "last_name")
-#    list_display = (
-#        "first_name",
-#        "last_name",
-#        "membership_level",
-#    )
-
-
-class WAHFMemberAdminInline(admin.StackedInline):
-    model = Member
 
 
 class WAHFUserAdmin(admin.ModelAdmin):
@@ -53,7 +36,6 @@ class WAHFUserAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [WAHFMemberAdminInline]
 
 
 # admin.site.register(Member, WAHFMemberAdmin)

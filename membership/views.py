@@ -1,143 +1,26 @@
+import json
+
 import stripe
 from django.conf import settings
 from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-from django.views.generic.base import RedirectView, TemplateView, View
-from django.views.generic.edit import FormView
+from django.views.generic.base import TemplateView, View
 from sentry_sdk import capture_exception
 
-from membership.forms import MemberJoinForm, MemberUpdateForm
+from membership.forms import MembershipSignupForm
 from membership.models import (
-    MembershipJoinSnippet,
-    MembershipRenewThanksSnippet,
+    Member,
+    MembershipContributionType,
+    MembershipLevel,
     MembershipThanksSnippet,
 )
 from membership.utils import get_stripe_secret_key
-from users.models import Member, User
+from users.models import User
 
 stripe.api_key = get_stripe_secret_key()
-
-
-class MemberProfileView(LoginRequiredMixin, TemplateView):
-    template_name = "membership/member_profile.html"
-
-    def get_context_data(self, **kwargs):
-        self.request.session["renewal"] = False
-        return super().get_context_data(**kwargs)
-
-
-class MemberUpdateFormView(LoginRequiredMixin, FormView):
-    template_name = "membership/member_update.html"
-    form_class = MemberUpdateForm
-    success_url = "/account/member-profile/"
-
-    def get_form(self):
-        try:
-            member = Member.objects.get(user=self.request.user)
-            return self.form_class(instance=member, **self.get_form_kwargs())
-        except Member.RelatedObjectDoesNotExist:
-            return self.form_class(**self.get_form_kwargs())
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.save()
-        return super().form_valid(form)
-
-
-class MemberRenewPaymentView(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):
-        # if not self.request.user.member
-        # not self.request.user.member.membership_level
-        # not self.request.user.member.membership_level.stripe_price_id
-        # not self.request.user.member.stripe_customer_id
-
-        payment_mode = "payment"
-        if self.request.user.member.membership_level.allow_recurring_payments:
-            payment_mode = "subscription"
-
-        # Disallow renewing active subscriptions
-        if self.request.user.member.stripe_subscription_active:
-            return HttpResponseRedirect("/account/member-profile/")
-
-        custom_fields = []
-
-        if self.request.user.member.membership_level.includes_spouse:
-            custom_fields.append(
-                {
-                    "key": "spousename",
-                    "label": {"type": "custom", "custom": "Spouse Name"},
-                    "type": "text",
-                }
-            )
-
-        if self.request.user.member.membership_level.is_business:
-            custom_fields.append(
-                {
-                    "key": "businessname",
-                    "label": {"type": "custom", "custom": "Business Name"},
-                    "type": "text",
-                }
-            )
-
-        create_kwargs = {
-            "line_items": [
-                {
-                    "price": self.request.user.member.membership_level.stripe_price_id,
-                    "quantity": 1,
-                },
-            ],
-            "mode": payment_mode,
-            "success_url": "https://www.wahf.org/account/member-profile/",
-            "cancel_url": "https://www.wahf.org/account/member-profile/",
-            "billing_address_collection": "auto",
-            "shipping_address_collection": {
-                "allowed_countries": ["US"],
-            },
-            "allow_promotion_codes": True,
-            "phone_number_collection": {
-                "enabled": True,
-            },
-            "metadata": {"action": "renewal", "member_pk": self.request.user.member.pk},
-            "custom_fields": custom_fields,
-        }
-
-        if self.request.user.member.stripe_customer_id:
-            create_kwargs["customer"] = self.request.user.member.stripe_customer_id
-        elif self.request.user.member.email:
-            create_kwargs["customer_email"] = self.request.user.member.email
-
-        if (
-            self.request.user.member.membership_expiry_date
-            and self.request.user.member.membership_expiry_date > timezone.now().date()
-        ):
-            create_kwargs["subscription_data"] = {
-                "billing_cycle_anchor": int(
-                    self.request.user.member.membership_expiry_date.strftime("%s")
-                )
-                + (60 * 60 * 24),
-                "proration_behavior": "none",
-            }
-
-        try:
-            checkout_session = stripe.checkout.Session.create(**create_kwargs)
-        except Exception as e:
-            if hasattr(e, "user_message"):
-                self.request.session["payment_error"] = e.user_message
-            else:
-                if settings.SENTRY_DSN:
-                    capture_exception(e)
-                print(e)
-                self.request.session[
-                    "payment_error"
-                ] = "An error occurred, give it a try again. If it continues to occur, please contact us."
-            return HttpResponseRedirect(reverse("membership-join"))
-
-        response = HttpResponse(content="", status=303)
-        response["Location"] = checkout_session.url
-        return response
 
 
 class MemberRenewPublicPaymentView(View):
@@ -188,15 +71,13 @@ class MemberRenewPublicPaymentView(View):
             "success_url": "https://www.wahf.org/renew/thanks/",
             "cancel_url": "https://www.wahf.org/account/member-profile/",
             "billing_address_collection": "auto",
-            "shipping_address_collection": {
-                "allowed_countries": ["US"],
-            },
             "allow_promotion_codes": True,
             "phone_number_collection": {
                 "enabled": True,
             },
             "metadata": {"action": "renewal", "member_pk": member.pk},
             "custom_fields": custom_fields,
+            "automatic_tax": {"enabled": False},
         }
 
         if member.stripe_customer_id:
@@ -235,98 +116,168 @@ class MemberRenewPublicPaymentView(View):
         return response
 
 
-class MemberJoinView(FormView):
-    template_name = "membership/member_join.html"
-    form_class = MemberJoinForm
+class MemberJoinView(View):
+    def get(self, request):
+        context = {}
+        context["membership_levels"] = MembershipLevel.objects.filter(
+            show_on_membership_page=True
+        ).order_by("membership_page_sequence")
+        context["contribution_types"] = MembershipContributionType.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        membership_json = {}
+        for level in context["membership_levels"]:
+            membership_json[level.slug] = {
+                "id": level.pk,
+                "name": level.name,
+                "slug": level.slug,
+                "price": level.price,
+                "price_display": level.price_display,
+                "allow_recurring": level.allow_recurring_payments,
+                "icon": level.membership_page_icon,
+                "includes_spouse": level.includes_spouse,
+                "is_business": level.is_business,
+            }
+        context["membershipLevelJSON"] = json.dumps(membership_json)
 
-        payment_error = self.request.session.get("payment_error")
-        if payment_error:
-            context["payment_error"] = payment_error
-            del self.request.session["payment_error"]
+        return render(request, "membership/member_join.html", context)
 
-        context["snippet"] = MembershipJoinSnippet.objects.first()
+    def post(self, request):
+        # member level
+        # additional contribution amounts
+        # total amount
+        # email
+        # name
+        # spouse / biz name
+        # address1, address2, city, state, zip
+        # is recurring
+        form = MembershipSignupForm(request.POST)
 
-        return context
+        if not form.is_valid():
+            return JsonResponse({"error": "invalid form"})
 
-    def form_valid(self, form):
-        if not form.membership_level:
-            self.request.session[
-                "payment_error"
-            ] = "Please select a membership level above."
-            return HttpResponseRedirect(reverse("membership-join"))
+        try:
+            level = MembershipLevel.objects.get(slug=form.cleaned_data["level"])
+        except MembershipLevel.DoesNotExist:
+            return JsonResponse({"error": "invalid level"})
 
-        if not form.membership_level.stripe_price_id:
-            self.request.session[
-                "payment_error"
-            ] = "Problem creating subscription, this method does not a price ID set."
-            return HttpResponseRedirect(reverse("membership-join"))
+        kwargs = {
+            "ui_mode": "embedded",
+            "shipping_address_collection": {
+                "allowed_countries": ["US"],
+            },
+            "metadata": {},
+            "line_items": [],
+            "allow_promotion_codes": True,
+            "phone_number_collection": {"enabled": True},
+            "return_url": "https://www.wahf.org/membership/thanks",
+        }
 
-        payment_mode = "payment"
-        if form.membership_level.allow_recurring_payments:
-            payment_mode = "subscription"
+        # Recurring payment
+        if level.allow_recurring_payments and form.cleaned_data["is_recurring"]:
+            is_recurring = True
+            kwargs["mode"] = "subscription"
+            kwargs["payment_method_collection"] = "always"
+            stripe_payment_id = level.stripe_price_id
+        else:
+            is_recurring = False
+            kwargs["mode"] = "payment"
+            stripe_payment_id = level.stripe_price_id_one_time
 
-        custom_fields = []
-
-        if form.membership_level.includes_spouse:
-            custom_fields.append(
-                {
-                    "key": "spousename",
-                    "label": {"type": "custom", "custom": "Spouse Name"},
-                    "type": "text",
-                }
+        if not stripe_payment_id:
+            raise Exception(
+                f"Missing stripe payment id for {level}, recurring: {is_recurring}"
             )
 
-        if form.membership_level.is_business:
-            custom_fields.append(
-                {
-                    "key": "businessname",
-                    "label": {"type": "custom", "custom": "Business Name"},
-                    "type": "text",
-                }
-            )
+        # Can use a biz name or spouse
+        if level.includes_spouse:
+            kwargs["metadata"]["spouse"] = form.cleaned_data["spouse_name"]
+        if level.is_business:
+            kwargs["metadata"]["business"] = form.cleaned_data["business_name"]
+
+        # Signup signal
+        kwargs["metadata"]["action"] = "signup"
+
+        # Add primary item first
+        kwargs["line_items"].append(
+            {
+                "price": stripe_payment_id,
+                "quantity": 1,
+            }
+        )
+
+        # Add any addon contributions
+        additional = form.cleaned_data["additional_contributions"]
+        if additional:
+            for addon in additional.split(","):
+                try:
+                    slug, amount_str = addon.split(":")
+                    amount = float(amount_str)
+                except ValueError:
+                    return JsonResponse({"error": "invalid addon"})
+
+                try:
+                    addon_type_obj = MembershipContributionType.objects.get(slug=slug)
+                except MembershipContributionType.DoesNotExist:
+                    return JsonResponse({"error": "missing addon"})
+
+                if amount > 0.0:
+                    addon_data = {
+                        "price_data": {
+                            "currency": "usd",
+                            "unit_amount": int(amount * 100),
+                            "product_data": {
+                                "name": addon_type_obj.name,
+                                "description": addon_type_obj.description,
+                            },
+                        },
+                        "quantity": 1,
+                    }
+
+                    if is_recurring:
+                        addon_data["price_data"]["recurring"] = {"interval": "year"}
+
+                    kwargs["line_items"].append(addon_data)
 
         # Create or update a subscription
         try:
-            checkout_session = stripe.checkout.Session.create(
-                line_items=[
-                    {
-                        "price": form.membership_level.stripe_price_id,
-                        "quantity": 1,
+            existing_customers = stripe.Customer.list(
+                email=form.cleaned_data["email"], limit=1
+            ).data
+            if existing_customers:
+                customer = existing_customers[0]
+            else:
+                address_data = {
+                    "line1": form.cleaned_data["line1"],
+                    "line2": form.cleaned_data["line2"],
+                    "city": form.cleaned_data["city"],
+                    "state": form.cleaned_data["state"],
+                    "postal_code": form.cleaned_data["zip"],
+                    "country": "US",
+                }
+
+                customer = stripe.Customer.create(
+                    email=form.cleaned_data["email"],
+                    name=form.cleaned_data["name"],
+                    phone=f"+1{form.cleaned_data['phone']}",
+                    address=address_data,
+                    shipping={
+                        "name": form.cleaned_data["name"],
+                        "address": address_data,
                     },
-                ],
-                mode=payment_mode,
-                success_url="https://www.wahf.org/membership/thanks/",
-                cancel_url="https://www.wahf.org/membership/",
-                billing_address_collection="auto",
-                shipping_address_collection={
-                    "allowed_countries": ["US"],
-                },
-                allow_promotion_codes=True,
-                phone_number_collection={
-                    "enabled": True,
-                },
-                metadata={"action": "signup"},
-                custom_fields=custom_fields,
-            )
+                )
+
+            kwargs["customer"] = customer.id
+
+            checkout_session = stripe.checkout.Session.create(**kwargs)
 
         except Exception as e:
-            if hasattr(e, "user_message"):
-                self.request.session["payment_error"] = e.user_message
-            else:
-                if settings.SENTRY_DSN:
-                    capture_exception(e)
-                print(e)
-                self.request.session[
-                    "payment_error"
-                ] = "An error occurred, give it a try again. If it continues to occur, please contact us."
-            return HttpResponseRedirect(reverse("membership-join"))
+            if settings.SENTRY_DSN:
+                capture_exception(e)
+            print(e)
 
-        response = HttpResponse(content="", status=303)
-        response["Location"] = checkout_session.url
-        return response
+            return JsonResponse({"error": "stripe error"})
+
+        return JsonResponse({"checkoutSession": checkout_session.client_secret})
 
 
 class MemberJoinThanks(TemplateView):
@@ -351,23 +302,3 @@ class MemberJoinThanks(TemplateView):
 
         context["snippet"] = MembershipThanksSnippet.objects.first()
         return context
-
-
-class MemberRenewThanks(TemplateView):
-    template_name = "membership/member_join_thanks.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["snippet"] = MembershipRenewThanksSnippet.objects.first()
-        return context
-
-
-class RenewRedirect(RedirectView):
-    permanent = False
-    query_string = False
-
-    def get_redirect_url(self, *args, **kwargs):
-        # Tag their session that they are trying to renew
-        self.request.session["renewal"] = True
-
-        return "/accounts/login/?next=/account/member-profile/"

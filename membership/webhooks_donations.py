@@ -10,8 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from html2text import html2text
 
 from membership.models import MembershipEmailTemplateSnippet
-from membership.utils import get_stripe_secret_key_donations
-from users.utils import send_email
+from membership.utils import get_stripe_secret_key_donations, send_email
 
 
 @csrf_exempt

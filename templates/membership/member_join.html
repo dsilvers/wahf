@@ -10,7 +10,7 @@ Membership
 {% endblock %}
 
 {% block page_title %}
-    {% with page_title="WAHF Membership - Sign Up" %}
+    {% with page_title="Membership - Join Us!" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -19,66 +19,126 @@ Membership
 
 <style type="text/css">
 
-.smaller-please {
-    font-size: small;
+.membershipAbout p {
+    margin-bottom: 30px;
+    font-size: larger;
+    line-height: 150%;
 }
 
-.membership-selector h3 {
-    margin-top: 20px;
+.membershipAbout li {
+    font-size: larger;
+    line-height: 150%;
 }
 
-.membership-selector .form-check label {
+.modal-dialog {
+    --bs-modal-width: 700px;
+}
+
+.modal-body {
+    padding: 1.2rem;
+}
+
+.level-individual, .level-individual-spouse {
+    border-left: 8px solid green;
+}
+
+.level-biz-small {
+    border-left: 8px solid #052c65;
+}
+
+.level-lifetime-individual {
+    border-left: 8px solid #644d03;
+}
+
+
+.membershipLevel {
     cursor: pointer;
-    font-size: 22px;
+    max-width: 700px;
+    padding: 20px;
 }
 
-.membership-selector .form-check {
-    margin: 15px 0 25px 0;
-    min-height: 100px;
-    padding: 14px;
-    border: 2px solid #efefef;
+.membershipLevel:hover {
+    background-color: #edf0feff;
+}
+
+.membershipLevelHeader {
+    font-size: 1.5rem;
+}
+
+.membershipLevelName {
+    font-weight: bold;
+}
+
+.membershipLevelDescription {
+    margin: .6rem 0 .6rem 2.0rem;
+}
+
+.membershipDonationExplaination {
+    background: #ffc430;
+}
+
+.membershipDonationExplaination span {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.membershipContinueButton, .addressContinueButton {
+    background: #366994;
+    font-weight: bold;
+    color: white;
+    font-size: larger;
     cursor: pointer;
-    border-radius: 5px;
 }
 
-.membership-selector .form-check input {
-    /* display: none; */
+.membershipLevelSelected {
+    margin-bottom: 20px;
 }
 
-.membership-level-selector {
-
-}
-
-.secure-message {
-    font-size: smaller;
-}
-
-.payment-card-wrapper {
-    border: 1px solid var(--bs-border-color);;
-    padding: 10px;
-    margin: 5px 0 5px 10px;
-    border-radius: .375rem;
-}
-
-.alert p {
+.membershipLevelHeader {
     margin-bottom: 0;
 }
 
-.selected-level {
-    background: #fff3cd;
-    border: 2px solid #bdbcaf !important;
+.membershipLevelSelectedHeader a {
+    font-size: smaller;
+    margin-left: 10px;
 }
 
-.asteriskField {
-    display: none;
+.specialProgramContributions .input-group {
+    width: 200px;
 }
 
-.detail-form label {
-    margin-top: 4px;
+.specialProgramContributions .form-control, .specialProgramContributions .group-text {
+    font-size: 1.5rem;
 }
 
-#submit-membership-form-button {
-    font-size: 26px;
+.makeRecurringParentWrapper {
+    border: 1px solid #cecece;
+    padding: 0 10px 10px 10px;
+    margin: 15px 10px 0 10px;
+    cursor: pointer;
+}
+
+.irsDisclaimer {
+    font-style: italic;
+    margin: 10px 0 10px 0;
+    color: #6e6e6e;
+    font-size: smaller;
+}
+
+.addressDetails div {
+    margin-bottom: 8px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+#specialProgramErrorMessage {
+    font-weight: bold;
 }
 
 </style>
@@ -87,52 +147,288 @@ Membership
 
 
 {% block extra_js %}
-
+<script src="https://js.stripe.com/clover/stripe.js"></script>
 <script>
 
-const btn = document.getElementById('submit-membership-form-button');
-btn.addEventListener('click', function handleClick() {
-    btn.textContent = 'Working...';
-    btn.disabled = true;
-    document.getElementById("join-form").submit();
-});
-btn.disabled = true;
+let membershipLevelArray = {{ membershipLevelJSON|safe }};
 
-const checks = document.querySelectorAll('.membership-level-item');
-checks.forEach(el => el.addEventListener('click', event => {
-    let formCheck = event.target.parentNode.closest(".form-check");
-    if (!formCheck)
-        formCheck = event.target;
+let membershipLevel = null;
+let additionalContributions = [];
+let isRecurring = false;
+let totalPrice = null;
+let checkout = null;
+let modal = null;
 
-    let input = formCheck.querySelector("input")
-    input.checked = true;
+function initiateVariables() {
+    membershipLevel = null;
+    additionalContributions = [];
+    isRecurring = false;
+    totalPrice = null;
 
-    for (elem of document.getElementsByClassName("selected-level")) {
-        elem.classList.remove("selected-level");
+    specialProgramResetValues();
+
+    // Reset checkbox
+    document.getElementById("makeRecurring").checked = false;
+}
+
+function startup() {
+    initiateVariables();
+    attachHandlers();
+    specialProgramAttachHandlers();
+    makeRecurringAttachHandlers();
+}
+
+function attachHandlers() {
+    // Membership Level Buttons
+    document.querySelectorAll('.membershipLevel').forEach(level => {
+        console.log(level)
+        level.addEventListener('click', () => {
+            console.log(level)
+            // document.querySelectorAll('.membershipLevel').forEach(c => c.classList.remove('membershipLevelSelected'));
+            // level.classList.add('membershipLevelSelected');
+
+            membershipLevel = membershipLevelArray[level.getAttribute('data-slug')];
+
+            updateCheckoutDescription();
+            updateMembershipSelected();
+
+            document.getElementById("selectYourMembership").classList.add("d-none");
+            document.getElementById("specifyContributions").classList.remove("d-none");
+            document.getElementById("addressDetails").classList.add("d-none");
+            document.getElementById("payment").classList.remove("d-none");
+
+            // Don't show is recurring checkbox for lifetime memberships
+            document.getElementById("makeRecurring").checked = false;
+            if (membershipLevel["allow_recurring"])
+                document.getElementById("makeRecurringParentWrapper").classList.remove("d-none");
+            else
+                document.getElementById("makeRecurringParentWrapper").classList.add("d-none");
+
+            // Show the modal in some cases
+            if(level.getAttribute('show-modal') === "yes") {
+                modal = new bootstrap.Modal(document.getElementById('membershipModal'));
+                modal.show();
+            }
+        });
+    });
+
+    // Additional Contribution Continue Button
+    document.getElementById("membershipContinueButton").addEventListener("click", () => {
+        let hasError = validateAdditionalContributionsInputs();
+        if(hasError) return
+
+        document.getElementById("specifyContributions").classList.add("d-none");
+        document.getElementById("addressDetails").classList.remove("d-none");
+
+        if (membershipLevel.includes_spouse) {
+            document.getElementById("spouseNameContainer").classList.remove("d-none");
+        } else {
+            document.getElementById("spouseNameContainer").classList.add("d-none");
+        }
+
+        if (membershipLevel.is_business) {
+            document.getElementById("businessNameContainer").classList.remove("d-none");
+        } else {
+            document.getElementById("businessNameContainer").classList.add("d-none");
+        }
+
+        document.getElementById("inputName").focus();
+    });
+
+    // Recurring make the whole thing clickable
+    document.getElementById("makeRecurringParentWrapper").addEventListener("click", () => {
+        document.getElementById("makeRecurring").click();
+    });
+
+    // Inputs for additional contributions
+    document.querySelectorAll('.specialProgram').forEach(input => {
+        input.addEventListener('click', () => {
+            if(input.value === "0") {
+                input.select();
+            }
+        });
+    });
+
+    // Continue to Payment Button
+    document.getElementById("addressContinueButton").addEventListener("click", () => {
+        document.getElementById("addressFormSubmitButton").click();
+    });
+
+    document.getElementById("addressForm").addEventListener("submit",  async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById("addressFormSubmitButton");
+        btn.setAttribute("disabled", "disabled");
+        btn.innerHTML = "One second..."
+        let stripeSessionId = await submitStripeSessionForm();
+
+        document.getElementById("addressDetails").classList.add("d-none");
+        document.getElementById("payment").classList.remove("d-none");
+
+        const stripe = Stripe('{% stripe_public_key %}');
+        checkout = await stripe.initEmbeddedCheckout({"clientSecret": stripeSessionId });
+        checkout.mount('#payment');
+    });
+}
+
+function specialProgramAttachHandlers() {
+    document.querySelectorAll('.specialProgram').forEach(program => {
+        program.addEventListener('change', () => {
+            let hasError = validateAdditionalContributionsInputs();
+            if(hasError) return
+            updateCheckoutDescription();
+        });
+    });
+}
+
+function specialProgramResetValues() {
+    document.querySelectorAll('.specialProgram').forEach(program => {
+        program.value = "0";
+    });
+}
+
+function makeRecurringAttachHandlers() {
+    document.getElementById('makeRecurring').addEventListener('change', function() {
+        if (this.checked) {
+            isRecurring = true;
+        } else {
+            isRecurring = false;
+        }
+        updateCheckoutDescription();
+    });
+}
+
+function updateCheckoutDescription() {
+    // not set? hide it.
+    if(!membershipLevel) {
+        document.querySelectorAll('.membershipDonationExplaination').forEach(el => {
+            el.classList.add('d-none');
+        });
+        totalPrice = 0;
+        return
     }
 
-    formCheck.classList.add("selected-level");
+    totalPrice = membershipLevel["price"]
 
-    btn.disabled = false;
+    additionalContributions = "";
+    let additionalContributionsArray = [];
+    document.querySelectorAll('.specialProgram').forEach(el => {
+        let elFloatValue = parseFloat(el.value);
+        totalPrice += elFloatValue
 
-}));
+        additionalContributionsArray.push(`${el.getAttribute('data-slug')}:${elFloatValue}`)
+    })
+    additionalContributions = additionalContributionsArray.join(",");
 
-// Select membership level if we are returning back to the form
-function startup_select_membership_level() {
-    let selected_option = document.querySelector('input[name="membership_level"]:checked');
-    if (selected_option) {
-        let formCheck = selected_option.parentNode.closest(".form-check");
-        formCheck.classList.add("selected-level");
+    let recurringDescription = "one time payment"
+    if (isRecurring) recurringDescription = "per year (recurring)"
+
+    document.querySelectorAll('.membershipDonationExplaination').forEach(el => {
+        el.classList.remove('d-none'); // show
+        el.innerHTML = `Your Contribution: <span>$${totalPrice}</span> ${recurringDescription}`;
+    });
+}
+
+function validateAdditionalContributionsInputs() {
+    let hasError = false;
+
+    document.querySelectorAll('.specialProgram').forEach(program => {
+        program.classList.remove("error");
+        if(!isPositiveNumber(program.value)) {
+            hasError = true;
+            program.classList.add("error");
+        }
+    });
+
+    if(hasError) {
+        document.getElementById("specialProgramErrorMessage").classList.remove("d-none");
+    } else {
+        document.getElementById("specialProgramErrorMessage").classList.add("d-none");
     }
-}
-startup_select_membership_level();
 
-
-// Scroll error message into view
-let form_errors_message = document.getElementById("form_errors_message");
-if (form_errors_message) {
-    form_errors_message.scrollIntoView();
+    return hasError;
 }
+
+function startOver() {
+    document.getElementById("specifyContributions").classList.add("d-none");
+    document.getElementById("addressDetails").classList.add("d-none");
+
+    initiateVariables();
+
+    document.getElementById("selectYourMembership").classList.remove("d-none");
+}
+
+function updateMembershipSelected() {
+    document.querySelectorAll('.membershipLevelSelectedIcon').forEach(el => {
+        el.setAttribute("data-feather", membershipLevel["icon"]);
+    });
+    feather.replace();
+
+    document.querySelectorAll('.membershipLevelSelectedName').forEach(el => {
+        el.innerHTML = membershipLevel["name"];
+    });
+
+    document.querySelectorAll('.membershipLevelSelectedPrice').forEach(el => {
+        el.innerHTML = membershipLevel["price_display"];
+    });
+}
+
+async function submitStripeSessionForm() {
+
+    const formData = new FormData();
+
+    formData.append("name", document.getElementById("inputName").value);
+    formData.append("spouse_name", document.getElementById("spouseName").value);
+    formData.append("business_name", document.getElementById("businessName").value);
+    formData.append("email", document.getElementById("email").value);
+    formData.append("phone", document.getElementById("phone").value);
+
+    formData.append("line1", document.getElementById("inputAddress").value);
+    formData.append("line2", document.getElementById("inputAddress2").value);
+    formData.append("city", document.getElementById("inputCity").value);
+    formData.append("state", document.getElementById("inputState").value);
+    formData.append("zip", document.getElementById("inputZip").value);
+
+    formData.append("level", membershipLevel["slug"]);
+    formData.append("additional_contributions", additionalContributions);
+    formData.append("total_amount", totalPrice);
+
+    if(isRecurring) formData.append("is_recurring", true)
+
+    const response = await fetch("{% url 'membership-join' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: formData
+    });
+
+    let data = await response.json();
+
+    console.log(data);
+
+    if(data["checkoutSession"]) return data["checkoutSession"];
+    // error, probably
+    return
+}
+
+function isPositiveNumber(value) {
+    // 1. Coerce the value to a number
+  const num = Number(value);
+
+  // 2. Check:
+  // - Is it not NaN? (catches "abc")
+  // - Is it a finite number? (catches Infinity)
+  // - Is it >= 0?
+  // - Is the original value not just an empty string or null?
+  // (Number("") or Number(null) results in 0, which might be a false positive)
+
+  if (value === "" || value === null) return false;
+
+  return !isNaN(num) && isFinite(num) && num >= 0;
+}
+
+startup();
 
 </script>
 
@@ -142,146 +438,320 @@ if (form_errors_message) {
 
 <div class="container">
     <div class="row">
-        <div class="col-xl-9 pb-5">
+        <div class="col-xl-9 membershipAbout">
+            <h3>Membership Benefits:</h3>
+            <p>
+                <ul>
+                    <li>An invitation to the <a href="/rsvp/">annual investiture ceremony.</a></li>
+                    <li>Subscription to our quarterly magazine <a href="/forward-in-flight-all-issues/"><i>Forward in Flight</i></a>.</li>
+                    <li>The opportunity to <a href="/hall-of-fame-nominations/">nominate the men and women</a> who made significant contributions to aviation.</li>
+                </ul>
+            </p>
 
-            <form method="post" id="join-form">
-                {% csrf_token %}
+            <hr>
 
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <h1>{{ snippet.title }}</h1>
+            <h3>Prefer to join by mail?</h3>
+            <p>
 
-                            {{ snippet.content|richtext }}
-                        </div>
-                    </div>
+                <a href="#">Membership Application Form (PDF).</a>
+            </p>
 
+            <h3>Membership Questions?</h3>
+            <p>
+                Send an email to: <a href="mailto:info@wahf.org">info@wahf.org</a>
+            </p>
 
-                    <hr class="border border-primary border-3 opacity-75">
+            <h3>Renew your Membership:</h3>
+            <p>
+                <!-- <a href="#">Click here to Renew or Manage your Membership.</a> -->
+                Online renewals will be back online soon. Contact us if you need assistance.
+            </p>
 
+            <hr>
 
-                    <div class="row">
-                        <div class="col">
-                            <h2><mark>Looking to Renew your Membership?</mark></h2>
-
-                            <div class="my-4">
-                                <p><a href="/renew/">Sign in to your WAHF.org account</a> to renew your membership!</p>
-
-                                <p>Please email <a href="mailto:membership@wahf.org">membership@wahf.org</a> if you require assistance.</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <hr class="border border-primary border-3 opacity-75">
-
-
-                    <h1>Choose Your Membership Level</h1>
-
-                    <div class="row membership-selector">
-
-                        <div class="col-md-4">
-                            <h3 class="text-success-emphasis"><i data-feather="user"></i> Individual</h3>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="individual" data-amount="30.00" id="membership_level_individual" {% if form.membership_level.value == "individual" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_individual">
-                                <b>$30</b> - Individual
-                                </label>
-                            </div>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="individual-spouse" data-amount="40.00" id="membership_level_individual_spouse" {% if form.membership_level.value == "individual-spouse" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_individual_spouse">
-                                <b>$40</b> - Family <br>
-                                </label>
-                            </div>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="individual-youth" data-amount="10.00" id="membership_level_individual_youth" {% if form.membership_level.value == "individual-youth" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_individual_youth">
-                                <b>$10</b> - Youth <i class="smaller-please">(under 18)</i>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h3 class="text-primary-emphasis"><i data-feather="compass"></i> Business</h3>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="biz-small" data-amount="250.00" id="membership_level_biz_small" {% if form.membership_level.value == "biz-small" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_biz_small">
-                                <b>$250</b> - Corporate <br><i class="smaller-please">(&lt;100 employees)</i>
-                                </label>
-                            </div>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="biz-large" data-amount="500.00" id="membership_level_biz_large" {% if form.membership_level.value == "biz-large" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_biz_large">
-                                <b>$500</b> - Corporate <br><i class="smaller-please">(100+ employees)</i>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h3 class="text-warning-emphasis"><i data-feather="send"></i> Lifetime</h3>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-individual" data-amount="500.00" id="membership_level_lifetime" {% if form.membership_level.value == "lifetime-individual" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_lifetime">
-                                <b>$500</b> - Lifetime
-                                </label>
-                            </div>
-
-                            <div class="form-check membership-level-item">
-                                <input class="form-check-input" type="radio" name="membership_level" value="lifetime-spouse" data-amount="750.00" id="membership_level_lifetime_spouse" {% if form.membership_level.value == "lifetime-spouse" %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="membership_level_lifetime_spouse">
-                                <b>$750</b> - Lifetime (Family)<br>
-                                </label>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-lg-10">
-
-                            <div class="container">
-
-                                {% for error_key, error_message in form.errors.items %}
-                                <div class="row">
-                                    <div class="alert alert-danger" role="alert" id="form_errors_message">
-                                        {% if error_message.as_text == "* EXISTING_USER" %}
-                                            <p><b>It looks like you might have had a membership at one point or another.</b></p>
-                                            <br>
-                                            <p>Please try <a href="{% url 'password_reset' %}">resetting your password</a> or <a href="/contact">contact us</a> for assistance.</p>
-                                        {% else %}
-                                            {{ error_message.as_text }}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                {% empty %}
-                                    {% if payment_error %}
-                                    <div class="row">
-                                        <div class="alert alert-danger" role="alert" id="form_errors_message">
-                                            {{ payment_error }}
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg mt-4 mx-4" id="submit-membership-form-button">Proceed to New Membership Form</button>
-
-                </div>
-            </form>
         </div>
+
+        <h3>Join Us!</h3>
+
+        <p>Tap on a level below to become a WAHF member.</p>
+
+        <div class="membershipLevels mt-3 mb-3">
+            <ul class="list-group">
+            {% for level in membership_levels %}
+                <li class="list-group-item membershipLevel level-{{ level.slug }} " data-slug="{{ level.slug }}" show-modal="yes">
+                    <p class="membershipLevelHeader">
+                        <span class="membershipLevelName {{ level.membership_page_text_class }}">
+                            {% if level.membership_page_icon %}<i data-feather="{{ level.membership_page_icon }}"></i>{% endif %}
+                            {{ level.name }}
+                        </span>
+                        -
+                        <span class="membershipPriceDisplay">{{ level.price_display }}</span>
+                    </p>
+                    <p class="membershipLevelDescription">
+                        {{ level.description }}
+                    </p>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
     </div>
 </div>
+
+<div class="modal fade" id="membershipModal" tabindex="-1" aria-labelledby="membershipModalLabel" aria-hidden="true">
+  <div class="modal-dialog p-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="membershipModalLabel">WAHF Membership</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="selectYourMembership">
+            <h2>Select Your Membership</h2>
+
+            <div class="membershipLevels mb-3">
+                <ul class="list-group">
+                {% for level in membership_levels %}
+                    <li class="list-group-item membershipLevel" data-slug="{{ level.slug }}">
+                        <p class="membershipLevelHeader">
+                            <span class="membershipLevelName">
+                                {% if level.membership_page_icon %}<i data-feather="{{ level.membership_page_icon }}"></i>{% endif %}
+                                {{ level.name }}
+                            </span>
+                            -
+                            <span class="membershipPriceDisplay">{{ level.price_display }}</span>
+                        </p>
+                        <p class="membershipLevelDescription">
+                            {{ level.description }}
+                        </p>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="membershipContinueButton rounded p-3 mt-2 text-center">
+                Continue
+            </div>
+
+        </div>
+
+        <div id="specifyContributions" class="specifyContributions d-none">
+
+            <div class="membershipLevelSelected">
+                <p class="membershipLevelSelectedHeader">
+                    Membership Level:
+                    <a href="#" onclick="startOver();">(start over)</a>
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p class="membershipLevelHeader">
+                            <span class="membershipLevelName">
+                                <i data-feather="user" class="membershipLevelSelectedIcon"></i>
+                                <span class="membershipLevelSelectedName"></span>
+                            </span>
+                            -
+                            <span class="membershipPriceDisplay membershipLevelSelectedPrice"></span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <h2>Additional Contributions</h2>
+
+            <div class="specialProgramContributions mb-3">
+                {% for ct in contribution_types %}
+                <div class="mb-3">
+                    <label for="specialProgram-{{ ct.slug }}" class="form-label">{{ ct.name }}</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control specialProgram" data-slug="{{ ct.slug }}" id="specialProgram-{{ ct.slug }}" aria-describedby="specialProgramHelp-{{ ct.slug }}" value="0">
+                    </div>
+                    <div id="specialProgramHelp-{{ ct.slug }}" class="form-text">
+                        {{ ct.description }}
+                        {% if ct.link %}
+                            <a href="{{ ct.link }}" target="_blank">Learn More</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="membershipDonationExplaination rounded p-3 mt-2 text-center">
+            </div>
+
+            <div class="makeRecurringParentWrapper rounded" id="makeRecurringParentWrapper">
+                <div class="form-check mt-3" id="makeRecurringWrapper">
+                    <input type="checkbox" class="form-check-input makeRecurring" id="makeRecurring" aria-describedby="makeRecurringHelp">
+                    <label class="form-check-label" for="makeRecurring">Renew my membership automatically</label>
+                    <div id="makeRecurringHelp" class="form-text">
+                        Your membership will renew annually. You can cancel anytime.
+                    </div>
+                </div>
+            </div>
+
+            <div class="irsDisclaimer">
+                The Wisconsin Aviation Hall of Fame is listed as a 501(c)(3) organization for donation and tax purposes.
+            </div>
+
+            <div class="alert alert-danger d-none" role="alert" id="specialProgramErrorMessage">
+                Please check your donation amounts above. It looks like one or more are not a number!
+            </div>
+
+            <div id="membershipContinueButton" class="membershipContinueButton rounded p-3 mt-2 text-center">
+                Continue
+            </div>
+
+        </div>
+
+        <div id="addressDetails" class="addressDetails d-none">
+
+            <div class="membershipLevelSelected">
+                <p class="membershipLevelSelectedHeader">
+                    Membership Level:
+                    <a href="#" onclick="startOver();">(start over)</a>
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p class="membershipLevelHeader">
+                            <span class="membershipLevelName">
+                                <i data-feather="user" class="membershipLevelSelectedIcon"></i>
+                                <span class="membershipLevelSelectedName"></span>
+                            </span>
+                            -
+                            <span class="membershipPriceDisplay membershipLevelSelectedPrice"></span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="membershipDonationExplaination rounded p-3 mt-2 text-center">
+            </div>
+
+            <h2>Your Details</h2>
+
+            <div class="container mb-4">
+                <div class="row">
+                  <form id="addressForm" action="#">
+
+                    <div class="col-12">
+                        <label for="inputName" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="inputName" required>
+                    </div>
+
+                    <div class="col-12" id="spouseNameContainer">
+                        <label for="spouseName" class="form-label">Spouse Name</label>
+                        <input type="text" class="form-control" id="spouseName">
+                    </div>
+
+                    <div class="col-12" id="businessNameContainer">
+                        <label for="businessName" class="form-label">Business Name</label>
+                        <input type="text" class="form-control" id="businessName">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+
+                    <div class="col-12 mb-5">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="phone" class="form-control" id="phone" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputAddress" class="form-label">Mailing Address</label>
+                        <input type="text" class="form-control" id="inputAddress" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputAddress2" class="form-label">Address 2 (Optional)</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Optional">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputCity" class="form-label">City</label>
+                        <input type="text" class="form-control" id="inputCity" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputState" class="form-label">State</label>
+                        <select id="inputState" class="form-select" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="inputZip" pattern="[0-9]{5}" required>
+                    </div>
+                    <input type="submit" id="addressFormSubmitButton" class="d-none">
+                  </form>
+                </div>
+            </div>
+
+            <div id="addressContinueButton" class="addressContinueButton rounded p-3 mt-2 text-center">
+                Continue to Payment
+            </div>
+        </div>
+
+        <div id="payment" class="d-none">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}

@@ -145,22 +145,8 @@
                       </li>
                       -->
 
-
                         {% get_main_menu slug="main" parent=site_root calling_page=self %}
 
-                        {% if user.pk > 0 %}
-                        <li class="nav-link px-3 link-dark">
-                            <a href="{% url 'member_profile' %}" class="nav-link{% if item.active %} active{% endif %}" {% if item.active %}aria-current="page"{% endif %}>
-                                {{ user }}
-                            </a>
-                          </li>
-                        {% else %}
-                        <li class="nav-link px-3 link-dark">
-                            <a href="{% url 'login' %}" class="nav-link{% if item.active %} active{% endif %}" {% if item.active %}aria-current="page"{% endif %}>
-                              Member Login
-                            </a>
-                          </li>
-                        {% endif %}
                     </ul>
                   </div>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -171,18 +157,6 @@
 
             <!-- end header -->
 
-            <!-- renewal blurb if they are logged in -->
-            {% if user.pk > 0 and user.member %}
-              {% if user.member.membership_expiring %}
-              <div class="alert alert-warning mt-3">
-                <i data-feather="alert-circle" class="mx-2 my-0"></i> Your WAHF Membership is expiring soon! <a href="{% url "member_renew" %}">Please renew your membership!</a>
-              </div>
-              {% elif user.member.membership_valid is False %}
-              <div class="alert alert-danger mt-3">
-                <i data-feather="alert-circle" class="mx-2 my-0"></i> Your WAHF Membership has lapsed. <a href="{% url "member_renew" %}">Please renew your membership!</a>
-              </div>
-              {% endif %}
-            {% endif %}
         </div>
 
         {% block before_title %}{% endblock %}

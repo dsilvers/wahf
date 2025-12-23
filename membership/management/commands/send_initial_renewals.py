@@ -5,9 +5,8 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from membership.models import MembershipLevel
-from users.models import Member
-from users.utils import send_email
+from membership.models import Member, MembershipLevel
+from membership.utils import send_email
 
 
 class Command(BaseCommand):

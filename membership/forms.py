@@ -1,54 +1,25 @@
-from crispy_forms.helper import FormHelper
 from django import forms
-from django.core.exceptions import ValidationError
-
-from membership.models import MembershipLevel
-from users.models import Member
 
 
-class MemberUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Member
-        fields = [
-            "email",
-            "first_name",
-            "last_name",
-            "spouse_name",
-            "business_name",
-            "address_line1",
-            "address_line2",
-            "city",
-            "state",
-            "zip",
-            "phone",
-        ]
+class MembershipSignupForm(forms.Form):
+    level = forms.CharField(required=True)
+    is_recurring = forms.BooleanField(required=False)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
+    # slug:amount,slug:amount
+    additional_contributions = forms.CharField()
 
+    total_amount = forms.FloatField(required=True)
 
-class MemberJoinForm(forms.Form):
-    membership_level = forms.CharField(max_length=200)
+    email = forms.EmailField(required=True)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
+    name = forms.CharField(required=True)
+    spouse_name = forms.CharField(required=False)
+    business_name = forms.CharField(required=False)
 
-    def clean(self):
-        # Membership level should exist
-        membership_level_lookup = self.cleaned_data.get("membership_level", None)
-        membership_level = None
+    phone = forms.CharField(required=True)
 
-        if membership_level_lookup:
-            membership_level = MembershipLevel.objects.filter(
-                slug=membership_level_lookup
-            ).first()
-        if not membership_level:
-            raise ValidationError("Please select a membership level above.")
-
-        self.membership_level = membership_level
-
-        return self.cleaned_data
+    line1 = forms.CharField(required=True)
+    line2 = forms.CharField(required=False)
+    city = forms.CharField(required=True)
+    state = forms.CharField(required=True)
+    zip = forms.CharField(required=True)

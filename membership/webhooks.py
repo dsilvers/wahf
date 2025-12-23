@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 import stripe
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -12,12 +13,16 @@ from html2text import html2text
 
 from membership.models import (
     BanquetPayment,
+    Member,
     MembershipEmailTemplateSnippet,
     MembershipLevel,
+    MemberSignupLog,
 )
-from membership.utils import get_stripe_secret_key, send_membership_error_email
-from users.models import Member, User
-from users.utils import send_email, usps_validate_user_address
+from membership.utils import (
+    get_stripe_secret_key,
+    send_email,
+    send_membership_error_email,
+)
 
 stripe.api_key = get_stripe_secret_key()
 
@@ -46,9 +51,9 @@ def process_stripe_webhook(request):
 
         if action == "signup":
             process_membership_signup(event.data.object, session)
-        elif action == "renewal":
-            # this is currently unused and does nothing
-            process_membership_renewal(event.data.object, session)
+        # elif action == "renewal":
+        #    # this is currently unused and does nothing
+        #    process_membership_renewal(event.data.object, session)
         elif action == "donation":
             process_donation_payment(event.data.object, session)
         elif success_url and "rsvp" in success_url:  # action == "banquet":
@@ -208,129 +213,56 @@ def process_donation_payment(obj, session):
 
 
 def process_membership_signup(obj, session):
+    MemberSignupLog.objects.create(data=obj)
+
     #################################
     # Process signup
     email = obj["customer_details"]["email"].lower()
 
-    if User.objects.filter(email__iexact=email).exists():
-        error = f"""
-            Unable to create WAHF account or process signup for <b>{ email }</b>, as it already exists in our users database.
-            <br><br>
-            This membership probably needs to be manually processed and an account created for a different email address if necessary. Sorry!
-        """
+    line_item_ids = []
+    for line in session["line_items"]["data"]:
+        try:
+            line_item_ids.append(line["price"]["id"])
+        except KeyError:
+            continue
 
-        send_membership_error_email(
-            f"WAHF Membership Creation Error - Account Already Exists for {email}",
-            error,
-        )
-
-        raise Exception("Email address already exists")
-
-    # Line item lookup for membership level
     try:
         membership_level = MembershipLevel.objects.get(
-            stripe_price_id=session["line_items"]["data"][0]["price"]["id"]
+            Q(stripe_price_id__in=line_item_ids)
+            | Q(stripe_price_id_one_time__in=line_item_ids)
         )
     except MembershipLevel.DoesNotExist:
         raise Exception("Membership level does not exist")
 
-    if session["subscription"]:
-        start_date = datetime.utcfromtimestamp(
-            session["subscription"]["current_period_start"]
-        ).date()
-        end_date = datetime.utcfromtimestamp(
-            session["subscription"]["current_period_end"]
-        ).date()
-    else:  # lifetime?
-        start_date = timezone.now().date()
-        end_date = None
-
-    password = User.objects.make_random_password(length=8)
-    user = User.objects.create_user(
-        email=email,
-        password=password,
-    )
-
-    name_split = session["shipping_details"]["name"].split(" ", 1)
-    first_name = name_split[0]
-    last_name = ""
-    if len(name_split) == 2:
-        last_name = name_split[1]
-
-    line2 = session["shipping_details"]["address"]["line2"]
-
-    phone = obj["customer_details"].get("phone")
-    phone = phone.replace("+1", "") if phone else ""
-
-    subscription_id = session["subscription"]["id"] if session["subscription"] else ""
-
-    spouse_name = ""
-    business_name = ""
-
-    for field in obj.get("custom_fields", []):
-        if field["key"] == "spousename":
-            spouse_name = field["text"]["value"]
-        elif field["key"] == "businessname":
-            business_name = field["text"]["value"]
-
-    member = Member.objects.create(
-        **{
-            "user": user,
-            "email": email,
-            "membership_level": membership_level,
-            "membership_join_date": timezone.now().date(),
-            "last_payment_date": start_date,
-            "membership_expiry_date": end_date,
-            "stripe_customer_id": session["customer"] or "",
-            "stripe_subscription_id": subscription_id,
-            "stripe_subscription_active": True,
-            "first_name": first_name,
-            "last_name": last_name,
-            "business_name": business_name,
-            "spouse_name": spouse_name,
-            "address_line1": session["shipping_details"]["address"]["line1"],
-            "address_line2": line2 if line2 else "",
-            "city": session["shipping_details"]["address"]["city"],
-            "state": session["shipping_details"]["address"]["state"],
-            "zip": session["shipping_details"]["address"]["postal_code"],
-            "phone": phone,
-        }
-    )
-
-    # Validate member address
-    # Update membership permissions
-    # Send welcome email
-    member = usps_validate_user_address(member)
-
-    member.update_wahf_group_membership()
+    full_name = session["customer_details"]["name"]
 
     snippet = MembershipEmailTemplateSnippet.objects.get(slug="join_thanks")
 
-    snippet_body = snippet.body.replace("%EMAIL%", member.email)
-    snippet_body = snippet_body.replace("%PASSWORD%", password)
-
     send_email(
-        to=member.email,
+        to=email,
         subject=snippet.subject,
-        body=snippet_body,
+        body=snippet.body,
         context={
-            "member": member,
+            "member": full_name,
         },
     )
 
     # Send a membership alert to ourselves
     alert_body = render_to_string(
-        "emails/membership_alert_signup.html", {"member": member}
+        "emails/membership_alert_signup.html",
+        {
+            "name": full_name,
+            "level": membership_level,
+            "email": email,
+        },
     )
 
     send_email(
         to=["membership@wahf.org", "dan@wahf.org"],
-        subject=f"WAHF Membership Signup - {member}",
+        subject=f"WAHF Membership Signup - {full_name}",
         body=None,
         body_html=alert_body,
-        context={
-            "member": member,
-        },
+        context={},
     )
 
     return
@@ -375,8 +307,6 @@ def process_membership_renewal(obj, session):
     member.stripe_subscription_id = obj["id"]
     member.stripe_subscription_active = obj["status"] == "active"
     member.save()
-
-    member.update_wahf_group_membership()
 
     # Send a membership alert to ourselves
     alert_body = render_to_string(
@@ -436,8 +366,6 @@ def process_subscription_create_update(obj):
     member.stripe_subscription_active = obj["status"] == "active"
     member.save()
 
-    member.update_wahf_group_membership()
-
     if end_date > previous_end_date and member.stripe_subscription_active:
         # Renewed?
 
@@ -481,8 +409,6 @@ def process_subscription_delete(obj):
 
     member.stripe_subscription_active = False
     member.save()
-
-    member.update_wahf_group_membership()
 
     send_membership_error_email(
         f"WAHF Membership Subscription Cancelled - {member} {member.email}",
