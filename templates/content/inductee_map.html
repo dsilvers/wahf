@@ -22,61 +22,41 @@
 {% block extra_js %}
 
 
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
     /* **** Leaflet 1.9.4 **** */
 
-    // White background tile layer
     var white = L.tileLayer("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEX///+nxBvIAAAAH0lEQVQYGe3BAQ0AAADCIPunfg43YAAAAAAAAAAA5wIhAAAB9aK9BAAAAABJRU5ErkJggg==", {minZoom: 1, maxZoom: 12});
 
+    var black = L.tileLayer("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", {
+        minZoom: 1,
+        maxZoom: 12
+    });
+
     // Overlay layers (TMS)
-    var lyr = L.tileLayer('https://maptiles.wahf.org/tiles/1968/{z}/{x}/{y}.png', {tms: 1, opacity: 1.0, attribution: "1967 AeroChart", minZoom: 5, maxZoom: 12});
+    var lyr = L.tileLayer('https://maptiles.wahf.org/tiles/1968/{z}/{x}/{y}.png', {tms: 1, opacity: 0.8, attribution: "1967 AeroChart", minZoom: 5, maxZoom: 12});
 
     // Map Initialization
     var map = L.map('map', {
         center: [44.45949703069321, -90.15830918306479],
         zoom: 8,
-        minZoom: 1,
+        minZoom: 6,
         maxZoom: 12,
-        layers: [white, lyr],
+        layers: [black, lyr],
         attributionControl: false,
-
-        // No need for specific mobile flags; 1.9.4 handles them well.
     });
 
-    var basemaps = {"Without background": white}
-    var overlaymaps = {"1968 AeroChart": lyr}
-
-
-// --- START: ADD CUSTOM PHOTO ICONS ---
-
-    // 1. Define Zoom-to-Size Mapping
     // This object maps the maximum zoom level for a given icon size.
     const ZOOM_SIZES = [
-        { maxZoom: 6, size: 35 },  // Zoom 6 and below: 35x35 pixels (Small)
-        { maxZoom: 8, size: 55 },  // Zoom 7-8: 55x55 pixels (Medium)
-        { maxZoom: 12, size: 85 } // Zoom 9-12: 85x85 pixels (Large/Tap-Friendly)
-        // Note: Map maxZoom is 12, so 85 is the max size.
+        { maxZoom: 6, size: 50 },
+        { maxZoom: 8, size: 55 },
+        { maxZoom: 9, size: 75 },
+        { maxZoom: 10, size: 95 },
+        { maxZoom: 10, size: 120 },
+        { maxZoom: 12, size: 135 }
     ];
 
-    // Array to hold references to all marker objects
-    const markers = [];
-
-// Object to track all markers at a given location (lat,lon)
-    const groupedLocations = {};
-
-    const photoLocations = {{ inductee_json|safe }};
-    photoLocations.forEach(data => {
-        const key = `${data.lat.toFixed(5)},${data.lon.toFixed(5)}`;
-        if (!groupedLocations[key]) {
-            groupedLocations[key] = [];
-        }
-        groupedLocations[key].push(data);
-    });
-
-
-    // --- 2. Function to Calculate Icon Size Based on Current Zoom ---
+    // Function to Calculate Icon Size Based on Current Zoom ---
     function getIconSize(currentZoom) {
         // Iterate through the defined sizes and return the first size that matches the zoom
         for (const zoomData of ZOOM_SIZES) {
@@ -91,6 +71,21 @@
         return { size: [size, size], anchor: [size / 2, size / 2] };
     }
 
+
+    // Array to hold references to all marker objects
+    const markers = [];
+
+    // Object to track all markers at a given location (lat,lon)
+    const groupedLocations = {};
+
+    const photoLocations = {{ inductee_json|safe }};
+    photoLocations.forEach(data => {
+        const key = `${data.lat.toFixed(5)},${data.lon.toFixed(5)}`;
+        if (!groupedLocations[key]) {
+            groupedLocations[key] = [];
+        }
+        groupedLocations[key].push(data);
+    });
 
     const JITTER_RADIUS_DEG = 0.05; // Adjust this value (in degrees) for separation distance
 
@@ -111,8 +106,6 @@
                 finalLat = data.lat + JITTER_RADIUS_DEG * Math.cos(angle);
                 finalLon = data.lon + JITTER_RADIUS_DEG * Math.sin(angle);
             }
-
-            // --- 3. Marker Creation with Jittered Coordinates ---
 
             const initialSize = getIconSize(map.getZoom());
 
@@ -145,8 +138,7 @@
         });
     });
 
-
-    // --- 4. Event Listener for Dynamic Resizing ---
+    // Event Listener for Dynamic Resizing
     map.on('zoomend', function() {
         const currentZoom = map.getZoom();
         const newIconData = getIconSize(currentZoom);
@@ -165,9 +157,6 @@
         });
     });
 
-    // --- END: ADD CUSTOM PHOTO ICONS ---
-
-
     // Note
     var note = L.control({position: 'bottomleft'});
     note.onAdd = function(map) {
@@ -179,9 +168,6 @@
         this._div.innerHTML = "WI BOA, WAHF";
     };
     note.addTo(map);
-
-    // Add base layers
-    // L.control.layers(basemaps, overlaymaps, {collapsed: false}).addTo(map);
 
     // Fit to overlay bounds (SW and NE points with (lat, lon))
     map.fitBounds([[42.25644743445924, -93.80236466472273], [46.662546626927174, -86.51425370140684]]);
