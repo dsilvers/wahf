@@ -85,7 +85,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-03-11-2023.css' %}?2025-12-08">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-12-23-2025.css' %}">
 
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
@@ -189,18 +189,18 @@
         <div class="container border-top">
             <div class="row py-3">
                 <div class="col-6 col-md-3 mb-4">
-                    <h5>Membership</h5>
+                    <div class="list-header">Membership</div>
                     {% get_footer_menu slug="footer_membership" parent=site_root calling_page=self %}
                 </div>
 
                 <div class="col-6 col-md-3 mb-4">
-                    <h5>Hall of Fame</h5>
+                    <div class="list-header">Hall of Fame</div>
                     {% get_footer_menu slug="footer_hall_of_fame" parent=site_root calling_page=self %}
                     </ul>
                 </div>
 
                 <div class="col-6 col-md-3 mb-4">
-                    <h5>About WAHF</h5>
+                    <div class="list-header">About WAHF</div>
                     {% get_footer_menu slug="footer_about" parent=site_root calling_page=self %}
                 </div>
 
