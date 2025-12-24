@@ -14,6 +14,8 @@
             .src { font-size: 10pt; }
             .leaflet-marker-icon { border: 3px solid white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
             .photo-popup-content p { margin: 5px 0 0 0; font-style: italic; color: #555; }
+            .photo-popup-content p, .photo-popup-content small { font-size: larger; }
+            .photo-popup-content img { cursor: pointer; }
         </style>
 
 {% endblock %}
@@ -118,11 +120,12 @@
 
             const popupContent = `
                 <div class="photo-popup-content">
-                    <h3>${data.name}</h3>
+                    <img src="${data.image}" alt="${data.name}" class="float-end img-fluid" onclick="window.open('${data.link}', '_blank');">
+                    <h3 style="display:inline-block">${data.name}</h3>
                     <small>${data.location}</small>
                     <p>${data.tagline}</p>
                     <a href="${data.link}" target="_blank">
-                        <button type="button" class="btn btn-primary btn-sm">READ MORE</button>
+                        <button type="button" class="btn btn-primary btn-sm mt-2">READ MORE</button>
                     </a>
                 </div>
             `;
