@@ -102,12 +102,15 @@ class MagazineListPage(OpenGraphMixin, Page):
         return context
 
     def get_graph_image(self):
+        image = super().get_graph_image()
+        if image:
+            return image
         first_magazine = (
             MagazineIssuePage.objects.child_of(self).live().order_by("-date").first()
         )
         if first_magazine:
             return first_magazine.get_graph_image()
-        return super().get_graph_image()
+        return None
 
     subpage_types = [
         "magazine.MagazineIssuePage",

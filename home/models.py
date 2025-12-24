@@ -100,9 +100,12 @@ class HomePage(OpenGraphMixin, Page):
     ]
 
     def get_graph_image(self):
+        image = super().get_graph_image()
+        if image:
+            return image
         if self.non_member_image:
             return self.non_member_image
-        return super().get_graph_image()
+        return None
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)

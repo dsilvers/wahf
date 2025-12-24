@@ -266,9 +266,12 @@ class ArticlePage(OpenGraphMixin, Page):
         ordering = ["-website_publish_date", "-pk"]
 
     def get_graph_image(self):
+        image = super().get_graph_image()
+        if image:
+            return image
         if self.image:
             return self.image
-        return super().get_graph_image()
+        return None
 
 
 class FourtyYearsStory(models.Model):
@@ -533,9 +536,12 @@ class InducteeDetailPage(OpenGraphMixin, Page):
         ordering = ["last_name", "first_name", "name"]
 
     def get_graph_image(self):
-        if self.photo:
+        photo = super().get_graph_image()
+        if photo:
+            return photo
+        elif self.photo:
             return self.photo
-        return super().get_graph_image()
+        return None
 
 
 @register_snippet

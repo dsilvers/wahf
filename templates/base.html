@@ -91,6 +91,14 @@
     {# Override this in templates to add extra stylesheets #}
     {% endblock %}
 
+    {% block meta_author %}
+    {% if page.author %}
+    <meta name="author" content="{{ page.author.name }}">
+    {% endif %}
+    {% endblock %}
+
+    <meta property="fb:app_id" content="875252041561148">
+
     {% if environment_name != "production" %}
     <style type="text/css">
     .env-alert {
