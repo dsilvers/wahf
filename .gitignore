@@ -70,10 +70,11 @@ old_site
 node_modules
 staticfiles
 media
-static_collected
+static-collected/
 
 # ignore aws lambda manual builds
 deploy/*.zip
 
 # this should be a symlink for WAHF
 docker-compose.yml
+
