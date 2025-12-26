@@ -99,7 +99,7 @@
 
     <meta property="fb:app_id" content="875252041561148">
 
-    {% if environment_name != "production" %}
+    {% if environment_name != "production" or page.live is False %}
     <style type="text/css">
     .env-alert {
         text-align:  center;
@@ -110,11 +110,14 @@
     .env-staging {
         background-color: #dc3545!important;
         color:  #fff!important;
-
     }
     .env-development {
         background-color: #ffc107!important;
         color:  #343a40!important;
+    }
+    .env-taller-warning {
+      padding: 20px 0 20px 0;
+      font-size: 1.5rem;
     }
     </style>
     {% endif %}
@@ -127,6 +130,11 @@
     {% if environment_name != "production" %}
     <div class="env-alert env-{{ environment_name }}">
         {{ environment_name|upper }} - TESTING
+    </div>
+    {% endif %}
+    {% if page.live is False %}
+    <div class="env-alert env-staging env-taller-warning">
+        UNPUBLISHED PAGE - THIS PAGE IS SET TO PUBLIC
     </div>
     {% endif %}
 

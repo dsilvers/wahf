@@ -325,9 +325,13 @@ class FourtyYearsFourtyStoriesListPage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["articles_list"] = FourtyYearsStory.objects.select_related(
-            "article", "image"
-        ).all()
+        qs = FourtyYearsStory.objects.select_related("article", "image")
+
+        # Only show live stories to public
+        if not request.user.is_authenticated:
+            qs = qs.filter(article__live=True)
+
+        context["articles_list"] = qs.all()
 
         return context
 

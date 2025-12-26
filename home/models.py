@@ -110,8 +110,10 @@ class HomePage(OpenGraphMixin, Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["inductee_bar"] = InducteeDetailPage.objects.filter(
-            photo__isnull=False
-        ).order_by("?")[0:36]
+        context["inductee_bar"] = (
+            InducteeDetailPage.objects.filter(photo__isnull=False)
+            .select_related("photo")
+            .order_by("?")[0:36]
+        )
 
         return context

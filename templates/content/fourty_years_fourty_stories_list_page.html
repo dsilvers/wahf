@@ -27,6 +27,13 @@
     margin-left: 8vw;
 }
 
+.badge {
+    color: white;
+    background: red;
+    font-family: Sans-Serif;
+    font-size: 0.8rem;
+}
+
 .image-wrapper {
   position: relative;
   display: inline-block;
@@ -87,7 +94,12 @@
             {% image feature.image fill-1200x125 class="" loading="lazy" %}
         </div>
         <div class="item-text p-3">
-            <h2>#{{ feature.article_number }} - {{ feature.short_title }}</h2>
+            <h2>
+                #{{ feature.article_number }} - {{ feature.short_title }}
+                {% if not feature.article.live %}
+                <span class="badge badge-danger" style="display:inline-block">NOT PUBLISHED</span>
+                {% endif %}
+            </h2>
         </div>
     </div>
     <a class="d-none" href="{% slugurl feature.article.slug %}">{{ feature.short_title }}</a>

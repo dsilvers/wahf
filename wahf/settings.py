@@ -97,6 +97,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "wahf.middleware.AdminDraftPreviewMiddleware",
 ]
 
 ROOT_URLCONF = "wahf.urls"
@@ -158,7 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Chicago"  # "UTC"
 
 USE_I18N = True
 
@@ -209,6 +210,8 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "https://www.wahf.org"
+
+# WAGTAIL_USER_TIME_ZONES = ['America/Chicago']
 
 # https://docs.wagtail.org/en/stable/advanced_topics/images/custom_image_model.html
 WAGTAILIMAGES_IMAGE_MODEL = "archives.WAHFImage"
