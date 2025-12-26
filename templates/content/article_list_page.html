@@ -19,16 +19,26 @@
                     <div class="img-fluid article-img" style="background-image: url('{{ tmp_img.url }}');">
                     </div>
 
-                    {% if article.top_badge %}
+                    {% if article.top_badge or article.live is False %}
                     <div class="top-badge">
+                        {% if article.top_badge %}
                         <span class="badge text-bg-warning">
                             {{ article.top_badge }}
                         </span>
+                        {% endif %}
+
+                        {% if article.live is False %}
+                        <span class="badge text-bg-danger" style="font-size: 2.0rem;">
+                            NOT PUBLISHED
+                        </span>
+                        {% endif %}
                     </div>
                     {% endif %}
 
+
+
                     <div class="article-title">
-                        <h2>{{ article.title }}</h2>
+                        <h2 {% if article.live is False%} style="border-bottom:12px solid #dc3545 ;"{% endif %}>{{ article.title }}</h2>
                     </div>
                 </div>
 
@@ -39,9 +49,11 @@
                         </span>
                         {% endif %}
 
+                        {% if article.date %}
                         <span class="badge text-bg-secondary">
                             {{ article.date }}
                         </span>
+                        {% endif %}
 
                         <p class="lead">
                             {{ article.short_description }}
