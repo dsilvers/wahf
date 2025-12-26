@@ -2,6 +2,7 @@
     {% for item in menu_items %}
     <li class="nav-item mb-2">
       <a href="{{ item.link }}" class="nav-link p-0 text-muted">
+        {% if item.menu_icon %}<i data-feather="{{ item.menu_icon }}"></i>{% endif %}
         {{ item.title }}
       </a>
     </li>

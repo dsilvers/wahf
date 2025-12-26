@@ -589,6 +589,8 @@ class FreeformPage(OpenGraphMixin, Page):
 class MenuItem(Orderable):
     menu_label = models.CharField(blank=True, null=True, max_length=50)
 
+    menu_icon = models.CharField(max_length=50, blank=True, null=True)
+
     link_url = models.CharField(max_length=500, blank=True)
 
     link_page = models.ForeignKey(
@@ -603,6 +605,7 @@ class MenuItem(Orderable):
 
     panels = [
         FieldPanel("menu_label"),
+        FieldPanel("menu_icon"),
         FieldPanel("link_url"),
         PageChooserPanel("link_page"),
     ]
