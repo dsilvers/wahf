@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import MagazineIssuePage
+from magazine.models import MagazineIssuePage
 
 register = template.Library()
 

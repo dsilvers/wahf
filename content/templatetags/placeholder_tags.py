@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import InducteePhotoPlaceholder
+from content.models import InducteePhotoPlaceholder
 
 register = template.Library()
 

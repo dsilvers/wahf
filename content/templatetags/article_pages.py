@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import ArticlePage
+from content.models import ArticlePage
 
 register = template.Library()
 

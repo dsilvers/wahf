@@ -1,7 +1,7 @@
 from django import template
 from wagtail.models import Site
 
-from ..models import Menu
+from content.models import Menu
 
 register = template.Library()
 
