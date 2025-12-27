@@ -9,16 +9,6 @@
 <html lang="en">
   <head>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZNT3NBBJT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-RZNT3NBBJT');
-    </script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -34,19 +24,50 @@
     <meta property="og:description" content="Remembering the pilots and aviation experts whose obituaries made headlines.">
     <meta property="og:image" content="https://www.wahf.org/static/sts-article/og-image.jpg">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-03-11-2023.css' %}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=News+Cycle:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+    {% include "base_head.html" %}
 
     <link rel="stylesheet" href="https://use.typekit.net/dqk6jfd.css">
 
-
-
 <style type="text/css">
+
+/* domine-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Domine';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/static/fonts/Domine/domine-v25-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* news-cycle-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'News Cycle';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/fonts/NewsCycle/news-cycle-v26-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* news-cycle-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'News Cycle';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/static/fonts/NewsCycle/news-cycle-v26-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* newsreader-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/fonts/Newsreader/newsreader-v26-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+
+
 .warnock-pro-semibold {
     font-family: warnock-pro-caption, serif;
     font-weight: 600;
@@ -1561,15 +1582,9 @@ hr {
     </footer>
     <!-- end footer -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js" integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script
-			  src="https://code.jquery.com/jquery-3.7.1.min.js"
-			  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-			  crossorigin="anonymous"></script>
-    <script>
-      feather.replace()
-    </script>
+    {% include "base_javascript.html" %}
+
+    <script src="{% static "js/jquery-3.7.1.min.js" %}"></script>
 
     <script>
     $(document).ready(function() {

@@ -1,0 +1,69 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load placeholder_tags %}
+
+
+<div class="container">
+    <div class="row">
+        {% for article in articles_list %}
+        <div class="{% if col_classes %}{{ col_classes }}{% else %}col-lg-6 col-md-6 col-sm-12{% endif %} p-2">
+            <div class="{% if article_class %}{{ article_class }}{% else %}article-large{% endif %} rounded" onclick="window.location='{% slugurl article.slug %}';">
+                <div class="article-hide">
+                    <a href="{% slugurl article.slug %}">{{ article.title }}</a>
+                </div>
+
+                <div class="article-img-wrapper">
+                    {% if article_class == "article-small" %}
+                        {% image article.image fill-450x450 as tmp_img %}
+                    {% else %}
+                        {% image article.image fill-900x900 as tmp_img %}
+                    {% endif %}
+                    <div class="img-fluid article-img" style="background-image: url('{{ tmp_img.url }}');">
+                    </div>
+
+                    {% if article.top_badge or article.live is False %}
+                    <div class="article-top-badge">
+                        {% if article.top_badge %}
+                        <span class="badge text-bg-warning">
+                            {{ article.top_badge }}
+                        </span>
+                        {% endif %}
+
+                        {% if article.live is False %}
+                        <span class="badge text-bg-danger" style="font-size: 2.0rem;">
+                            NOT PUBLISHED
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="article-title">
+                        <h2 {% if article.live is False%} style="border-bottom:12px solid #dc3545 ;"{% endif %}>{{ article.title }}</h2>
+                    </div>
+                </div>
+
+                <div class="article-description">
+                        {% if article.author %}
+                        <span class="badge text-bg-info">
+                            By {{ article.author.name }}
+                        </span>
+                        {% endif %}
+
+                        {% if article.date %}
+                        <span class="badge text-bg-secondary">
+                            {{ article.date }}
+                        </span>
+                        {% endif %}
+
+                        <p class="lead">
+                            {{ article.short_description }}
+
+                            <span class="read-more">
+                                Read&nbsp;More
+                            <span>
+                        </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

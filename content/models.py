@@ -13,7 +13,9 @@ from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
     MultiFieldPanel,
+    ObjectList,
     PageChooserPanel,
+    TabbedInterface,
 )
 from wagtail.documents import get_document_model
 from wagtail.fields import RichTextField, StreamField
@@ -179,6 +181,22 @@ class KohnProjectPage(Page):
     ]
 
 
+class RelatedArticle(Orderable):
+    page = ParentalKey("content.ArticlePage", related_name="related_articles")
+
+    link_to = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("link_to"),
+    ]
+
+
 class ArticlePage(OpenGraphMixin, Page):
     author = models.ForeignKey(
         "content.ArticleAuthor", null=True, blank=True, on_delete=models.PROTECT
@@ -235,7 +253,8 @@ class ArticlePage(OpenGraphMixin, Page):
         help_text="Leave blank if you do not have any custom CSS. This is custom styling for this article.",
     )
 
-    content_panels = Page.content_panels + [
+    # Wagtail CMS panel configs w/ custom tabs at top
+    detail_panels = Page.content_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("author"),
@@ -247,20 +266,31 @@ class ArticlePage(OpenGraphMixin, Page):
                 FieldPanel("tags"),
             ],
             heading="Details and Preview",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("body"),
-            ],
-            heading="Article Contents",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("page_css"),
-            ],
-            heading="Article Style",
-        ),
+        )
     ]
+
+    content_panels = [
+        FieldPanel("body"),
+    ]
+
+    related_content_panels = [
+        InlinePanel("related_articles", label="Related Articles", max_num=4),
+    ]
+
+    style_panels = [
+        FieldPanel("page_css"),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(detail_panels, heading="Details"),
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(related_content_panels, heading="Related Articles"),
+            ObjectList(style_panels, heading="Style"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            # ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
+        ]
+    )
 
     parent_page_type = [
         "home.ArticleListPage",

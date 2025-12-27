@@ -5,68 +5,6 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        {% for article in articles_list %}
-        <div class="col-lg-6 col-md-6 col-sm-12 p-2">
-            <div class="col-article rounded" onclick="window.location='{% slugurl article.slug %}';">
-                <div class="article-hide">
-                    <a href="{% slugurl article.slug %}">{{ article.title }}</a>
-                </div>
-
-                <div class="article-img-wrapper">
-                    {% image article.image fill-900x900 as tmp_img %}
-                    <div class="img-fluid article-img" style="background-image: url('{{ tmp_img.url }}');">
-                    </div>
-
-                    {% if article.top_badge or article.live is False %}
-                    <div class="top-badge">
-                        {% if article.top_badge %}
-                        <span class="badge text-bg-warning">
-                            {{ article.top_badge }}
-                        </span>
-                        {% endif %}
-
-                        {% if article.live is False %}
-                        <span class="badge text-bg-danger" style="font-size: 2.0rem;">
-                            NOT PUBLISHED
-                        </span>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-
-
-
-                    <div class="article-title">
-                        <h2 {% if article.live is False%} style="border-bottom:12px solid #dc3545 ;"{% endif %}>{{ article.title }}</h2>
-                    </div>
-                </div>
-
-                <div class="article-description">
-                        {% if article.author %}
-                        <span class="badge text-bg-info">
-                            {{ article.author.name }}
-                        </span>
-                        {% endif %}
-
-                        {% if article.date %}
-                        <span class="badge text-bg-secondary">
-                            {{ article.date }}
-                        </span>
-                        {% endif %}
-
-                        <p class="lead">
-                            {{ article.short_description }}
-
-                            <span class="read-more">
-                                Read&nbsp;More
-                            <span>
-                        </p>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+{% include 'content/article_list_objects.html' with articles_list=articles_list %}
 
 {% endblock %}

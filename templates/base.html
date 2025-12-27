@@ -66,85 +66,22 @@
     <meta property="og:site_name" content="{{ current_site.site_name }}" >
     {% endif %}
 
-    {# Force all links in the live preview panel to be opened in a new tab #}
-    {% if request.in_preview_panel %}
-    <base target="_blank">
-    {% endif %}
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-12-23-2025.css' %}">
-
-    {% block extra_css %}
-    {# Override this in templates to add extra stylesheets #}
-    {% endblock %}
-
     {% block meta_author %}
     {% if page.author %}
     <meta name="author" content="{{ page.author.name }}">
     {% endif %}
     {% endblock %}
 
-    <meta property="fb:app_id" content="875252041561148">
-
-    {% if environment_name != "production" or page.live is False %}
-    <style type="text/css">
-    .env-alert {
-        text-align:  center;
-        letter-spacing: .1rem;
-        padding: 4px 0 4px 0;
-        border-bottom:  2px solid rgba(0, 0, 0, 0.1);
-    }
-    .env-staging {
-        background-color: #dc3545!important;
-        color:  #fff!important;
-    }
-    .env-development {
-        background-color: #ffc107!important;
-        color:  #343a40!important;
-    }
-    .env-taller-warning {
-      padding: 20px 0 20px 0;
-      font-size: 1.5rem;
-    }
-    </style>
+    {# Force all links in the live preview panel to be opened in a new tab #}
+    {% if request.in_preview_panel %}
+    <base target="_blank">
     {% endif %}
 
+    {% include "base_head.html" %}
 
-    <!-- Matomo -->
-    <script>
-      var _paq = window._paq = window._paq || [];
-      _paq.push(['setCustomRequestProcessing', function(queryString) {
-          return queryString.replace('action_name=', 'act_id=');
-      }]);
-
-      _paq.push(["disableCampaignParameters"]);
-      _paq.push(["disableCookies"]);
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      _paq.push(['disableAlwaysUseSendBeacon']);
-      _paq.push(['setRequestMethod', 'POST']);
-      (function() {
-        var u="//s.wahf.org/";
-        _paq.push(['setTrackerUrl', u+'m.php']);
-        _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src=u+'m.js'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    <noscript><p><img referrerpolicy="no-referrer-when-downgrade" src="//stats.wahf.org/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
-    <!-- End Matomo Code -->
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZNT3NBBJT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-RZNT3NBBJT');
-    </script>
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
 
   </head>
 
@@ -264,11 +201,7 @@
     </footer>
     <!-- end footer -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js" integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-      feather.replace()
-    </script>
+    {% include "base_javascript.html" %}
 
     {% block extra_js %}
     {# Override this in templates to add extra javascript #}

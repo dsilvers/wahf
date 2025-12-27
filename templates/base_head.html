@@ -1,0 +1,45 @@
+{% load static %}
+
+    <!-- start base_head -->
+    <link rel="stylesheet" href="{% static "bootstrap-5.3.8/css/bootstrap.min.css" %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wahf-12-26-2025.css' %}">
+
+    <meta property="fb:app_id" content="875252041561148">
+
+    {% if environment_name == "production" %}
+    <!-- Matomo -->
+    <script>
+      var _paq = window._paq = window._paq || [];
+      _paq.push(['setCustomRequestProcessing', function(queryString) {
+          return queryString.replace('action_name=', 'act_id=');
+      }]);
+
+      _paq.push(["disableCampaignParameters"]);
+      _paq.push(["disableCookies"]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      _paq.push(['disableAlwaysUseSendBeacon']);
+      _paq.push(['setRequestMethod', 'POST']);
+      (function() {
+        var u="//s.wahf.org/";
+        _paq.push(['setTrackerUrl', u+'m.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'m.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img referrerpolicy="no-referrer-when-downgrade" src="//s.wahf.org/m.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo Code -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZNT3NBBJT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RZNT3NBBJT');
+    </script>
+    {% endif %}
+    <!-- end base_head -->
