@@ -1,0 +1,17 @@
+/* 1. Target by the Draftail style name (Case Sensitive!) */
+.Draftail-Editor .HIGHLIGHT {
+    background-color: #fff5b1 !important;
+    color: #000 !important;
+}
+
+/* 2. Target the tag just in case it's rendering as a mark tag */
+.Draftail-Editor mark {
+    background-color: #fff5b1 !important;
+    color: #000 !important;
+}
+
+/* 3. Target the specific span class Draftail often generates */
+.Draftail-Editor .style--HIGHLIGHT {
+    background-color: #fff5b1 !important;
+    color: #000 !important;
+}

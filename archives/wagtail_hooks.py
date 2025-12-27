@@ -1,11 +1,17 @@
+import wagtail.admin.rich_text.editors.draftail.features as draftail_features
 from django.contrib.auth.decorators import login_required
+from django.templatetags.static import static
 from django.urls import re_path as url
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.utils.html import format_html
 from djqscsv import render_to_csv_response
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.rich_text.converters.html_to_contentstate import (
+    InlineStyleElementHandler,
+)
 from wagtail.admin.viewsets.pages import PageListingViewSet
 from wagtail.documents import get_document_model
 from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
@@ -350,6 +356,41 @@ class InducteeDetailPageListingViewSet(PageListingViewSet):
 def register_inductee_detail_page_tag_audit_listing_viewset():
     # The first argument must be a unique name
     return InducteeDetailPageListingViewSet("inductee_detail_page_audit_listing")
+
+
+@hooks.register("register_rich_text_features")
+def register_highlight_feature(features):
+    feature_name = "highlight"
+    type_ = "HIGHLIGHT"
+    tag = "mark"
+
+    control = {
+        "type": type_,
+        "icon": "pick",
+        "description": "Highlight",
+        # This helps group it with other inline styles like Bold/Italic
+        "group": "blocks",
+    }
+
+    features.register_editor_plugin(
+        "draftail", feature_name, draftail_features.InlineStyleFeature(control)
+    )
+
+    db_conversion = {
+        "from_database_format": {tag: InlineStyleElementHandler(type_)},
+        "to_database_format": {"style_map": {type_: tag}},
+    }
+
+    features.register_converter_rule("contentstate", feature_name, db_conversion)
+    features.default_features.append(feature_name)
+
+
+# This isn't working
+@hooks.register("insert_global_admin_css")
+def editor_css():
+    return format_html(
+        '<link rel="stylesheet" href="{}">', static("css/wagtail-editor.css")
+    )
 
 
 modeladmin_register(LocationTagAdmin)
