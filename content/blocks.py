@@ -9,3 +9,12 @@ class BlockQuoteBlock(blocks.StructBlock):
         icon = "openquote"
         label = "Blockquote"
         template = "blocks/blockquote.html"
+
+
+class EditorsNoteBlock(blocks.StructBlock):
+    note = blocks.TextBlock(required=True, label="Editor's Note")
+
+    class Meta:
+        icon = "openquote"
+        label = "Editors Note"
+        template = "blocks/editors_note.html"

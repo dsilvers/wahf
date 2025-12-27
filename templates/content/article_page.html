@@ -186,7 +186,7 @@ blockquote {
                         {% image block.value width-900 class="img-fluid article-image" %}
                         {% caption block.value %}
                     </div>
-                {% elif block.block_type == 'blockquote' %}
+                {% else %}
                     {{ block }}
                 {% endif %}
             {% endfor %}

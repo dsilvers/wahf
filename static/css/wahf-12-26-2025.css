@@ -296,6 +296,21 @@ figcaption {
     color: var(--bs-heading-color);
 }
 
+.editors-note {
+    border-top: 2px solid #aeaeae;
+    border-left: 10px solid #0085cb;
+    border-bottom: 2px solid #aeaeae;
+    border-right: 2px solid #aeaeae;
+    padding: 14px 14px 14px 28px;
+}
+.editors-note .editors-note-header {
+    font-family: "RobotoCondensed";
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: larger;
+    font-weight: bold;
+    text-decoration: underline;
+}
 
 
 .env-alert {

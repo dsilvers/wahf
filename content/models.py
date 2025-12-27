@@ -23,7 +23,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
 
-from content.blocks import BlockQuoteBlock
+from content.blocks import BlockQuoteBlock, EditorsNoteBlock
 from wahf.mixins import OpenGraphMixin
 
 Document = get_document_model()
@@ -243,6 +243,7 @@ class ArticlePage(OpenGraphMixin, Page):
             ),
             ("image", ImageChooserBlock()),
             ("blockquote", BlockQuoteBlock()),
+            ("editorsnote", EditorsNoteBlock()),
         ],
         use_json_field=True,
     )
