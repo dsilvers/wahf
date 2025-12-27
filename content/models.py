@@ -405,10 +405,13 @@ class ScholarshipPage(OpenGraphMixin, Page):
         for recipient in context["scholarship_list"]:
             if recipient.image:
                 if count % 2 == 0:
-                    context["top_images"].append(recipient.image)
+                    if recipient.image not in context["top_images"]:
+                        context["top_images"].append(recipient.image)
+                        count += 1
                 else:
-                    context["bottom_images"].append(recipient.image)
-                count += 1
+                    if recipient.image not in context["bottom_images"]:
+                        context["bottom_images"].append(recipient.image)
+                        count += 1
 
         return context
 
