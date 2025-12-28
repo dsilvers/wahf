@@ -56,9 +56,11 @@ class TagView(TemplateView):
             tag=tag, content_object__content_type=inductee_page_content_type
         ).values_list("content_object__pk", flat=True)[0:100]
 
-        context["articles"] = ArticlePage.objects.filter(pk__in=article_page_pks)
+        context["articles"] = ArticlePage.objects.filter(
+            pk__in=article_page_pks, live=True
+        )
         context["inductees"] = InducteeDetailPage.objects.filter(
-            pk__in=inductee_page_pks
+            pk__in=inductee_page_pks,
         )
 
         context["articles_found"] = context["articles"].exists()
