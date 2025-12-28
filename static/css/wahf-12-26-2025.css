@@ -394,6 +394,10 @@ figcaption {
     padding-left: 25px;
 }
 
+.img-fluid {
+    width: 100%;
+}
+
 
 figcaption {
     color: #eaeaea;
