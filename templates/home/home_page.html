@@ -113,7 +113,7 @@ figcaption {
 {% block before_title %}
     <div class="inductee-bar mb-3">
     {% for inductee in inductee_bar %}
-        <a href="{% pageurl inductee %}">{% image inductee.photo fill-50x50 class="img-fluid" loading="lazy" %}</a>
+        <a href="{% pageurl inductee %}">{% image inductee.photo fill-50x50 loading="lazy" %}</a>
     {% endfor %}
     </div>
 {% endblock %}
