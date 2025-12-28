@@ -1,3 +1,9 @@
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 html {
     height: 100%;
 }
@@ -182,6 +188,7 @@ figcaption {
     border-color: #eafeaf;
 }
 
+
 .article-large {
     border: 10px solid #ededed;
 }
@@ -193,16 +200,24 @@ figcaption {
 .article-img-wrapper {
     position: relative;
     width: 100%;
-    height: 650px;
+    /* height: 650px; */
     cursor: pointer;
 }
 
+.article-img-wrapper img {
+    width: 100%;
+}
+
 .article-large .article-img-wrapper {
-    height: 650px;
+    /* height: 650px; */
 }
 
 .article-small .article-img-wrapper {
-    height: 350px;
+    /* height: 350px; */
+}
+
+.article-frontpage {
+    border: 2px solid #0e0e0e;
 }
 
 .article-img {
@@ -227,7 +242,12 @@ figcaption {
     background: rgba(255,255,255,0.87);
     position: absolute;
     bottom: 0;
-    padding: 12px;
+    padding: 12px 12px 12px 18px;
+}
+
+.article-img-wrapper {
+    border-top: 7px solid #0085cb;
+
 }
 
 .article-top-badge {
@@ -237,17 +257,22 @@ figcaption {
 }
 
 .article-large .article-title h2 {
-    font-size: calc(1.625rem + .9vw);
+    font-size: calc(1.325rem + .9vw);
 }
 
 .article-small .article-title h2 {
     font-size: calc(1.025rem + .9vw);
 }
 
+.article-title h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .article-description {
   color: black;
   background: rgba(255,255,255,.88);
-  padding: 8px 13px 13px 13px;
+  padding: 12px 17px 17px 17px;
   margin: 0px;
   cursor: pointer;
 }
@@ -266,13 +291,18 @@ figcaption {
 }
 
 .article-large .article-description .lead {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     padding-top: 6px;
 }
 
 .article-small .article-description .lead {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     padding-top: 6px;
+}
+
+.article-frontpage .article-description {
+    font-size: 1.1rem;
+    padding-top: 17px;
 }
 
 .navbar-nav, .nav {
@@ -330,4 +360,64 @@ figcaption {
 .env-taller-warning {
     padding: 20px 0 20px 0;
     font-size: 1.5rem;
+}
+
+
+/* This applies to everything from mobile up to the end of 'xl' */
+@media (max-width: 1199.98px) {
+  .full-width-image {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    max-width: none !important;
+  }
+}
+
+/* Optional: Ensure the image behaves normally on xxl */
+@media (min-width: 1200px) {
+  .full-width-image {
+    width: 100vw;
+    position: relative;
+    left: 66%;
+    transform: translateX(-50%);
+    margin: 0;
+    max-width: none !important;
+  }
+  .full-width-image img {
+    width: 100%;
+  }
+}
+
+.full-width-image figcaption {
+    padding-left: 25px;
+}
+
+
+figcaption {
+    color: #eaeaea;
+    background: #1e1e1e;
+    line-height: 140%;
+    padding: 4px 8px 4px 8px;
+}
+
+.image-credit {
+    color: #7e7e7e;
+    text-transform: uppercase;
+    font-size: smaller;
+    margin-left: 8px;
+}
+
+blockquote {
+  border-left: 7px solid #0085cb;
+  margin: 0.5rem 2.0rem 0.5rem 2.0rem;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-size: larger;
+}
+
+.text-highlight {
+    background: #ffef99;
+    border-radius: 2px;
 }

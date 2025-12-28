@@ -16,7 +16,7 @@ class CaptionedImageFormat(Format):
 
         if image.caption:
             source = (
-                f"<br><span class='image-credit'>{ image.source }</span>"
+                f" <span class='image-credit'>{ image.source }</span>"
                 if image.source
                 else ""
             )
@@ -28,10 +28,35 @@ class CaptionedImageFormat(Format):
         return format_html(html)
 
 
+class SuperWidthCaptionedImageFormat(Format):
+    def image_to_html(self, image, alt_text, extra_attributes=None):
+        default_html = super().image_to_html(image, alt_text, extra_attributes)
+
+        source = (
+            f" <span class='image-credit'>{ image.source }</span>"
+            if image.source
+            else ""
+        )
+        caption = image.caption if image.caption else ""
+
+        html = f"<div class='full-width-image'>{default_html}<figcaption>{caption}{source}</figcaption></div>"
+
+        return format_html(html)
+
+
+register_image_format(
+    SuperWidthCaptionedImageFormat(
+        "captioned_superwidth",
+        "Super width - full page width, captioned",
+        "img-fluid",
+        "width-1200",
+    )
+)
+
 register_image_format(
     CaptionedImageFormat(
         "captioned_fullwidth",
-        "Full width captioned",
+        "Full width of column, captioned",
         "img-fluid article-image",
         "width-1200",
     )

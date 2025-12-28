@@ -5,20 +5,18 @@
 <div class="container">
     <div class="row">
         {% for article in articles_list %}
-        <div class="{% if col_classes %}{{ col_classes }}{% else %}col-lg-6 col-md-6 col-sm-12{% endif %} p-2">
-            <div class="{% if article_class %}{{ article_class }}{% else %}article-large{% endif %} rounded" onclick="window.location='{% slugurl article.slug %}';">
+        <div class="{% if col_classes %}{{ col_classes }}{% else %}col-xl-4 col-lg-6 col-md-6 col-sm-12{% endif %} p-2 mb-1" onclick="window.location='{% slugurl article.slug %}';">
+            <div class="{% if article_class %}{{ article_class }}{% else %}article-large{% endif %} rounded">
                 <div class="article-hide">
                     <a href="{% slugurl article.slug %}">{{ article.title }}</a>
                 </div>
 
                 <div class="article-img-wrapper">
                     {% if article_class == "article-small" %}
-                        {% image article.image fill-450x450 as tmp_img %}
+                        {% image article.image fill-450x450 class="img-fluid" loading="lazy" %}
                     {% else %}
-                        {% image article.image fill-900x900 as tmp_img %}
+                        {% image article.image fill-900x900 class="img-fluid" loading="lazy" %}
                     {% endif %}
-                    <div class="img-fluid article-img" style="background-image: url('{{ tmp_img.url }}');">
-                    </div>
 
                     {% if article.top_badge or article.live is False %}
                     <div class="article-top-badge">
@@ -37,7 +35,7 @@
                     {% endif %}
 
                     <div class="article-title">
-                        <h2 {% if article.live is False%} style="border-bottom:12px solid #dc3545 ;"{% endif %}>{{ article.title }}</h2>
+                        <h2 {% if article.live is False%} style="border-bottom:12px solid #dc3545;"{% endif %}>{{ article.title }}</h2>
                     </div>
                 </div>
 
@@ -57,8 +55,9 @@
                         <p class="lead">
                             {{ article.short_description }}
 
-                            <span class="read-more">
-                                Read&nbsp;More
+                            <br>
+                            <span class="read-more float-end">
+                                <i data-feather="arrow-right-circle"></i> Read&nbsp;More
                             <span>
                         </p>
                 </div>

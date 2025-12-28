@@ -99,14 +99,6 @@ figcaption {
     background:
 }
 
-.taller-box .article-img {
-    height: 600px;
-}
-
-.taller-box {
-    height: 600px;
-}
-
 .article-title-smaller h2 {
     font-size: calc(1.425rem + .9vw);
 }
@@ -132,77 +124,61 @@ figcaption {
 <div class="row">
     <!-- magazine preview -->
     {% get_current_magazine_issue as current_magazine_issue %}
-    <div class="col-lg-6 col-md-6 mb-2 col-sm-12 ">
-        <div class="p-2 rounded text-bg-dark">
-            <div class="col-article" onclick="window.location='{% slugurl current_magazine_issue.slug %}';">
-                <div class="article-hide">
-                    <a href="{% slugurl current_magazine_issue.slug %}">{{ current_magazine_issue.headline }}</a>
-                </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 p-0 mb-1 " onclick="window.location='{% slugurl current_magazine_issue.slug %}';">
+        <div class="m-3 article-frontpage rounded">
+            <div class="article-hide">
+                <a href="{% slugurl current_magazine_issue.slug %}">{{ current_magazine_issue.headline }}</a>
+            </div>
 
-                <div class="article-img-wrapper taller-box">
-                    {% image current_magazine_issue.cover width-900 as magazine_image %}
-                    <div class="img-fluid article-img magazine-image" style="background-image: url('{{ magazine_image.url }}');">
-                    </div>
+            <div class="article-img-wrapper">
+                {% image current_magazine_issue.cover width-900 class="img-fluid" loading="lazy" %}
+            </div>
 
-                </div>
+            <div class="article-description">
+                    {{ current_magazine_issue.blurb|safe }}
 
-                <div class="article-description">
-                        <p class="lead">
-                            {{ current_magazine_issue.blurb|safe }}
-
-                            <span class="read-more">
-                                Read <i>Forward in Flight</i>
-                            <span>
-                        </p>
-                </div>
+                    <span class="read-more">
+                        <i data-feather="arrow-right-circle"></i> Read <i>Forward in Flight</i>
+                    <span>
             </div>
         </div>
     </div>
 
 
-    <div class="col-lg-6 col-md-6 col-sm-12 mb-2 rounded text-bg-dark">
-        <div class="p-2 rounded text-bg-dark">
-            <div class="col-article" onclick="window.location='{% slugurl page.non_member_link_page.slug %}';">
-                <div class="article-hide">
-                    <a href="{% slugurl page.non_member_link_page.slug %}">Become a WAHF Member</a>
-                </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 p-0 mb-1" onclick="window.location='{% slugurl page.non_member_link_page.slug %}';">
+        <div class="m-3 article-large article-frontpage rounded">
 
-                <div class="article-img-wrapper taller-box">
-                    {% image page.non_member_image fill-900x900 as non_member_image %}
-                    <div class="img-fluid article-img" style="background-image: url('{{ non_member_image.url }}');">
-                    </div>
+            <div class="article-hide">
+                <a href="{% slugurl page.non_member_link_page.slug %}">Become a WAHF Member</a>
+            </div>
 
-                    <div class="article-title article-title-smaller">
-                        <h1>{{ page.non_member_headline }}</h1>
-                    </div>
-                </div>
+            <div class="article-img-wrapper">
+                {% image page.non_member_image fill-900x900 class="img-fluid" loading="lazy" %}
+            </div>
 
-                <div class="article-description">
-                    <p class="lead">{{ page.non_member_blurb|safe }}</p>
+            <div class="article-description">
+                {{ page.non_member_blurb|safe }}
 
-                    <span class="read-more">
-                        Become a Member
-                    <span>
+                <span class="read-more">
+                    <i data-feather="arrow-right-circle"></i> Become a Member
+                <span>
 
-                    <a href="{% slugurl page.non_member_link_page.slug %}" class="text-white fw-bold" aria-label="Become a Member">
+                <a href="{% slugurl page.non_member_link_page.slug %}" class="text-white fw-bold" aria-label="Become a Member">
 
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
     </div>
 
     {% for card in page.home_page_cards.all %}
-    <div class="col-lg-6 col-md-6 col-sm-12 p-2">
-        <div class="col-article rounded" onclick="window.location='{% slugurl card.link_page.slug %}';">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 p-0 mb-1" onclick="window.location='{% slugurl card.link_page.slug %}';">
+        <div class="m-3 article-large article-frontpage rounded">
             <div class="article-hide">
                 <a href="{% slugurl card.link_page.slug %}">{{ card.heading }}</a>
             </div>
 
             <div class="article-img-wrapper">
-                {% image card.image fill-900x900 as card_img %}
-                <div class="img-fluid article-img" style="background-image: url('{{ card_img.url }}');">
-                </div>
+                {% image card.image fill-900x900 class="img-fluid" loading="lazy" %}
 
                 <div class="article-title">
                     <h2>{{ card.heading }}</h2>
@@ -210,37 +186,34 @@ figcaption {
             </div>
 
             <div class="article-description">
-                    {% if card.badge_text %}
-                    <span class="badge text-bg-info">
-                        {{ card.badge_text }}
-                    </span>
+                    {% if card.badge_text or card.date %}
+                        <div class="mb-2">
+                            {% if card.badge_text %}
+                            <span class="badge text-bg-info">
+                                {{ card.badge_text }}
+                            </span>
+                            {% endif %}
+
+                            {% if card.date %}
+                            <span class="badge text-bg-secondary">
+                                {{ card.date|date:"N j" }}
+                            </span>
+                            {% endif %}
+                        </div>
                     {% endif %}
 
-                    {% if card.date %}
-                    <span class="badge text-bg-secondary">
-                        {{ card.date|date:"N j" }}
-                    </span>
-                    {% endif %}
+                    {{ card.blurb|safe }}
 
-                    <p class="lead">
-                        {{ card.blurb|safe }}
-
-                        <span class="read-more">
-                            Read&nbsp;More
-                        <span>
-                    </p>
+                    <span class="read-more">
+                        <i data-feather="arrow-right-circle"></i> Read&nbsp;More
+                    <span>
             </div>
         </div>
     </div>
     {% endfor %}
 
-</div>
-
-
-
-<div class="row mb-2">
     <!-- desktop -->
-    <div class="col-12 d-none d-lg-inline">
+    <div class="col-12 d-none d-lg-inline p-0">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col d-flex flex-column position-static kohn-container-desktop" onclick="window.location='/kohn';">
                 <div class="kohn-text">
@@ -256,14 +229,14 @@ figcaption {
     </div>
 
     <!-- mobile -->
-    <div class="col-12 d-sm-block d-lg-none">
+    <div class="col-12 d-sm-block d-lg-none p-0">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col d-flex flex-column position-static kohn-container-mobile" onclick="window.location='/kohn';">
                 <div class="kohn-text">
                     <h2>Leo J. Kohn Photography Collection</h2>
                     <h3>Digitization and Preservation Project</h3>
                     <a href="/kohn">
-                        <button class="btn btn-success btn-lg">Project Details</button>
+                        <button class="btn btn-success btn-lg"><i data-feather="arrow-right-circle"></i> Project Details</button>
                     </a>
                 </div>
 
