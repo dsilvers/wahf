@@ -198,6 +198,10 @@ class RelatedArticle(Orderable):
 
 
 class ArticlePage(OpenGraphMixin, Page):
+    subtitle = models.TextField(
+        null=True, blank=True, help_text="Text that appears under the title. Optional."
+    )
+
     author = models.ForeignKey(
         "content.ArticleAuthor", null=True, blank=True, on_delete=models.PROTECT
     )
@@ -256,18 +260,14 @@ class ArticlePage(OpenGraphMixin, Page):
 
     # Wagtail CMS panel configs w/ custom tabs at top
     detail_panels = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("author"),
-                FieldPanel("date"),
-                FieldPanel("website_publish_date"),
-                FieldPanel("image"),
-                FieldPanel("short_description"),
-                FieldPanel("top_badge"),
-                FieldPanel("tags"),
-            ],
-            heading="Details and Preview",
-        )
+        FieldPanel("subtitle"),
+        FieldPanel("author"),
+        FieldPanel("date"),
+        FieldPanel("website_publish_date"),
+        FieldPanel("image"),
+        FieldPanel("short_description"),
+        FieldPanel("top_badge"),
+        FieldPanel("tags"),
     ]
 
     content_panels = [

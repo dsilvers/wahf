@@ -157,16 +157,22 @@ figcaption {
 
 .page-title-container {
     border-top: 5px solid #0085cb;
-    padding: 16px 0 16px 0;
-    margin: 5px 0 25px 0;
+    padding: 16px 0 11px 0;
+    margin: 5px 0 20px 0;
 }
 
 .page-title-container h1 {
     margin: 5px 0 5px 0;
     padding: 5px;
-    color: black;
-    border-bottom: 1px dotted black;
-    display: inline;
+    color: #000000;
+    font-size: calc(1.575rem + 1.5vw);
+}
+
+.page-title-container h2 {
+    margin: 5px 0 5px 0;
+    padding: 5px;
+    color: #0e0e0e;
+    font-size: calc(1.175rem + 1.5vw);
 }
 
 
@@ -342,6 +348,14 @@ figcaption {
     text-decoration: underline;
 }
 
+.tags a {
+
+}
+
+.spacer {
+    margin-right: 12px;
+}
+
 
 .env-alert {
     text-align:  center;
@@ -424,4 +438,8 @@ blockquote {
 .text-highlight {
     background: #ffef99;
     border-radius: 2px;
+}
+
+.border-primary {
+    border-color: #0085cb !important;
 }

@@ -123,17 +123,22 @@ blockquote {
 
     </div>
 
+    {% if page.tags.all %}
     <div class="row mt-5 mb-3">
         <div class="col">
-            <h4>See Also:</h4>
+            <p class="related-heading">
+                See Also:
+            </p>
 
+            <div class="tags">
             {% for tag in page.tags.all %}
-                <a href="{% url "tag" slug=tag.slug %}" title="{{ tag.name }}">
-                    <span class="badge text-bg-info mr-3 p-2">{{ tag.name }}</span>
-                </a>
+                <a href="{% url "tag" slug=tag.slug %}" title="{{ tag.name }}"><span class="badge text-bg-dark p-2">{{ tag.name }}</span></a>
+                <span class="spacer"></span>
             {% endfor %}
+            </div>
         </div>
     </div>
+    {% endif %}
 
     <!--
     <div class="row mt-5 mb-3">
