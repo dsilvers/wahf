@@ -17,14 +17,7 @@
     <link rel="manifest" href="/static/favicon/site.webmanifest">
 
     {% wagtail_site as current_site %}
-    <title>
-      {% block title %}
-      {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
-      {% endblock %}
-      {% block title_suffix %}
-      {% if current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-      {% endblock %}
-    </title>
+    <title>{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% if page.subtitle %} - {{ page.subtitle }}{% endif %}{% endif %}{% endblock %}{% block title_suffix %}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}{% endblock %}</title>
 
     {% block metadescription %}
     {% if page.search_description %}
@@ -43,8 +36,8 @@
     {% endif %}
 
     {% block ogtitle %}
-    <meta property="og:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}" >
-    <meta name="twitter:title" content="{{ page.title }}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}">
+    <meta property="og:title" content="{{ page.title }}{% if page.subtitle %} - {{ page.subtitle }}{% endif %}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}" >
+    <meta name="twitter:title" content="{{ page.title }}{% if page.subtitle %} - {{ page.subtitle }}{% endif %}{% if current_site.site_name %} - {{ current_site.site_name }}{% endif %}">
     {% endblock %}
     <meta property="og:type" content="website" >
     <meta property="og:url" content="https://www.wahf.org{{ request.path }}" >
@@ -142,7 +135,7 @@
           {% if page.title or page_title %}
           <div class="page-title-container">
             <div class="container">
-              <h1>{% if page.title %}{{ page.title }}{% elif page_title %}{{ page_title }}{% endif %}</h1>
+              <h1>{% if page.title %}{{ page.title }}{% if page.subtitle %} - {{ page.subtitle }}{% endif %}{% elif page_title %}{{ page_title }}{% endif %}</h1>
             </div>
           </div>
           {% endif %}
