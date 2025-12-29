@@ -12,6 +12,7 @@ django-debug-toolbar==6.1.0
 psycopg==3.3.2
 django-redis==6.0.0
 pytz==2025.2
+tzdata==2025.3
 
 crispy-bootstrap5==2025.6
 
