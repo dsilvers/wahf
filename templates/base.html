@@ -89,7 +89,7 @@
         {{ environment_name|upper }} - TESTING
     </div>
     {% endif %}
-    {% if page.live is False %}
+    {% if page.live is False and request.user.is_superuser %}
     <div class="env-alert env-staging env-taller-warning">
         UNPUBLISHED PAGE - THIS PAGE IS NOT YET PUBLIC
     </div>

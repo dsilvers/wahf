@@ -1,5 +1,7 @@
 from wagtail.models import Page, Site
 
+from content.models import ArticlePage
+
 
 class AdminDraftPreviewMiddleware:
     def __init__(self, get_response):
@@ -10,9 +12,10 @@ class AdminDraftPreviewMiddleware:
 
         # Only proceed if we got a 404 and the user is staff
         if (
-            response.status_code == 404
-            and request.user.is_authenticated
-            and (request.user.is_staff or request.user.is_superuser)
+            response.status_code
+            == 404
+            # and request.user.is_authenticated
+            # and (request.user.is_staff or request.user.is_superuser)
         ):
             site = Site.find_for_request(request)
             if not site:
@@ -27,8 +30,10 @@ class AdminDraftPreviewMiddleware:
             try:
                 # Find the specific version of the page (to get your custom fields)
                 page = Page.objects.get(url_path=full_url_path).specific
-
-                if not page.live:
+            except (Page.DoesNotExist, Page.MultipleObjectsReturned):
+                pass
+            else:
+                if type(page) == ArticlePage and not page.live:
                     # Trigger the page's serve method
                     preview_response = page.serve(request)
 
@@ -38,7 +43,5 @@ class AdminDraftPreviewMiddleware:
                         preview_response.render()
 
                     return preview_response
-            except (Page.DoesNotExist, Page.MultipleObjectsReturned):
-                pass
 
         return response
