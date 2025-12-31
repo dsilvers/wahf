@@ -53,6 +53,8 @@
     <meta property="og:image:alt" content="{% if page.get_graph_image.caption %}{{ page.get_graph_image.caption }}{% else %}{{ page.title }}{% endif %}" >
     {% endif %}
     {% endblock %}
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     {% block ogdescription %}
     {% if page.search_description %}
