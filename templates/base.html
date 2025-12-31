@@ -43,8 +43,11 @@
     <meta property="og:url" content="https://www.wahf.org{{ request.path }}" >
 
     {% block ogimage %}
-    {% if page.get_graph_image %}
-        {% image page.get_graph_image fill-1200x860 as og_fb_image %}
+    {% if page.og_image %}
+    {% image page.og_image original as og_fb_image %}
+    <meta property="og:image" content="https://www.wahf.org{{ og_fb_image.url }}" >
+    {% elif page.get_graph_image %}
+        {% image page.get_graph_image fill-1200x630 as og_fb_image %}
     <meta property="og:image" content="https://www.wahf.org{{ og_fb_image.url }}" >
     {% endif %}
     {% endblock %}
