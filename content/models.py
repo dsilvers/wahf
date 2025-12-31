@@ -288,7 +288,7 @@ class ArticlePage(OpenGraphMixin, Page):
             ObjectList(content_panels, heading="Content"),
             ObjectList(related_content_panels, heading="Related Articles"),
             ObjectList(style_panels, heading="Style"),
-            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(OpenGraphMixin.promote_panels, heading="Promote"),
             # ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
         ]
     )
