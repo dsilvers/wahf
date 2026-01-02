@@ -47,14 +47,30 @@
     {% image page.og_image original as og_fb_image %}
     <meta property="og:image" content="https://www.wahf.org{{ og_fb_image.url }}" >
     <meta property="og:image:alt" content="{% if page.og_image.caption %}{{ page.og_image.caption }}{% else %}{{ page.title }}{% endif %}" >
+    <meta property="og:image:width" content="{{ og_fb_image.width }}">
+    <meta property="og:image:height" content="{{ og_fb_image.height }}">
     {% elif page.get_graph_image %}
         {% image page.get_graph_image fill-1200x630 as og_fb_image %}
     <meta property="og:image" content="https://www.wahf.org{{ og_fb_image.url }}" >
     <meta property="og:image:alt" content="{% if page.get_graph_image.caption %}{{ page.get_graph_image.caption }}{% else %}{{ page.title }}{% endif %}" >
-    {% endif %}
-    {% endblock %}
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    {% endif %}
+
+    {% if page.og_image_square %}
+    {% image page.og_image_square original as og_fb_image_square %}
+    <meta property="og:image" content="https://www.wahf.org{{ og_fb_image_square.url }}" >
+    <meta property="og:image:alt" content="{% if page.og_image_square.caption %}{{ page.og_image_square.caption }}{% else %}{{ page.title }}{% endif %}" >
+    <meta property="og:image:width" content="{{ og_fb_image_square.width }}">
+    <meta property="og:image:height" content="{{ og_fb_image_square.height }}">
+    {% endif %}
+
+    {% endblock %}
+
+
+
+
+
 
     {% block ogdescription %}
     {% if page.search_description %}

@@ -13,11 +13,21 @@ class OpenGraphMixin(models.Model):
         help_text="Social media image (1200x630px recommended)",
     )
 
+    og_image_square = models.ForeignKey(
+        "archives.WAHFImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Square social media image (1080x1080 recommended)",
+    )
+
     # Add the field to the Promote tab
     promote_panels = Page.promote_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("og_image"),
+                FieldPanel("og_image_square"),
             ],
             heading="Social Media Metadata",
         )
